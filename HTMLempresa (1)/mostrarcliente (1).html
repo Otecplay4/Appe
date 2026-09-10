@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympia Gym</title>
+        <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+</head>
+<body>
+    <header>
+        <h2>Entrenador</h2>
+        <nav>
+            <a href="lugares">Planes</a>
+            <a href="productos.html">Productos</a>
+            <a href="lugares">Contacto</a>
+        </nav>
+
+        <div class="botones">
+            <button>Iniciar Sesión</button>
+            <button>Registrarse</button>
+        </div>
+</header>
+
+<section class="pantalla">
+
+    <div class="overlay"></div>
+
+    <div class="contenido">
+<h1>Actualizar datos del cliente</h1>
+    <form action="/HTML/HTMLempresa/PHPempresa/mostrarcliente.php" method="POST"> 
+    <form id="actualizarCliente" ></form>
+        <label> Plan </label>
+        <input type="text" name="plan">
+        <label> rutina </label>
+        <input type="text" name="rutina">
+        
+        <input type="submit">
+    </form>
+    
+
+    </div>
+
+</section>
+<a href="PHPempresa/logout.php">Cerrar Sesion</a>
+     <script src="JSempresa/panel.js"></script>
+</body>
+</html>
