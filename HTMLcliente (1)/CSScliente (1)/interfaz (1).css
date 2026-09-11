@@ -4,8 +4,15 @@
     box-sizing:border-box;
     font-family:Arial, Helvetica, sans-serif;
 }
+
+body{
+    background:#000;
+}
+
 header{
     position:absolute;
+    top:0;
+    left:0;
     width:100%;
     padding:25px 70px;
     display:flex;
@@ -14,63 +21,48 @@ header{
     z-index:100;
     border-bottom: 1px solid rgba(255,255,255,.08);
     box-shadow: 0 4px 12px rgba(0,0,0,.25);
-
-}
-header h2{
-    color:#FFD700;
-    font-size:32px;
-    font-weight:lighter;
-}
-.Img-Inicio {
-  width: 100%;
-  max-width: 500px; 
-  height: 300px;    
-  overflow: hidden; 
-  border-radius: 8px; 
 }
 
-.Img-Inicio img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-
+.logo img{
+    height:60px;
+    width:auto;
+    display:block;
 }
+
 nav{
     display:flex;
-    gap:60px;
+    gap:24px;
 }
 
-nav a{
-    color:rgb(3, 3, 3);
+.nav-boton{
+    color:#FFD700;
     text-decoration:none;
+    font-weight:bold;
+    padding:12px 24px;
+    border:2px solid #FFD700;
+    border-radius:6px;
     transition:.3s;
 }
 
-nav a:hover{
-    color:#FFD700;
-}
-
-.botones{
-    display:flex;
-    gap:15px;
-}
-
-button{
-    cursor:pointer;
-    background:transparent;
-    padding:12px 24px;
-    font-weight:bold;
-    border:2px solid #FFD700;
+.nav-boton:hover{
+    background:#FFD700;
+    color:#000;
 }
 
 .pantalla{
     height:100vh;
+    background-image:url("../imagenes/Despierta-Potencial.jpg");
     background-size:cover;
     background-position:center;
     position:relative;
     display:flex;
     align-items:center;
+}
 
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.35);
 }
 
 .contenido{
@@ -80,9 +72,10 @@ button{
 }
 
 .contenido h1{
-    font-size:65px;
+    font-size:48px;
     margin-bottom:20px;
     font-weight:bold;
+    color:#fff;
 }
 
 .contenido p{
