@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestinar</title>
+
+    </head>
+    <body>
+<div class="dropdown-contenedor">
+    <h1>Eliminar</h1>
+        <label for="formSelector">Acciona realizar:</label>
+        <select id="formSelector"class="dropdown-menu">
+        <option value="" disabled selected>-- Seleccionar un formulario --</option>
+        <option value="personaCliente">Datos del cliente</option>
+        <option value="actualizarCliente">Actualizar cliente</option>
+        <option value="eliminarCliente">Eliminar cliente</option>
+    </select>
+    </div>
+    
+    
+<div class="forms-contenedor">
+    <!-- Formulario Persona cliente -->
+    <form id="personacliente" class="cliente-form">
+        <h3>Datos del cliente</h3>
+        <input type="text" placeholder="Nombre completo" required>
+        <input type="mail" placeholder="Correo electonico" required>
+        <botton type="submit"> Guardar </botton>  
+    </form>
+
+    <!-- Formulario Actualizar cliente -->
+     <form id="actualizarCliente" class="cliente-form">
+        <h3> Actualizar cliente</h3>
+        <input type="text" placeholder="ID de cliente" required>
+        <input type="text" placeholder="Nuevo telefono">
+        <botton type="submit"> Actualizar </botton>
+     </form>
+
+     <!-- Formulario Eliminar cliente -->
+     <form id="eliminarCliente" class="cliente-form">
+        <h3> Eliminar cliente</h3>
+        <input type="text" placeholder="ID de cliente a eliminar" required>
+        <botton type="submit"> Confirmar eliminacion </botton>
+     </form>
+</div>
+
+<div id="div"></div>
+<a href="PHPempresa/logout.php">Cerrar Sesion</a>
+     <script src="JSempresa/panel.js"></script>
+   
+    </body>
+</html>
