@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympia Gym - Productos</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css">
+    <link rel="stylesheet" href="CSScliente/productos.css">
+</head>
+<body>
+    <header>
+        <a class="logo" href="Principio.html" aria-label="Inicio de Olympia Gym">
+            <img src="imagenes/olympia_dorado.png" alt="Olympia Gym">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="lado-derecho">
+            <nav id="navMenu" aria-label="Navegación principal">
+                <a href="planes.html" class="nav-boton">Planes</a>
+                <a href="productos.html" class="nav-boton">Productos</a>
+                <a href="rutina.html" class="nav-boton">Rutina</a>
+            </nav>
+            <a href="carrito.html" class="boton-carrito">Carrito (<span id="numeroCarrito">0</span>)</a>
+            <a href="productos.html" class="boton-volver">← Volver</a>
+        </div>
+    </header>
+
+    <main class="pagina-productos">
+        <h1 class="titulo-productos" id="productosTitulo">Productos</h1>
+
+        <div class="grilla-productos" id="productosGrid">
+            <!-- Se completa dinámicamente según la categoría (?cat=) -->
+        </div>
+    </main>
+
+    <script src="JScliente/menu.js"></script>
+    <script src="JScliente/catalogo.js"></script>
+    <script src="JScliente/productos.js"></script>
+    <script src="JScliente/carrito.js"></script>
+</body>
+</html>

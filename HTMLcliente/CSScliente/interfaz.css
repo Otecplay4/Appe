@@ -1,0 +1,193 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+html, body{
+    overflow-x:hidden;
+    background:#000;
+}
+
+header{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    padding:20px 70px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:100;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+
+.logo img{
+    height:60px;
+    width:auto;
+    display:block;
+}
+
+nav{
+    display:flex;
+    gap:24px;
+}
+
+.nav-boton{
+    color:#FFD700;
+    text-decoration:none;
+    font-weight:bold;
+    padding:12px 24px;
+    border:2px solid #FFD700;
+    border-radius:6px;
+    transition:.3s;
+    white-space:nowrap;
+}
+
+.nav-boton:hover{
+    background:#FFD700;
+    color:#000;
+}
+
+/* Botón hamburguesa: oculto en desktop */
+.menu-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:space-between;
+    width:32px;
+    height:24px;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    padding:0;
+    z-index:110;
+}
+
+.menu-toggle span{
+    display:block;
+    height:3px;
+    width:100%;
+    background:#FFD700;
+    border-radius:2px;
+    transition:.3s;
+}
+
+.menu-toggle.activo span:nth-child(1){
+    transform:translateY(10px) rotate(45deg);
+}
+.menu-toggle.activo span:nth-child(2){
+    opacity:0;
+}
+.menu-toggle.activo span:nth-child(3){
+    transform:translateY(-10px) rotate(-45deg);
+}
+
+.pantalla{
+    height:100svh;
+    background-image:url("../imagenes/Despierta-Potencial.jpg");
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.35);
+}
+
+.contenido{
+    position:relative;
+    margin-left:100px;
+    max-width:650px;
+    padding:0 20px;
+}
+
+.contenido h1{
+    font-size:clamp(32px, 4vw, 48px);
+    margin-bottom:20px;
+    font-weight:bold;
+    color:#fff;
+    line-height:1.15;
+}
+
+.contenido p{
+    font-size:clamp(16px, 2vw, 20px);
+    line-height:1.6;
+    color:#ddd;
+}
+
+/* Tablet */
+@media (max-width:900px){
+    header{
+        padding:18px 32px;
+    }
+    nav{
+        gap:14px;
+    }
+    .nav-boton{
+        padding:10px 16px;
+        font-size:14px;
+    }
+    .contenido{
+        margin-left:60px;
+        max-width:520px;
+    }
+}
+
+/* Mobile */
+@media (max-width:640px){
+    header{
+        padding:16px 20px;
+    }
+    .logo img{
+        height:44px;
+    }
+    .menu-toggle{
+        display:flex;
+    }
+    nav{
+        position:fixed;
+        top:0;
+        right:0;
+        height:100vh;
+        width:min(75vw, 300px);
+        background:rgba(0,0,0,.97);
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:24px;
+        transform:translateX(100%);
+        transition:transform .35s ease;
+    }
+    nav.abierto{
+        transform:translateX(0);
+    }
+    .nav-boton{
+        width:80%;
+        text-align:center;
+        padding:14px 0;
+        font-size:16px;
+    }
+    .contenido{
+        margin-left:0;
+        padding:0 24px;
+        max-width:100%;
+        text-align:center;
+    }
+    .pantalla{
+        justify-content:center;
+        background-position: 65% center;
+    }
+}
+
+/* Mobile chico */
+@media (max-width:380px){
+    .contenido h1{
+        font-size:28px;
+    }
+}

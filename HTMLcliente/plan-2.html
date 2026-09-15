@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympia Gym - Plan 2</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css">
+    <link rel="stylesheet" href="CSScliente/productos.css">
+    <link rel="stylesheet" href="CSScliente/planes.css">
+</head>
+<body>
+    <header>
+        <a class="logo" href="Principio.html" aria-label="Inicio de Olympia Gym">
+            <img src="imagenes/Logo Oscuro.jpg" alt="Olympia Gym">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="lado-derecho">
+            <nav id="navMenu" aria-label="Navegación principal">
+                <a href="planes.html" class="nav-boton">Planes</a>
+                <a href="productos.html" class="nav-boton">Productos</a>
+                <a href="rutina.html" class="nav-boton">Rutina</a>
+            </nav>
+            <a href="planes.html" class="boton-volver">← Volver</a>
+        </div>
+    </header>
+
+    <main class="pagina-planes">
+        <div class="cabecera-plan">
+            <img src="imagenes/Despierta-Potencial.jpg" alt="Entrenamiento personalizado en Olympia Gym">
+            <div>
+                <p class="tipo-plan">Membresía</p>
+                <h1 class="titulo-planes">Plan Pro</h1>
+            </div>
+        </div>
+
+        <div class="grilla-tiempos">
+            <div class="tiempo-plan">Mensual</div>
+            <div class="tiempo-plan">Trimestral</div>
+            <div class="tiempo-plan">Semestral</div>
+            <div class="tiempo-plan">Anual</div>
+        </div>
+    </main>
+
+    <script src="JScliente/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creá tu cuenta de Olympia Gym.">
+    <title>Olympia Gym | Crear cuenta</title>
+    <link rel="stylesheet" href="CSScliente/estilo.css">
+</head>
+<body class="pagina-acceso">
+    <header class="encabezado-acceso">
+        <a class="logo-acceso" href="Principio.html" aria-label="Ir al inicio de Olympia Gym">
+            <img src="imagenes/olympia_dorado.png" alt="Olympia Gym">
+        </a>
+    </header>
+
+    <main class="contenido-acceso">
+        <section class="texto-acceso" aria-labelledby="register-page-title">
+            <p class="texto-chico">Olympia Gym</p>
+            <h1 id="register-page-title">Tu mejor versión empieza hoy.</h1>
+            <p>Creá tu cuenta para empezar a organizar tu entrenamiento.</p>
+        </section>
+
+        <section class="caja-acceso" aria-labelledby="register-title">
+            
+            <h2 id="register-title">Crear cuenta</h2>
+            <form id="crearCuenta" class="formulario-acceso">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" type="text" name="nombre" autocomplete="name" required>
+
+                <label for="apellido">Apellido</label>
+                <input id="nombre" type="text" name="apellido" autocomplete="name" required>
+
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" type="email" name="correo" autocomplete="email" required>
+
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" type="password" name="contraseña" autocomplete="new-password" required>
+
+                <button type="submit">Crear cuenta</button>
+            </form>
+            <p id="div" class="mensaje-formulario" role="status" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <script src="./JScliente/app.js"></script>
+</body>
+</html>

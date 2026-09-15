@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympia Gym - Planes</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css">
+    <link rel="stylesheet" href="CSScliente/productos.css">
+    <link rel="stylesheet" href="CSScliente/planes.css">
+</head>
+<body>
+    <header>
+        <a class="logo" href="Principio.html" aria-label="Inicio de Olympia Gym">
+            <img src="imagenes/Logo Oscuro.jpg" alt="Olympia Gym">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="lado-derecho">
+            <nav id="navMenu" aria-label="Navegación principal">
+                <a href="planes.html" class="nav-boton">Planes</a>
+                <a href="productos.html" class="nav-boton">Productos</a>
+                <a href="rutina.html" class="nav-boton">Rutina</a>
+            </nav>
+            <a href="Principio.html" class="boton-volver">← Volver</a>
+        </div>
+    </header>
+
+    <main class="pagina-planes">
+        <h1 class="titulo-planes">Planes</h1>
+
+        <div class="lista-planes">
+
+            <div class="fila-plan">
+                <a class="caja-plan" href="plan-1.html" data-plan="1" aria-expanded="false" aria-controls="planPanel1">
+                    <img src="imagenes/Despierta-Potencial.jpg" alt="Entrenamiento de fuerza del Plan Esencial">
+                    <span class="nombre-plan">Plan Esencial</span>
+                </a>
+
+                <div class="flecha-plan" aria-hidden="true">→</div>
+
+                <div class="detalle-plan" id="planPanel1" aria-hidden="true">
+                    <div class="grilla-detalle">
+                        <div class="tiempo-plan">Mensual</div>
+                        <div class="tiempo-plan">Trimestral</div>
+                        <div class="tiempo-plan">Semestral</div>
+                        <div class="tiempo-plan">Anual</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fila-plan">
+                <a class="caja-plan" href="plan-2.html" data-plan="2" aria-expanded="false" aria-controls="planPanel2">
+                    <img src="imagenes/Despierta-Potencial.jpg" alt="Entrenamiento personalizado del Plan Pro">
+                    <span class="nombre-plan">Plan Pro</span>
+                </a>
+
+                <div class="flecha-plan" aria-hidden="true">→</div>
+
+                <div class="detalle-plan" id="planPanel2" aria-hidden="true">
+                    <div class="grilla-detalle">
+                        <div class="tiempo-plan">Mensual</div>
+                        <div class="tiempo-plan">Trimestral</div>
+                        <div class="tiempo-plan">Semestral</div>
+                        <div class="tiempo-plan">Anual</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="JScliente/menu.js"></script>
+    <script src="JScliente/planes.js"></script>
+</body>
+</html>

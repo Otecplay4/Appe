@@ -1,0 +1,150 @@
+body {
+    background-color: rgb(22, 21, 21);
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin:0;
+    line-height: 1.6;
+    margin-top: 80px;
+
+}
+/* Efecto hover: cambiar la imagen */
+.logo {
+    color: rgb(255, 0, 0);
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: bold;
+
+}
+
+.menu {
+    margin-left: 20px;
+    display: flex;
+    
+}
+.menu a {
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 8px 12px;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+.menu a:hover {
+    background-color: #e50914;
+    color: #ffffff;
+}
+#encabezado {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    background-color: #000000;
+    color: #fff;
+    padding: 15px 30px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+}
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 40px;
+}
+section {
+    margin-bottom: 40px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+section h2 {
+    color: #e50914;
+    font-size: 1.6rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #e50914;
+}
+
+section p {
+    color: #cccccc;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.peliculas {
+    overflow: auto;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.pelicula {
+    width: 200px;
+    float: left;
+    margin: 10px;
+    background-color: #2a2a2a;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.pelicula:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+
+.pelicula img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+
+.titulo-pelicula {
+    font-size: 1.1rem;
+    margin: 5px 0;
+    color: #fff;
+}
+
+.sinopsis {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #b0b0b0;
+}
+.portadas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #cccccc;
+
+}
+h3{
+color:#fff;
+}
+footer {
+    background-color: #111;
+    color: #aaa;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    font-size: 0.9rem;
+}
+#formulario {
+     margin-top: 20px;
+     background-color: #1b1b1b; 
+
+}
+.info{
+    margin-left: 450px;
+
+}
+.historia, .memorable, .equilibrio, .inspirador, .creativa, .estilo{
+    margin-left: 390px;
+}

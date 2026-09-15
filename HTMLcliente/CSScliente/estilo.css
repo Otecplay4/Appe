@@ -1,0 +1,177 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.pagina-acceso {
+    min-height: 100vh;
+    background:
+        linear-gradient(120deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .68)),
+        url("../imagenes/Despierta-Potencial.jpg") center / cover no-repeat;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.encabezado-acceso {
+    width: 90%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 0;
+}
+
+.logo-acceso {
+    display: inline-flex;
+    align-items: center;
+}
+
+.logo-acceso img {
+    display: block;
+    width: auto;
+    height: 62px;
+    object-fit: contain;
+}
+
+.contenido-acceso {
+    width: 90%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 0 72px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    align-items: center;
+    gap: 80px;
+}
+
+.texto-acceso {
+    max-width: 620px;
+}
+
+.texto-chico {
+    margin: 0 0 14px;
+    color: #ffd700;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.texto-acceso h1 {
+    margin: 0;
+    font-size: 60px;
+    line-height: .98;
+}
+
+.texto-acceso > p:last-child {
+    max-width: 48ch;
+    margin: 24px 0 0;
+    color: #d1d1d1;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.caja-acceso {
+    background: rgba(18, 18, 18, .92);
+    border: 1px solid rgba(255, 215, 0, .28);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+}
+
+.caja-acceso h2 {
+    margin: 0 0 28px;
+    color: #ffd700;
+    font-size: 30px;
+}
+
+.formulario-acceso {
+    display: grid;
+    gap: 10px;
+}
+
+.formulario-acceso label {
+    margin-top: 8px;
+    color: #f2f2f2;
+    font-size: .93rem;
+    font-weight: 700;
+}
+
+.formulario-acceso input {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgba(255, 255, 255, .24);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: #080808;
+    color: #fff;
+    font: inherit;
+}
+
+.formulario-acceso input:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+}
+
+.formulario-acceso button {
+    min-height: 48px;
+    margin-top: 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #ffd700;
+    color: #080808;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+}
+
+.formulario-acceso button:hover {
+    background: #d6af00;
+}
+
+.enlace-acceso,
+.mensaje-formulario {
+    margin: 18px 0 0;
+    color: #d1d1d1;
+    line-height: 1.5;
+}
+
+.enlace-acceso a {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.mensaje-formulario {
+    min-height: 1.5em;
+    color: #ffcf6a;
+}
+
+@media (max-width: 760px) {
+    .encabezado-acceso,
+    .contenido-acceso {
+        width: 90%;
+        max-width: 560px;
+    }
+
+    .encabezado-acceso {
+        padding: 20px 0;
+    }
+
+    .logo-acceso img {
+        height: 48px;
+    }
+
+    .contenido-acceso {
+        grid-template-columns: 1fr;
+        align-content: start;
+        gap: 38px;
+        padding: 34px 0 48px;
+    }
+
+    .texto-acceso h1 {
+        font-size: 40px;
+    }
+}

@@ -1,0 +1,252 @@
+.pagina-planes {
+    min-height: 100vh;
+    background: #000;
+    padding: 140px 70px 80px;
+}
+
+.titulo-planes {
+    margin: 0;
+    color: #ffd700;
+    font-size: 52px;
+    letter-spacing: .02em;
+    line-height: 1.05;
+}
+
+.pagina-planes > .titulo-planes {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.lista-planes {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    gap: 36px;
+}
+
+.fila-plan {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    align-items: center;
+}
+
+.caja-plan {
+    position: relative;
+    display: grid;
+    min-height: 240px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, .35);
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.caja-plan::after {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    content: "";
+    background: linear-gradient(0deg, rgba(0, 0, 0, .82), rgba(0, 0, 0, .08) 72%);
+}
+
+.caja-plan img {
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.caja-plan:hover,
+.caja-plan:focus-visible {
+    border-color: #ffd700;
+}
+
+.caja-plan:focus-visible {
+    outline: 2px solid #ffd700;
+    outline-offset: 4px;
+}
+
+.nombre-plan {
+    position: relative;
+    z-index: 2;
+    align-self: end;
+    padding: 24px;
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.flecha-plan {
+    display: grid;
+    place-items: center;
+    color: #ffd700;
+    font-size: 2rem;
+    font-weight: 800;
+    opacity: 0;
+}
+
+.fila-plan.abierta .flecha-plan {
+    opacity: 1;
+}
+
+.detalle-plan {
+    height: 0;
+    overflow: hidden;
+    border: 0 solid transparent;
+    border-radius: 10px;
+    background: #0d0d0d;
+    opacity: 0;
+}
+
+.grilla-detalle {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 240px;
+    opacity: 0;
+}
+
+.fila-plan.abierta .detalle-plan {
+    height: 240px;
+    border-width: 1px;
+    border-color: rgba(255, 215, 0, .35);
+    opacity: 1;
+}
+
+.fila-plan.abierta .grilla-detalle {
+    opacity: 1;
+}
+
+.tiempo-plan {
+    display: grid;
+    place-items: center;
+    min-height: 80px;
+    padding: 16px;
+    border-right: 1px solid rgba(255, 215, 0, .18);
+    border-bottom: 1px solid rgba(255, 215, 0, .18);
+    color: #ffd700;
+    font-size: .95rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.tiempo-plan:nth-child(even) {
+    border-right: 0;
+}
+
+.tiempo-plan:nth-child(n + 3) {
+    border-bottom: 0;
+}
+
+.cabecera-plan {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, .35);
+    border-radius: 10px;
+    background: #0d0d0d;
+}
+
+.cabecera-plan img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.cabecera-plan div {
+    padding: 30px;
+}
+
+.tipo-plan {
+    margin: 0 0 8px;
+    color: #b9b9b9;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.grilla-tiempos {
+    width: 100%;
+    max-width: 700px;
+    min-height: 300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, .35);
+    border-radius: 10px;
+    background: #0d0d0d;
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .lista-planes {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+        gap: 24px;
+    }
+
+    .fila-plan {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .flecha-plan {
+        display: none;
+    }
+
+    .fila-plan.abierta .detalle-plan {
+        height: 240px;
+    }
+}
+
+@media (max-width: 640px) {
+    .pagina-planes {
+        padding: 120px 20px 60px;
+    }
+
+    .pagina-planes > .titulo-planes {
+        margin-bottom: 36px;
+        font-size: 40px;
+    }
+
+    .fila-plan {
+        grid-template-columns: 1fr;
+    }
+
+    .flecha-plan,
+    .detalle-plan {
+        display: none;
+    }
+
+    .caja-plan {
+        min-height: 190px;
+    }
+
+    .cabecera-plan {
+        grid-template-columns: 1fr;
+    }
+
+    .cabecera-plan img {
+        height: 170px;
+    }
+
+    .grilla-tiempos {
+        grid-template-columns: 1fr;
+    }
+
+    .grilla-tiempos .tiempo-plan {
+        min-height: 76px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 215, 0, .18);
+    }
+
+    .grilla-tiempos .tiempo-plan:last-child {
+        border-bottom: 0;
+    }
+}
