@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creá tu cuenta de Olympia Gym.">
+    <title>Olympia Gym | Crear cuenta</title>
+    <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+</head>
+<body class="pagina-acceso">
+    <header class="encabezado-acceso">
+        <a class="logo-acceso" href="interfaz2.html" aria-label="Ir al inicio de Olympia Gym">
+            <img src="imagenes/olympia_dorado.png" alt="Olympia Gym">
+        </a>
+    </header>
+
+    <main class="contenido-acceso">
+        <section class="texto-acceso" aria-labelledby="register-page-title">
+            <p class="texto-chico1">Olympia Gym</p>
+            <h1 id="register-page-title">Recupera el tiempo perdido.</h1>
+            <p>Inicia sesión para estar al día con Olympia Gym.</p>
+        </section>
+
+        <section class="caja-acceso" aria-labelledby="register-title">
+            
+            <h2 id="register-title">Registrarse</h2>
+            <form id="crearEntrenador" class="formulario-acceso">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" type="text" name="nombre" autocomplete="name" required>
+
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" type="email" name="correo" autocomplete="email" required>
+
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" type="password" name="contraseña" autocomplete="password" required>
+
+                <label for="telefono">Teléfono</label>
+                <input id="telefono" type="text" name="telefono" autocomplete="telefono" required>
+
+                <label for="cedula">Cédula</label>
+                <input id="cedula" type="test" name="cedula" autocomplete="cedula" required>
+
+
+
+                <button type="submit">Crear cuenta</button>
+                <p id="estetico">¿Ya tienes una cuenta? <a href="interfaz2.html" id="color"> Iniciar Sesión</a></p>
+            </form>
+            <p id="div" class="mensaje-formulario" role="status" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <script src="JSempresa/app2.js"></script>
+</body>
+</html>

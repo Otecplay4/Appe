@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Clientes</title>
+    <link rel="stylesheet" href="CSSempresa/estilo.css">
+</head>
+<body>
+
+    <h1>Gestión de Clientes</h1>
+
+    <hr>
+<br>
+<br>
+<br>
+    <!-- FORMULARIO ACTUALIZAR -->
+    <form id="actualizarCliente" class="cliente-form">
+        <h3>Actualizar cliente</h3>
+        <input type="text" name="id" placeholder="ID del cliente" required>
+        <input type="text" name="nombre" placeholder="Nuevo Nombre" required>
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <hr>
+
+    <!-- FORMULARIO ELIMINAR -->
+    <form id="eliminarCliente" class="cliente-form">
+        <h3>Eliminar cliente</h3>
+        <input type="text" name="id" placeholder="ID de cliente a eliminar" required>
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <br>
+    <a href="PHPempresa/logout.php">Cerrar Sesión</a>
+
+    <script src="JSempresa/panel.js"></script>
+</body>
+</html>

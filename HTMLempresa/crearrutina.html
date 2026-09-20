@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Rutina</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>CREADOR DE RUTINAS</h1>
+
+            <form id="crearRutina" action="PHPempresa/agregarrutina.php" method="POST">
+            <div class="top-form">
+
+                <label>Cliente:</label>
+                <!-- Usamos name="id_cliente" para identificar al cliente -->
+                <select id="clientesSelect" name="id_cliente" required>
+                    <option value="">Cargando clientes...</option>
+                </select>
+
+                <label>Nombre Rutina:</label>
+                <input type="text" name="nombre_rutina" placeholder="Ej: Hipertrofia" required>
+
+            </div>
+
+            <div id="diasContainer"></div>
+
+            <div class="acciones">
+                <button type="button" onclick="agregarDia()">
+                    + AGREGAR DIA
+                </button>
+
+                <button type="submit">
+                    GUARDAR RUTINA
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <script src="JSempresa/rutina.js"></script>
+
+</body>
+
+</html>

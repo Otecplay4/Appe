@@ -1,0 +1,272 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.pagina-acceso {
+    min-height: 100vh;
+    background:
+        linear-gradient(120deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .68)),
+        url("../imagenes/Despierta-Potencial.jpg") center / cover no-repeat;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.encabezado-acceso {
+    width: 90%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 0;
+}
+
+.logo-acceso {
+    display: inline-flex;
+    align-items: center;
+}
+
+.logo-acceso img {
+    display: block;
+    width: auto;
+    height: 30px;
+    object-fit: contain;
+}
+
+.contenido-acceso {
+    width: 90%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 0 72px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    align-items: center;
+    gap: 80px;
+}
+
+.texto-acceso {
+    max-width: 620px;
+}
+
+.texto-chico {
+    margin: 0 0 14px;
+    color: #ff0000;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.texto-chico1 {
+    margin: 0 0 14px;
+    color: #ffd700;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.texto-acceso h1 {
+    margin: 0;
+    font-size: 60px;
+    line-height: .98;
+}
+
+.texto-acceso > p:last-child {
+    max-width: 48ch;
+    margin: 24px 0 0;
+    color: #d1d1d1;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.caja-acceso {
+    background: rgba(18, 18, 18, .92);
+    border: 1px solid rgba(255, 238, 0, 0.28);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+}
+
+.caja-acceso h2 {
+    margin: 0 0 28px;
+    color: #ffd700;
+    font-size: 30px;
+}
+
+.formulario-acceso {
+    display: grid;
+    gap: 10px;
+}
+
+.formulario-acceso label {
+    margin-top: 8px;
+    color: #f2f2f2;
+    font-size: .93rem;
+    font-weight: 700;
+}
+
+.formulario-acceso input {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgba(255, 255, 255, .24);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: #080808;
+    color: #fff;
+    font: inherit;
+}
+
+.formulario-acceso input:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+}
+
+.formulario-acceso button {
+    min-height: 48px;
+    margin-top: 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #ffd700;
+    color: #080808;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+}
+
+.formulario-acceso button:hover {
+    background: #b19600;
+}
+
+.enlace-acceso,
+.mensaje-formulario {
+    margin: 18px 0 0;
+    color: #d1d1d1;
+    line-height: 1.5;
+}
+
+.enlace-acceso a {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.mensaje-formulario {
+    min-height: 1.5em;
+    color: #ffd700;
+}
+
+#estetico, #color{
+display: flex;
+justify-content: center;
+}
+
+#color {
+    margin-left: 10px; 
+    color: rgb(39, 103, 240);
+}
+
+#header{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    padding:20px 70px;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    z-index:100;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+
+.logo img{
+    height:60px;
+    width:auto;
+    display:flex;
+    margin-right:658px;
+}
+
+nav{
+    display:flex;
+    gap:24px;
+}
+
+.nav-boton{
+    color:#FFD700;
+    text-decoration:none;
+    font-weight:bold;
+    padding:12px 24px;
+    border:2px solid #FFD700;
+    border-radius:6px;
+    transition:.3s;
+    white-space:nowrap;
+}
+
+.nav-boton:hover{
+    background:#FFD700;
+    color:#000;
+}
+
+/* Botón hamburguesa: oculto en desktop */
+.menu-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:space-between;
+    width:32px;
+    height:24px;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    padding:0;
+    z-index:110;
+}
+
+.menu-toggle span{
+    display:block;
+    height:3px;
+    width:100%;
+    background:#FFD700;
+    border-radius:2px;
+    transition:.3s;
+}
+
+.menu-toggle.activo span:nth-child(1){
+    transform:translateY(10px) rotate(45deg);
+}
+.menu-toggle.activo span:nth-child(2){
+    opacity:0;
+}
+.menu-toggle.activo span:nth-child(3){
+    transform:translateY(-10px) rotate(-45deg);
+}
+
+@media (max-width: 760px) {
+    .encabezado-acceso,
+    .contenido-acceso {
+        width: 90%;
+        max-width: 560px;
+    }
+
+    .encabezado-acceso {
+        padding: 20px 0;
+    }
+
+    .logo-acceso img {
+        height: 48px;
+    }
+
+    .contenido-acceso {
+        grid-template-columns: 1fr;
+        align-content: start;
+        gap: 38px;
+        padding: 34px 0 48px;
+    }
+
+    .texto-acceso h1 {
+        font-size: 40px;
+    }
+}
+

@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #1a1a1a; /* Fondo oscuro general */
+    color: #ffffff;
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 900px;
+    background: #2b2b2b; /* Fondo de la tarjeta principal */
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8); /* Sombra para dar profundidad */
+}
+
+h1#tituloRutina {
+    text-align: center;
+    color: #ffd700; /* Dorado Olympia */
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 32px;
+    border-bottom: 3px solid #ffd700;
+    padding-bottom: 15px;
+}
+
+/* Estilos de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #383838;
+    border-radius: 8px;
+    overflow: hidden; /* Permite que los bordes redondeados se apliquen a los encabezados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Encabezado de la tabla (Músculo, Ejercicio, Series) */
+thead tr {
+    background-color: #000000; /* Fondo negro como en la imagen */
+}
+
+th {
+    color: #ffd700; /* Texto dorado */
+    padding: 18px 15px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* Celdas de la tabla */
+td {
+    padding: 16px 15px;
+    border-bottom: 1px solid #222222;
+    font-size: 16px;
+}
+
+/* Efecto cebra para alternar colores de fondo en las filas */
+tbody tr:nth-child(odd) {
+    background-color: #424242;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #4a4a4a;
+}
+
+/* Efecto hover al pasar el ratón */
+tbody tr:hover {
+    background-color: #555555;
+    transition: background-color 0.3s ease;
+}
+
+/* Colores específicos por columna*/
+td:nth-child(1) { /* Columna: Músculo */
+    color: #ffd700;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+td:nth-child(2) { /* Columna: Ejercicio */
+    color: #ffd700;
+    font-weight: 600;
+}
+
+td:nth-child(3) { /* Columna: Series / Repeticiones */
+    color: #ffffff; /* Blanco para contrastar */
+    font-weight: 500;
+}
+
+/*Diseño Responsivo)*/
+@media screen and (max-width: 768px) {
+    body {
+        padding: 20px 15px; /* Menos espacio en los bordes para móviles */
+    }
+
+    .contenedor {
+        padding: 20px;
+    }
+
+    h1#tituloRutina {
+        font-size: 24px; /* Achicamos el titulo */
+    }
+
+    /* Transformamos los elementos de la tabla para que se apilen como bloques */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    /* Ocultamos el encabezado (Músculo, Ejercicio, Series) */
+    thead tr {
+        display: none;
+    }
+
+    /* Convertimos cada fila de la tabla en una "tarjeta" */
+    tbody tr {
+        margin-bottom: 20px;
+        background-color: #383838;
+        border-radius: 8px;
+        border: 1px solid #555;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+
+
+    td {
+        position: relative;
+        padding: 15px 15px 15px 45%; /* Dejamos espacio a la izquierda para el título */
+        text-align: right;
+        border-bottom: 1px solid #4a4a4a;
+        font-size: 15px;
+    }
+
+    td:last-child {
+        border-bottom: none; /* Quitamos la línea de la última celda */
+    }
+
+    /* Usamos ::before para agregar un título a la izquierda de cada dato */
+    td::before {
+        position: absolute;
+        left: 15px;
+        width: 40%;
+        text-align: left;
+        font-weight: bold;
+        color: #aaaaaa; /* Un color gris claro para el título */
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    /* Asignamos el texto correspondiente a cada fila */
+    td:nth-child(1)::before { content: "Músculo"; }
+    td:nth-child(2)::before { content: "Ejercicio"; }
+    td:nth-child(3)::before { content: "Series / Rep"; }
+
+    /* Mantenemos los colores dorados de la información */
+    td:nth-child(1) { text-align: right; } /* Músculo */
+    td:nth-child(2) { text-align: right; } /* Ejercicio */
+}
