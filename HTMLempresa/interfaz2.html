@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creá tu cuenta de Olympia Gym.">
+    <title>Olympia Gym | Iniciar Sesión</title>
+    <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+</head>
+<body class="pagina-acceso">
+    <header id="header">
+        <div class="logo">
+            <img src="imagenes/Logo Oscuro.jpg" alt="Logo de Olympia Gym">
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="navMenu">
+            <a href="crearplanes.html" class="nav-boton">Planes</a>
+            <a href="crearproductos.html" class="nav-boton">Productos</a>
+            <a href="crearrutina.html" class="nav-boton">Rutina</a>
+        </nav>
+    </header>
+<br>
+<br>
+<br>
+<br>
+    <main class="contenido-acceso">
+        <section class="texto-acceso" aria-labelledby="register-page-title">
+            <p class="texto-chico">Administración</p>
+            <h1 id="register-page-title">Agrega, Elimina y Modifica.</h1>
+            <p>Haz que los clientes tengan una buena estadía.</p>
+        </section>
+
+        <section class="caja-acceso" aria-labelledby="register-title">
+            
+            <h2 id="register-title">Iniciar Sesión</h2>
+            <form id="iniciarEntrenador" class="formulario-acceso">
+
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" type="email" name="correo" autocomplete="email" required>
+
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" type="password" name="contraseña" autocomplete="password" required>
+
+                <button type="submit">Iniciar Sesión</button>
+                <p id="estetico">¿No tienes una cuenta? <a href="crearentrenador.html" id="color"> Registrarse</a></p>
+            </form>
+            <p id="div" class="mensaje-formulario" role="status" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <script src="JSempresa/app2.js"></script>
+</body>
+</html>

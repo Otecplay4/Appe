@@ -1,0 +1,260 @@
+/* ==========================================
+   RESET Y ESTILOS GLOBALES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+rutina button:hover {
+    background-color: #dc2626;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem;
+}
+
+/* ==========================================
+   PANEL SUPERIOR (SELECTOR DE ACCIONES)
+   ========================================== */
+.dropdown-contenedor {
+    background: #ffffff;
+    width: 100%;
+    max-width: 460px;
+    padding: 1.75rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1.5rem;
+}
+
+.dropdown-contenedor h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1rem;
+}
+
+.dropdown-contenedor label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 0.95rem;
+    color: #1e293b;
+    outline: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.dropdown-menu:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* ==========================================
+   CONTENEDOR DE FORMULARIOS
+   ========================================== */
+.forms-contenedor {
+    width: 100%;
+    max-width: 460px;
+}
+
+/* Estilo base para cada formulario */
+.cliente-form {
+    background: #ffffff;
+    padding: 1.75rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+/* Clase para ocultar formularios mediante JavaScript */
+.cliente-form.oculto {
+    display: none;
+}
+
+.cliente-form h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.75rem;
+}
+
+/* Campos de entrada */
+.cliente-form input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.cliente-form input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Estilos de botones */
+.cliente-form button,
+.cliente-form botton { /* Mantiene compatibilidad con el error tipográfico */
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cliente-form button:hover,
+.cliente-form botton:hover {
+    background-color: #4338ca;
+}
+
+.cliente-form button:active,
+.cliente-form botton:active {
+    transform: scale(0.98);
+}
+
+/* Botón específico para la acción de eliminar */
+#eliminarCliente button,
+#eliminarCliente botton {
+    background-color: #ef4444;
+}
+
+#eliminarCliente button:hover,
+#eliminarCliente botton:hover {
+    background-color: #dc2626;
+}
+
+/* ==========================================
+   ENLACE DE CERRAR SESIÓN
+   ========================================== */
+a[href*="logout.php"] {
+    display: inline-block;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+a[href*="logout.php"]:hover {
+    color: #dc2626;
+    background-color: #fee2e2;
+}
+
+
+.cliente-form1 {
+    background: #ffffff;
+    padding: 1.75rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+/* Clase para ocultar formularios mediante JavaScript */
+.cliente-form1.oculto {
+    display: none;
+}
+
+.cliente-form1 h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.75rem;
+}
+
+/* Campos de entrada */
+.cliente-form1 input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.cliente-form1 input:focus {
+    border-color: #00be29;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Estilos de botones */
+.cliente-form1 button,
+.cliente-form1 botton { /* Mantiene compatibilidad con el error tipográfico */
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #00be29;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cliente-form1 button:hover,
+.cliente-form1 botton:hover {
+    background-color: #00a01b;
+}
+
+.cliente-form1 button:active,
+.cliente-form1 botton:active {
+    transform: scale(0.98);
+}
+.rutina {
+    display: flex;
+    justify-content: center;
+    color: inherit;
+    margin-left: 10px;
+    text-decoration: none;
+    width: 229.92px;
+    height: 44px;
+    
+}
+
+
+button{
+
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Productos</title>
+                <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+        </head>
+        
+        <body>
+            
+
+                <h2>Consumibles</h2>
+
+             <!-- Hallazgo 20: cada formulario y cada input de archivo tenía el
+                  mismo id repetido tres veces (HTML inválido). Ahora cada uno
+                  tiene un id único. -->
+             <form id="formularioConsumibles" class="formulario-producto">
+                <input type="text" name="nombre">
+
+                <label for="archivoConsumibles" class="etiqueta">Consumibles nuevos</label>
+
+                <input type="file" name="archivo" id="archivoConsumibles" accept=".png,.jpg">
+                
+                
+                <input type="submit" value="Subir">
+                
+            </form>
+               <h2>Atuendos</h2>
+                <form id="formularioAtuendos" class="formulario-producto">
+                <input type="text" name="nombre">
+
+                <label for="archivoAtuendos" class="etiqueta">Atuendos nuevos</label>
+
+                <input type="file" name="archivo" id="archivoAtuendos" accept=".png,.jpg">
+                
+                
+                <input type="submit" value="Subir">
+
+            </form>
+            
+            <h2>Accesorios</h2>
+
+            <form id="formularioAccesorios" class="formulario-producto">
+                <input type="text" name="nombre">
+
+                <label for="archivoAccesorios" class="etiqueta">Accesorio nuevo</label>
+
+                <input type="file" name="archivo" id="archivoAccesorios" accept=".png,.jpg">
+                
+                
+                <input type="submit" value="Subir">
+
+            </form>
+
+            <h2>Productos cargados</h2>
+            <!-- Hallazgo 29: productos.js usaba "contenedor" sin ninguna
+                 referencia explícita al DOM; ahora este elemento existe y el
+                 script lo obtiene explícitamente con getElementById. -->
+            <div id="contenedor"></div>
+
+            <script src="JSempresa/productos.js"></script>
+        </body>
+</html>

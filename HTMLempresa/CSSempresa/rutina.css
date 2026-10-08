@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #2e2e2e;
+    color: #ffd700;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffd700;
+}
+
+.top-form {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    background: #3f3f3f;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.top-form label {
+    font-weight: bold;
+}
+
+.top-form input,
+.top-form select {
+    padding: 8px;
+    border: none;
+    background: #555;
+    color: white;
+    border-radius: 3px;
+}
+
+#diasContainer {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    align-items: flex-start;
+    padding-bottom: 10px;
+}
+
+.dia {
+    min-width: 280px;
+    background: #4a4a4a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.dia h2 {
+    background: #000;
+    color: #ffd700;
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dia hr {
+    border: none;
+    border-bottom: 1px solid #333;
+}
+
+.ejercicio {
+    border-bottom: 1px solid #333;
+    padding: 15px;
+    background: #555;
+}
+
+.ejercicio:last-child {
+    border-bottom: none;
+}
+
+.ejercicio label {
+    display: block;
+    color: #ffd700;
+    font-size: 13px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.ejercicio label:first-child {
+    margin-top: 0;
+}
+
+.ejercicio input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: #3f3f3f;
+    color: white;
+    border-radius: 3px;
+}
+
+.btnAgregar {
+    width: 100%;
+    padding: 12px;
+    background: #007a00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btnAgregar:hover {
+    background: #009900;
+}
+
+.btnEliminar {
+    width: 100%;
+    padding: 8px;
+    background: #b30000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 3px;
+}
+
+.btnEliminar:hover {
+    background: #d50000;
+}
+
+.acciones {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.acciones button {
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.acciones button:first-child {
+    background: #008000;
+    color: white;
+}
+
+.acciones button:last-child {
+    background: #ffd700;
+    color: black;
+}
+
+::-webkit-scrollbar {
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #333;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #777;
+    border-radius: 5px;
+}
