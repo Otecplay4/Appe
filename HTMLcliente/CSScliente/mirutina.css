@@ -13,6 +13,19 @@ body {
     justify-content: center;
 }
 
+/* La rutina comparte la cabecera de `interfaz.css` (posición absoluta), así que
+   el cuerpo deja de ser una caja flexible y deja espacio para la cabecera. */
+body.pagina-rutina {
+    display: block;
+    padding: 130px 20px 60px;
+    background: #000;
+}
+
+body.pagina-rutina .contenedor {
+    margin: 0 auto;
+}
+
+
 .contenedor {
     width: 100%;
     max-width: 900px;
@@ -79,15 +92,16 @@ tbody tr:hover {
     transition: background-color 0.3s ease;
 }
 
-/* Colores específicos por columna*/
-td:nth-child(1) { /* Columna: Músculo */
+/* Colores específicos por columna
+   (orden de `mirutina.js`: Ejercicio, Músculo, Series x Repeticiones, Día) */
+td:nth-child(1) { /* Columna: Ejercicio */
     color: #ffd700;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-td:nth-child(2) { /* Columna: Ejercicio */
+td:nth-child(2) { /* Columna: Músculo */
     color: #ffd700;
     font-weight: 600;
 }
@@ -97,10 +111,58 @@ td:nth-child(3) { /* Columna: Series / Repeticiones */
     font-weight: 500;
 }
 
+td:nth-child(4) { /* Columna: Día */
+    color: #cccccc;
+    font-weight: 500;
+}
+
+/* Fila de encabezado de cada día (la inserta `mirutina.js`). */
+.fila-dia th {
+    border-bottom: 1px solid #222222;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: none;
+}
+
+/* Mensaje cuando el cliente todavía no tiene rutina asignada. */
+.sin-rutina {
+    margin: 0;
+    padding: 18px 15px;
+    color: #ffd700;
+    font-size: 16px;
+}
+
+/* Leyenda de columnas: `mirutina.js` reconstruye la tabla y borra el `thead`. */
+.leyenda-rutina {
+    margin: 0 0 12px;
+    color: #9a9a9a;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+/* Enlace de vuelta dentro de la tarjeta. */
+.volver-rutina {
+    display: inline-block;
+    margin-top: 24px;
+    color: #ffd700;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.volver-rutina:hover {
+    text-decoration: underline;
+}
+
 /*Diseño Responsivo)*/
 @media screen and (max-width: 768px) {
     body {
         padding: 20px 15px; /* Menos espacio en los bordes para móviles */
+    }
+
+    body.pagina-rutina {
+        padding: 96px 15px 40px;
     }
 
     .contenedor {
@@ -157,11 +219,14 @@ td:nth-child(3) { /* Columna: Series / Repeticiones */
     }
 
     /* Asignamos el texto correspondiente a cada fila */
-    td:nth-child(1)::before { content: "Músculo"; }
-    td:nth-child(2)::before { content: "Ejercicio"; }
+    td:nth-child(1)::before { content: "Ejercicio"; }
+    td:nth-child(2)::before { content: "Músculo"; }
     td:nth-child(3)::before { content: "Series / Rep"; }
+    td:nth-child(4)::before { content: "Día"; }
 
     /* Mantenemos los colores dorados de la información */
-    td:nth-child(1) { text-align: right; } /* Músculo */
-    td:nth-child(2) { text-align: right; } /* Ejercicio */
+    td:nth-child(1) { text-align: right; } /* Ejercicio */
+    td:nth-child(2) { text-align: right; } /* Músculo */
+    td:nth-child(3) { text-align: right; } /* Series / Repeticiones */
+    td:nth-child(4) { text-align: right; } /* Día */
 }

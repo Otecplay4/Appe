@@ -125,6 +125,22 @@ body {
     outline-offset: 2px;
 }
 
+.formulario-acceso select {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgba(255, 255, 255, .24);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: #080808;
+    color: #fff;
+    font: inherit;
+}
+
+.formulario-acceso select:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+}
+
 .formulario-acceso button {
     min-height: 48px;
     margin-top: 16px;
@@ -175,7 +191,7 @@ justify-content: center;
     width:100%;
     padding:20px 70px;
     display:flex;
-    justify-content:flex-end;
+    justify-content:space-between;
     align-items:center;
     z-index:100;
     border-bottom: 1px solid rgba(255,255,255,.08);
@@ -183,15 +199,54 @@ justify-content: center;
 }
 
 .logo img{
-    height:60px;
+    height:70px;
     width:auto;
-    display:flex;
-    margin-right:658px;
+    display:block;
+    margin-right:0;
 }
 
 nav{
     display:flex;
     gap:24px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+
+/* ===== Botones del menú de administración (enlaces con aspecto de botón) === */
+.acceso-botones {
+    display: grid;
+    gap: 10px;
+}
+
+.acceso-boton {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: #ffd700;
+    color: #080808;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.acceso-boton:hover {
+    background: #b19600;
+    color: #080808;
+}
+
+.acceso-boton.secundario {
+    background: transparent;
+    color: #ffd700;
+    border: 2px solid #ffd700;
+}
+
+.acceso-boton.secundario:hover {
+    background: #ffd700;
+    color: #080808;
 }
 
 .nav-boton{
@@ -270,3 +325,9 @@ nav{
     }
 }
 
+#header {
+	backround:#0a0a0a;
+}
+.contenido-acceso{
+padding-top: 150px;
+}

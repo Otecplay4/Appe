@@ -4,48 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Rutina</title>
-    <link rel="stylesheet" href="CSSempresa/rutina.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Constructor de rutinas de entrenamiento de Olympia Gym.">
+    <title>Olympia Gym | Constructor de rutinas</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
 </head>
 
 <body>
-
     <div class="container">
+
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
+        </div>
 
         <h1>CREADOR DE RUTINAS</h1>
 
-            <form id="crearRutina" action="PHPempresa/agregarrutina.php" method="POST">
-            <div class="top-form">
+        <div id="rutinaMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
 
-                <label>Cliente:</label>
-                <!-- Usamos name="id_cliente" para identificar al cliente -->
-                <select id="clientesSelect" name="id_cliente" required>
-                    <option value="">Cargando clientes...</option>
-                </select>
+        <!-- El script JSempresa/rutina.js arma los días y los ejercicios dentro
+             de `#diasContainer` y renueva el token CSRF antes de enviar. -->
+        <form id="crearRutina" method="post" enctype="multipart/form-data" action="PHPempresa/agregarrutina.php">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="">
 
-                <label>Nombre Rutina:</label>
-                <input type="text" name="nombre_rutina" placeholder="Ej: Hipertrofia" required>
+            <div class="formulario-campos">
+                <label class="campo" for="clientesSelect">
+                    <span>Cliente</span>
+                    <select name="id_cliente" id="clientesSelect" required>
+                        <option value="">Cargando clientes...</option>
+                    </select>
+                </label>
 
+                <label class="campo" for="nombreRutina">
+                    <span>Nombre de la rutina</span>
+                    <input type="text" name="nombre_rutina" id="nombreRutina" maxlength="50" placeholder="Ej: Hipertrofia" required>
+                </label>
             </div>
 
             <div id="diasContainer"></div>
 
             <div class="acciones">
-                <button type="button" onclick="agregarDia()">
-                    + AGREGAR DIA
-                </button>
-
-                <button type="submit">
-                    GUARDAR RUTINA
-                </button>
+                <button type="submit" class="btnPrincipal">GUARDAR RUTINA</button>
             </div>
-
         </form>
 
     </div>
 
-    <script src="JSempresa/rutina.js"></script>
-
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/rutina.js?v=5"></script>
 </body>
 
 </html>

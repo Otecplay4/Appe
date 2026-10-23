@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Búsqueda global de clientes, entrenadores, planes, productos, proveedores y rutinas de Olympia Gym.">
+    <title>Olympia Gym | Búsqueda</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
+        </div>
+
+        <h2>BÚSQUEDA GLOBAL</h2>
+
+        <!-- La búsqueda se dispara sola mientras se escribe (el script espera
+             unos milisegundos antes de consultar al servidor). -->
+        <div class="filtros">
+            <label for="busquedaGeneral">Buscar:</label>
+            <input type="search" id="busquedaGeneral" name="busquedaGeneral" placeholder="Buscar en todo el sistema" autocomplete="off">
+
+            <label for="tipoBusqueda">Tipo de registro:</label>
+            <select id="tipoBusqueda" name="tipoBusqueda">
+                <option value="clientes" selected>Clientes</option>
+                <option value="entrenadores">Entrenadores</option>
+                <option value="planes">Planes</option>
+                <option value="productos">Productos</option>
+                <option value="proveedores">Proveedores</option>
+                <option value="rutinas">Rutinas</option>
+            </select>
+        </div>
+
+        <div id="busquedaMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
+
+        <ul id="resultadosBusqueda" class="lista-panel"></ul>
+
+    </div>
+
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/buscar.js?v=5"></script>
+</body>
+
+</html>

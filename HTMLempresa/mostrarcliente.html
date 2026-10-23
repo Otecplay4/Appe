@@ -1,47 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olympia Gym</title>
-        <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Gestión de clientes de Olympia Gym: listado, búsqueda por nombre o correo, actualización y eliminación.">
+    <title>Olympia Gym | Gestión de clientes</title>
+    <link rel="stylesheet" href="CSSempresa/estilo.css?v=5">
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
 </head>
+
 <body>
-    <header>
-        <h2>Entrenador</h2>
-        <nav>
-            <a href="lugares">Planes</a>
-            <a href="productos.html">Productos</a>
-            <a href="lugares">Contacto</a>
-        </nav>
+    <div class="container">
 
-        <div class="botones">
-            <button>Iniciar Sesión</button>
-            <button>Registrarse</button>
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
         </div>
-</header>
 
-<section class="pantalla">
+        <h1>GESTIÓN DE CLIENTES</h1>
 
-    <div class="overlay"></div>
+        <div id="panelMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
 
-    <div class="contenido">
-<h1>Actualizar datos del cliente</h1>
-    <form action="/HTML/HTMLempresa/PHPempresa/mostrarcliente.php" method="POST"> 
-    <form id="actualizarCliente" ></form>
-        <label> Plan </label>
-        <input type="text" name="plan">
-        <label> rutina </label>
-        <input type="text" name="rutina">
-        
-        <input type="submit">
-    </form>
-    
+        <!-- Filtros del listado: el script los escucha y recarga la tabla. -->
+        <div class="filtros">
+            <label for="buscarCliente">Buscar:</label>
+            <input type="search" id="buscarCliente" name="buscarCliente" placeholder="Buscar por nombre, apellido o correo" autocomplete="off">
+
+            <label for="filtroEstado">Estado:</label>
+            <select id="filtroEstado" name="filtroEstado">
+                <option value="activos" selected>Activos</option>
+                <option value="inactivos">Inactivos</option>
+                <option value="todos">Todos</option>
+            </select>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Plan</th>
+                        <th scope="col">Entrenador</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+        </div>
+
+        <!-- El script completa el formulario con los datos del cliente que se
+             elige en la tabla ("Editar") y lo envía por AJAX. -->
+        <section class="seccion">
+            <h2>Actualizar cliente</h2>
+
+            <form id="actualizarCliente" method="post" action="PHPempresa/actualizar.php">
+                <input type="hidden" name="id" id="idClienteActualizar">
+
+                <div class="formulario-campos">
+                    <label class="campo" for="nombreCliente">
+                        <span>Nombre</span>
+                        <input type="text" name="nombre" id="nombreCliente" maxlength="70" required>
+                    </label>
+
+                    <label class="campo" for="apellidoCliente">
+                        <span>Apellido</span>
+                        <input type="text" name="apellido" id="apellidoCliente" maxlength="70" required>
+                    </label>
+
+                    <label class="campo" for="correoCliente">
+                        <span>Correo electrónico</span>
+                        <input type="email" name="correo" id="correoCliente" autocomplete="email" required>
+                    </label>
+
+                    <label class="campo" for="telefonoCliente">
+                        <span>Teléfono</span>
+                        <input type="tel" name="telefono" id="telefonoCliente" autocomplete="tel" pattern="[0-9+ ]{7,20}">
+                    </label>
+                </div>
+
+                <div class="acciones">
+                    <button type="submit" class="btnPrincipal">GUARDAR CAMBIOS</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- El script envía este formulario cuando se pulsa "Eliminar" en la
+             tabla, previa confirmación del usuario. -->
+        <section class="seccion">
+            <h2>Eliminar cliente</h2>
+
+            <form id="eliminarCliente" method="post" action="PHPempresa/eliminar.php">
+                <input type="hidden" name="id" id="idClienteEliminar">
+
+                <div class="acciones">
+                    <button type="submit" class="btnPeligro">ELIMINAR CLIENTE</button>
+                </div>
+            </form>
+        </section>
 
     </div>
 
-</section>
-<a href="PHPempresa/logout.php">Cerrar Sesion</a>
-     <script src="JSempresa/panel.js"></script>
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/panel.js?v=5"></script>
 </body>
+
 </html>

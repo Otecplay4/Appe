@@ -1,112 +1,136 @@
-function leerCarrito() {
-    const guardado = localStorage.getItem("carrito")
+/**
+ * A.P.P.E. — Carrito de compras (almacenamiento local).
+ *
+ * El carrito es local al navegador: es una simulación, no hay pasarela de
+ * pago. El contenido se inserta siempre con `textContent`.
+ */
+const Carrito = (() => {
+    "use strict";
 
-    if (!guardado) {
-        return []
+    const CLAVE = "appe_carrito";
+
+    function leer() {
+        try {
+            const crudo = window.localStorage.getItem(CLAVE);
+            const lista = crudo ? JSON.parse(crudo) : [];
+            return Array.isArray(lista) ? lista : [];
+        } catch (error) {
+            return [];
+        }
     }
 
-    return JSON.parse(guardado)
-}
-
-function guardarCarrito(carrito) {
-    localStorage.setItem("carrito", JSON.stringify(carrito))
-}
-
-function actualizarNumeroCarrito() {
-    const numero = document.getElementById("numeroCarrito")
-
-    if (numero) {
-        const carrito = leerCarrito()
-        let cantidad = 0
-
-        carrito.forEach(producto => {
-            cantidad = cantidad + producto.cantidad
-        })
-
-        numero.textContent = cantidad
+    function guardar(lista) {
+        try {
+            window.localStorage.setItem(CLAVE, JSON.stringify(lista));
+        } catch (error) {
+            // El almacenamiento puede estar deshabilitado: no es crítico.
+        }
     }
-}
 
-function agregarAlCarrito(producto, categoria) {
-    const carrito = leerCarrito()
-    const clave = categoria + "-" + producto.nombre
-    const encontrado = carrito.find(item => item.clave === clave)
+    function clave(producto) {
+        return String(producto.id) + "|" + String(producto.categoria || "");
+    }
 
-    if (encontrado) {
-        encontrado.cantidad = encontrado.cantidad + 1
+    function actualizarNumero() {
+        const contador = document.getElementById("numeroCarrito");
+        if (!contador) {
+            return;
+        }
+
+        const cantidad = leer().reduce((total, item) => total + (Number(item.cantidad) || 0), 0);
+        contador.textContent = String(cantidad);
+    }
+
+    function agregar(producto, categoria) {
+        const lista = leer();
+        const id = clave({ id: producto.id, categoria: categoria || producto.categoria });
+        const existente = lista.find((item) => item.clave === id);
+
+        if (existente) {
+            existente.cantidad = (Number(existente.cantidad) || 0) + 1;
+        } else {
+            lista.push({
+                clave: id,
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: Number(producto.precio || 0),
+                imagen: producto.imagen || "",
+                categoria: categoria || producto.categoria || "",
+                cantidad: 1,
+            });
+        }
+
+        guardar(lista);
+        actualizarNumero();
+        mostrar();
+
+        if (typeof Swal !== "undefined") {
+            Swal.fire({ title: "Agregado", text: producto.nombre + " se agregó al carrito.", icon: "success", timer: 1500 });
+        }
+    }
+
+    function quitar(item) {
+        guardar(leer().filter((otro) => otro.clave !== item.clave));
+        actualizarNumero();
+        mostrar();
+    }
+
+    function mostrar() {
+        const lista = document.getElementById("listaCarrito");
+        if (!lista) {
+            return;
+        }
+
+        Dom.limpiar(lista);
+        const items = leer();
+
+        if (items.length === 0) {
+            lista.appendChild(Dom.texto("p", "Tu carrito está vacío.", { clases: ["carrito-vacio"] }));
+            return;
+        }
+
+        items.forEach((item) => {
+            const fila = Dom.crear("div", { clases: ["fila-carrito"] });
+
+            if (item.imagen) {
+                const foto = Dom.crear("img", {
+                    clases: ["foto-carrito"],
+                    atributos: { src: item.imagen, alt: item.nombre },
+                });
+                fila.appendChild(foto);
+            }
+
+            fila.appendChild(Dom.texto("span", item.nombre, { clases: ["nombre-carrito"] }));
+            fila.appendChild(Dom.texto("span", " x " + (Number(item.cantidad) || 0), { clases: ["cantidad-carrito"] }));
+            fila.appendChild(Dom.texto("span", Dom.precio((Number(item.precio) || 0) * (Number(item.cantidad) || 0)), { clases: ["precio-carrito"] }));
+
+            const boton = Dom.boton("Quitar", () => quitar(item), { clases: ["boton-quitar"] });
+            fila.appendChild(boton);
+
+            lista.appendChild(fila);
+        });
+
+        const total = items.reduce((suma, item) => suma + (Number(item.precio) || 0) * (Number(item.cantidad) || 0), 0);
+        lista.appendChild(Dom.texto("p", "Total: " + Dom.precio(total), { clases: ["total-carrito"] }));
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+            actualizarNumero();
+            mostrar();
+        });
     } else {
-        carrito.push({
-            clave: clave,
-            categoria: categoria,
-            nombre: producto.nombre,
-            imagen: producto.imagen,
-            alt: producto.alt,
-            cantidad: 1
-        })
+        actualizarNumero();
+        mostrar();
     }
 
-    guardarCarrito(carrito)
-    actualizarNumeroCarrito()
-}
-
-function borrarDelCarrito(clave) {
-    const carrito = leerCarrito()
-    const nuevoCarrito = carrito.filter(item => item.clave !== clave)
-
-    guardarCarrito(nuevoCarrito)
-    mostrarCarrito()
-    actualizarNumeroCarrito()
-}
-
-function mostrarCarrito() {
-    const lista = document.getElementById("listaCarrito")
-
-    if (!lista) {
-        return
-    }
-
-    const carrito = leerCarrito()
-    lista.innerHTML = ""
-
-    if (!carrito.length) {
-        const aviso = document.createElement("p")
-        aviso.className = "carrito-vacio"
-        aviso.textContent = "Todavía no agregaste productos al carrito."
-        lista.append(aviso)
-        return
-    }
-
-    carrito.forEach(item => {
-        const fila = document.createElement("article")
-        fila.className = "fila-carrito"
-
-        const foto = document.createElement("img")
-        foto.src = item.imagen
-        foto.alt = item.alt
-
-        const info = document.createElement("div")
-
-        const categoria = document.createElement("p")
-        categoria.className = "categoria-carrito"
-        categoria.textContent = item.categoria
-
-        const nombre = document.createElement("h2")
-        nombre.textContent = item.nombre
-
-        const cantidad = document.createElement("p")
-        cantidad.textContent = "Cantidad: " + item.cantidad
-
-        const quitar = document.createElement("button")
-        quitar.className = "boton-quitar"
-        quitar.type = "button"
-        quitar.textContent = "Quitar"
-        quitar.addEventListener("click", () => borrarDelCarrito(item.clave))
-
-        info.append(categoria, nombre, cantidad, quitar)
-        fila.append(foto, info)
-        lista.append(fila)
-    })
-}
-
-actualizarNumeroCarrito()
-mostrarCarrito()
+    return {
+        leer: leer,
+        guardar: guardar,
+        agregar: agregar,
+        agregarAlCarrito: agregar,
+        quitar: quitar,
+        mostrar: mostrar,
+        actualizarNumero: actualizarNumero,
+    };
+})();

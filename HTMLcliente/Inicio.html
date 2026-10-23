@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olympia Gym</title>
-        <link rel="stylesheet" href="CSScliente/interfaz.css">
+    <meta name="description" content="Olympia Gym: tu panel de cliente con rutina, planes, productos y estado de cuenta.">
+    <title>Olympia Gym | Mi inicio</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css?v=5">
 </head>
 <body class="pagina-acceso">
     <header>
@@ -16,10 +17,13 @@
             <span></span>
             <span></span>
         </button>
-        <nav id="navMenu">
+        <nav id="navMenu" aria-label="Navegación principal">
             <a href="planes.html" class="nav-boton">Planes</a>
             <a href="productos.html" class="nav-boton">Productos</a>
             <a href="mirutina.html" class="nav-boton">Rutina</a>
+            <a href="perfil.html" class="nav-boton">Mi perfil</a>
+            <a href="contacto.html" class="nav-boton">Contacto</a>
+            <a href="PHPcliente/logout.php" class="nav-boton" id="cerrarSesion">Cerrar sesión</a>
         </nav>
     </header>
 
@@ -30,13 +34,15 @@
         <div class="contenido">
             <h1>DESPIERTA TU POTENCIAL</h1>
             <p>
-                Lleva tu rendimiento al siguiente nivel con instalaciones
-                de élite y entrenamiento personalizado.
+               Bienvenido a tu nueva familia de Olympia Gym. Aquí podrás acceder a tus planes, productos, rutinas y mucho más para alcanzar tu mejor versión.
             </p>
         </div>
 
     </section>
 
-    <script src="JScliente/menu.js"></script>
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JScliente/auth.js?v=5"></script>
+    <script src="JScliente/menu.js?v=5"></script>
 </body>
 </html>

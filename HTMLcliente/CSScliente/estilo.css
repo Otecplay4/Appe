@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
     background:
         linear-gradient(120deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .68)),
-        url("../imagenes/Despierta-Potencial.jpg") center / cover no-repeat;
+        url("../imagenes/registro.jpg") center / cover no-repeat;
     display: grid;
     grid-template-rows: auto 1fr;
 }
@@ -159,6 +159,238 @@ justify-content: center;
     color: rgb(39, 103, 240);
 }
 
+/* ----------------------------------------------------------------------
+ * Páginas internas del cliente (perfil, contacto, recuperación y
+ * restablecimiento de contraseña).
+ *
+ * Se reutilizan las clases base de esta misma hoja (`.caja-acceso`,
+ * `.formulario-acceso`, `.mensaje-formulario`, `.enlace-acceso`) y se
+ * agregan solo las clases nuevas que necesitan.
+ * -------------------------------------------------------------------- */
+
+/* Barra superior con logo y navegación (una sola línea en escritorio). */
+.encabezado-navegacion {
+    width: 90%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.nav-acceso {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-acceso a {
+    padding: 9px 16px;
+    border: 2px solid #ffd700;
+    border-radius: 6px;
+    color: #ffd700;
+    font-size: .88rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .25s ease, color .25s ease;
+}
+
+.nav-acceso a:hover,
+.nav-acceso a:focus-visible {
+    background: #ffd700;
+    color: #080808;
+}
+
+.nav-acceso a:focus-visible {
+    outline: 2px solid #ffd700;
+    outline-offset: 3px;
+}
+
+/* Contenido en una sola columna (perfil, contacto, recuperación). */
+.contenido-simple {
+    width: 90%;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 0 72px;
+    display: grid;
+    gap: 28px;
+}
+
+.titulo-pagina {
+    margin: 0;
+    color: #ffd700;
+    font-size: 42px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.enlace-volver {
+    margin: 8px 0 0;
+    color: #d1d1d1;
+}
+
+.enlace-volver a {
+    color: #ffd700;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.enlace-volver a:hover {
+    color: #b19600;
+}
+
+/* Los textos largos usan el mismo estilo que los campos de texto. */
+.formulario-acceso textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, .24);
+    border-radius: 8px;
+    background: #080808;
+    color: #fff;
+    font: inherit;
+    resize: vertical;
+}
+
+.formulario-acceso textarea:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+}
+
+/* Mensajes que inserta Dom.mensaje() y el flujo de recuperación. */
+.mensaje-info {
+    color: #ffd700;
+}
+
+.mensaje-error {
+    color: #ff8a8a;
+}
+
+.mensaje-exito {
+    color: #86e086;
+}
+
+.mensaje-info a {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+/* Ficha del perfil (la arma `perfil.js`). */
+.perfil-contenido {
+    display: grid;
+    gap: 20px;
+}
+
+.perfil-ficha {
+    padding: 24px;
+    border: 1px solid rgba(255, 238, 0, .28);
+    border-radius: 12px;
+    background: rgba(18, 18, 18, .92);
+}
+
+.perfil-titulo {
+    margin: 0 0 16px;
+    color: #ffd700;
+    font-size: 1.3rem;
+}
+
+.perfil-lista {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+    color: #e6e6e6;
+}
+
+.perfil-etiqueta {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.perfil-vacio {
+    margin: 0;
+    color: #d1d1d1;
+}
+
+.perfil-enlace {
+    display: inline-block;
+    margin-top: 12px;
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.perfil-tabla {
+    width: 100%;
+    margin-top: 18px;
+    border-collapse: collapse;
+    font-size: .92rem;
+}
+
+.perfil-tabla th,
+.perfil-tabla td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    text-align: left;
+}
+
+.perfil-tabla th {
+    color: #ffd700;
+    font-size: .78rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+/* Solicitudes de cambio de rutina. */
+.solicitud-card {
+    margin-top: 12px;
+    padding: 16px;
+    display: grid;
+    gap: 6px;
+    border-left: 3px solid #ffd700;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.solicitud-motivo {
+    margin: 0;
+    color: #fff;
+}
+
+.solicitud-estado {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.solicitud-fecha {
+    color: #a9a9a9;
+    font-size: .85rem;
+}
+
+.solicitud-respuesta {
+    margin: 0;
+    color: #d1d1d1;
+}
+
+/* Datos de contacto del gimnasio (texto estático). */
+.lista-datos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    color: #e6e6e6;
+}
+
+.dato-etiqueta {
+    color: #ffd700;
+    font-weight: 700;
+}
+
 @media (max-width: 760px) {
     .encabezado-acceso,
     .contenido-acceso {
@@ -183,5 +415,27 @@ justify-content: center;
 
     .texto-acceso h1 {
         font-size: 40px;
+    }
+
+    .encabezado-navegacion {
+        padding: 18px 0;
+    }
+
+    .nav-acceso {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .contenido-simple {
+        padding: 24px 0 48px;
+        gap: 22px;
+    }
+
+    .titulo-pagina {
+        font-size: 32px;
+    }
+
+    .perfil-ficha {
+        padding: 18px;
     }
 }

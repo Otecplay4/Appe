@@ -1,292 +1,233 @@
+/**
+ * A.P.P.E. — Gestión de productos (empresa).
+ *
+ * Requisito funcional RF-08 · Caso de uso CU-05.
+ *
+ * Correcciones:
+ *   - Hallazgo 18: la versión anterior redeclaraba `let form` en el mismo
+ *     ámbito, lo que producía un `SyntaxError` que impedía ejecutar el
+ *     archivo completo. Aquí todo vive dentro de un módulo (IIFE) y cada
+ *     bloque tiene su propio ámbito.
+ *   - Hallazgo 29: se eliminó la dependencia de la variable global
+ *     `contenedor`; la referencia al DOM es explícita.
+ *   - Hallazgo 26: se comprueba el resultado real de cada operación.
+ */
+(function () {
+    "use strict";
 
-let form = document.getElementById("formulario")
-form.addEventListener("submit", (e) => {
+    API.configurar("./PHPempresa/");
 
-    e.preventDefault()
-    let f = new FormData(form)
+    const formulario = document.getElementById("formularioProducto");
+    const contenedor = document.getElementById("contenedor");
+    const mensaje = document.getElementById("productoMensaje");
+    const botonCancelar = document.getElementById("cancelarEdicion");
+    const tituloForm = document.getElementById("tituloFormProducto");
+    const campoId = document.getElementById("idProducto");
+    const campoArchivo = document.getElementById("archivoProducto");
+    const notaImagen = document.getElementById("notaImagen");
 
-    fetch("./PHPempresa/img.php", {
-        method: "POST",
-        body: f
-    }) .then(r => r.text())
-        .then(datos => {
-            console.log(datos);
-            
-        })
+    let idEnEdicion = null;
 
-    
+    const TIPOS = {
+        consumible: "Consumible",
+        accesorio: "Accesorio",
+        atuendo: "Atuendo",
+    };
 
-})
+    function salirDeEdicion() {
+        idEnEdicion = null;
 
-function actualizar(){
-    fetch("./PHPempresa/mostrarprod.php")
+        if (campoId) {
+            campoId.value = "";
+        }
+        if (formulario) {
+            formulario.reset();
+        }
+        if (campoArchivo) {
+            // Al crear, la imagen es obligatoria; al editar es opcional.
+            campoArchivo.required = true;
+        }
+        if (tituloForm) {
+            tituloForm.textContent = "Nuevo producto";
+        }
+        if (botonCancelar) {
+            botonCancelar.hidden = true;
+        }
+        if (notaImagen) {
+            notaImagen.textContent = "La imagen es obligatoria al crear un producto.";
+        }
+    }
 
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
+    function pintarProducto(producto) {
+        if (!contenedor) {
+            return;
+        }
 
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
+        const tarjeta = Dom.crear("article", { clases: ["tarjeta"] });
+
+        if (producto.extension) {
+            const imagen = Dom.crear("img", {
+                clases: ["imagen-producto"],
+                atributos: {
+                    // El directorio de imágenes está protegido: se pide a
+                    // través del endpoint, que valida la sesión.
+                    src: "./PHPempresa/imagen.php?tipo=producto&id=" + encodeURIComponent(producto.id_producto),
+                    alt: producto.nombre,
+                },
+            });
+            imagen.addEventListener("error", () => {
+                imagen.style.display = "none";
+            });
+            tarjeta.appendChild(imagen);
+        } else {
+            tarjeta.appendChild(Dom.texto("span", "Sin imagen", { clases: ["imagen-producto", "sin-imagen"] }));
+        }
+        tarjeta.appendChild(Dom.texto("h3", producto.nombre, { clases: ["nombre-producto"] }));
+
+        if (producto.descripcion) {
+            tarjeta.appendChild(Dom.texto("p", producto.descripcion, { clases: ["descripcion-producto"] }));
+        }
+
+        tarjeta.appendChild(Dom.texto("span", TIPOS[producto.tipo_de_producto] || producto.tipo_de_producto, { clases: ["categoria"] }));
+        tarjeta.appendChild(Dom.texto("span", Dom.precio(producto.precio), { clases: ["precio"] }));
+        tarjeta.appendChild(Dom.texto("span", "Stock: " + producto.stock, { clases: ["stock"] }));
+        tarjeta.appendChild(Dom.texto("span", producto.activo ? "Publicado" : "Oculto", { clases: ["estado-producto"] }));
+
+        const acciones = Dom.crear("div", { clases: ["acciones"] });
+
+        const botonEditar = Dom.boton("Actualizar", () => {
+            idEnEdicion = producto.id_producto;
+
+            if (campoId) {
+                campoId.value = String(producto.id_producto);
+            }
+            if (formulario) {
+                formulario.elements["nombre"].value = producto.nombre;
+                formulario.elements["descripcion"].value = producto.descripcion || "";
+                formulario.elements["precio"].value = producto.precio;
+                formulario.elements["stock"].value = producto.stock;
+                formulario.elements["tipo_de_producto"].value = producto.tipo_de_producto;
+            }
+            if (tituloForm) {
+                tituloForm.textContent = "Editar producto #" + producto.id_producto;
+            }
+            if (campoArchivo) {
+                // Al editar no hace falta volver a subir la imagen.
+                campoArchivo.required = false;
+                campoArchivo.value = "";
+            }
+            if (botonCancelar) {
+                botonCancelar.hidden = false;
+            }
+            if (notaImagen) {
+                notaImagen.textContent = "La imagen es opcional al editar: si no subís una nueva se conserva la actual.";
+            }
+
+            formulario.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, { clases: ["btnActualizar"] });
+
+        const botonEliminar = Dom.boton("Eliminar", () => {
+            const confirmar = () => {
+                API.post("eliminarpro.php", { id: producto.id_producto })
+                    .then(() => {
+                        Dom.mensaje(mensaje, "El producto fue eliminado.", "exito");
+                        actualizar();
+                    })
+                    .catch((error) => {
+                        Dom.mensaje(mensaje, error.mensaje || "No se pudo eliminar el producto.", "error");
+                    });
+            };
+
+            if (typeof Swal !== "undefined") {
+                Swal.fire({
+                    title: "¿Eliminar el producto?",
+                    text: "Se borrará la imagen y el registro.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar",
+                }).then((resultado) => {
+                    if (resultado.isConfirmed) {
+                        confirmar();
+                    }
+                });
+            } else if (window.confirm("¿Eliminar el producto?")) {
+                confirmar();
+            }
+        }, { clases: ["btnEliminar"] });
+
+        acciones.appendChild(botonEditar);
+        acciones.appendChild(botonEliminar);
+        tarjeta.appendChild(acciones);
+
+        contenedor.appendChild(tarjeta);
+    }
+
+    function actualizar() {
+        if (!contenedor) {
+            return;
+        }
+
+        Dom.limpiar(contenedor);
+
+        API.get("mostrarprod.php")
+            .then((datos) => {
+                const productos = datos.productos || [];
+
+                if (productos.length === 0) {
+                    contenedor.appendChild(Dom.texto("p", "Todavía no hay productos cargados.", { clases: ["sin-productos"] }));
+                    return;
+                }
+
+                productos.forEach(pintarProducto);
             })
+            .catch((error) => {
+                Dom.mensaje(mensaje, error.mensaje || "No se pudo cargar el listado de productos.", "error");
+            });
+    }
 
-        })
-}
+    if (formulario) {
+        formulario.addEventListener("submit", (evento) => {
+            evento.preventDefault();
 
-actualizar()
+            const datos = new FormData(formulario);
+            const nombre = String(datos.get("nombre") || "").trim();
 
-function eliminar (idu){
-    fetch("./PHPempresa/eliminarpro.php?id="+idu)
-    .then(r=>r.text())
-    .then(datos=>{
-        console.log(datos)
-        actualizar()
-    })
-}
+            if (nombre === "") {
+                Dom.mensaje(mensaje, "El nombre del producto es obligatorio.", "error");
+                return;
+            }
 
-function cambioimg(){
-    fetch("./PHPempresa/actualizarprod.php")
+            if (idEnEdicion === null) {
+                API.postForm("img.php", datos)
+                    .then(() => {
+                        Dom.mensaje(mensaje, "Producto creado correctamente.", "exito");
+                        salirDeEdicion();
+                        actualizar();
+                    })
+                    .catch((error) => {
+                        Dom.mensaje(mensaje, error.mensaje || "No se pudo crear el producto.", "error");
+                    });
+                return;
+            }
 
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
+            datos.set("id", String(idEnEdicion));
 
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
+            API.postForm("actualizarprod.php", datos)
+                .then(() => {
+                    Dom.mensaje(mensaje, "Producto actualizado correctamente.", "exito");
+                    salirDeEdicion();
+                    actualizar();
+                })
+                .catch((error) => {
+                    Dom.mensaje(mensaje, error.mensaje || "No se pudo actualizar el producto.", "error");
+                });
+        });
+    }
 
-        })
-}
-//consumibles
-let form = document.getElementById("formulario")
-form.addEventListener("submit", (e) => {
+    if (botonCancelar) {
+        botonCancelar.addEventListener("click", salirDeEdicion);
+    }
 
-    e.preventDefault()
-    let f = new FormData(form)
-
-    fetch("./PHPempresa/img.php", {
-        method: "POST",
-        body: f
-    }) .then(r => r.text())
-        .then(datos => {
-            console.log(datos);
-            
-        })
-
-    
-
-})
-
-function actualizar(){
-    fetch("./PHPempresa/mostrarprod.php")
-
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
-
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
-
-        })
-}
-
-actualizar()
-
-function eliminar (idu){
-    fetch("./PHPempresa/eliminarpro.php?id="+idu)
-    .then(r=>r.text())
-    .then(datos=>{
-        console.log(datos)
-        actualizar()
-    })
-}
-
-function cambioimg(){
-    fetch("./PHPempresa/actualizprod.php")
-
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
-
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
-
-        })
-}
-
-//accesorios
-
-let formulario = document.getElementById("formulario")
-form.addEventListener("submit", (e) => {
-
-    e.preventDefault()
-    let f = new FormData(form)
-
-    fetch("./PHPempresa/img.php", {
-        method: "POST",
-        body: f
-    }) .then(r => r.text())
-        .then(datos => {
-            console.log(datos);
-            
-        })
-
-    
-
-})
-
-function actualizar(){
-    fetch("./PHPempresa/mostrarprod.php")
-
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
-
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
-
-        })
-}
-
-actualizar()
-
-function eliminar (idu){
-    fetch("./PHPempresa/eliminarpro.php?id="+idu)
-    .then(r=>r.text())
-    .then(datos=>{
-        console.log(datos)
-        actualizar()
-    })
-}
-
-function cambioimg(){
-    fetch("./PHPempresa/actualizprod.php")
-
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
-
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
-
-        })
-}
-
-//atuendos
-
-let form = document.getElementById("formulario")
-form.addEventListener("submit", (e) => {
-
-    e.preventDefault()
-    let f = new FormData(form)
-
-    fetch("./PHPempresa/img.php", {
-        method: "POST",
-        body: f
-    }) .then(r => r.text())
-        .then(datos => {
-            console.log(datos);
-            
-        })
-
-    
-
-})
-
-function actualizar(){
-    fetch("./PHPempresa/mostrarprod.php")
-
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
-
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
-
-        })
-}
-
-actualizar()
-
-function eliminar (idu){
-    fetch("./PHPempresa/eliminarpro.php?id="+idu)
-    .then(r=>r.text())
-    .then(datos=>{
-        console.log(datos)
-        actualizar()
-    })
-}
-
-function cambioimg(){
-    fetch("./PHPempresa/actualizprod.php")
-
-        .then(r => r.json())
-        .then(datos => {
-            console.log(datos)
-            contenedor.innerHTML =""
-            datos.forEach(pj => {
-
-                contenedor.innerHTML += `
-                    <div>
-                        <h2>${pj.nombre}</h2>
-                        <img src=./img/${pj.id}.jpg>
-                        <button onclick=eliminar(${pj.id})>X</button>
-                        <button onclick=actualizar(${pj.id})>Actualizar</button>
-                    </div>`
-            })
-
-        })
-}
+    actualizar();
+})();

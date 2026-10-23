@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Alta, edición y eliminación de planes de suscripción de Olympia Gym.">
+    <title>Olympia Gym | Gestión de planes</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
+        </div>
+
+        <h1 id="tituloFormPlan">CREADOR DE PLANES</h1>
+
+        <!-- Cada plan que se guarda acá aparece en la página "Planes" del
+             cliente, con un botón por cada duración que tenga precio. -->
+        <form id="crearPlan" method="post" enctype="multipart/form-data" action="PHPempresa/agregarplan.php">
+            <div class="formulario-campos">
+
+                <input type="hidden" name="id" id="idPlan">
+
+                <label class="campo" for="nombrePlan">
+                    <span>Nombre del plan</span>
+                    <input type="text" name="nombre_plan" id="nombrePlan" maxlength="100" placeholder="Ej: Plan Premium" required>
+                </label>
+
+                <label class="campo" for="descripcionPlan">
+                    <span>Descripción</span>
+                    <input type="text" name="descripcion" id="descripcionPlan" maxlength="200" placeholder="Ej: Acceso libre + clases">
+                </label>
+
+                <label class="campo" for="beneficioPlan">
+                    <span>Beneficio</span>
+                    <input type="text" name="beneficio" id="beneficioPlan" maxlength="50" placeholder="Ej: Acceso a todas las áreas">
+                </label>
+
+                <label class="campo" for="duracionPlan">
+                    <span>Duración</span>
+                    <select name="duracion" id="duracionPlan">
+                        <option value="">Elegí una duración</option>
+                        <option value="Semanal">Semanal</option>
+                        <option value="Mensual">Mensual</option>
+                        <option value="Trimestral">Trimestral</option>
+                        <option value="Anual">Anual</option>
+                    </select>
+                </label>
+
+                <label class="campo" for="tipoPlan">
+                    <span>Tipo de plan</span>
+                    <select name="tipo_de_plan" id="tipoPlan">
+                        <option value="">Sin tipo</option>
+                        <option value="individual">Individual</option>
+                        <option value="familiar">Familiar</option>
+                        <option value="pareja">Pareja</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="formulario-campos">
+
+                <label class="campo" for="precioSemanal">
+                    <span>Semanal ($)</span>
+                    <input type="number" name="precio_semanal" id="precioSemanal" step="0.01" min="0" placeholder="Ej: 400">
+                </label>
+
+                <label class="campo" for="precioMensual">
+                    <span>Mensual ($)</span>
+                    <input type="number" name="precio_mensual" id="precioMensual" step="0.01" min="0" placeholder="Ej: 1500">
+                </label>
+
+                <label class="campo" for="precioTrimestral">
+                    <span>Trimestral ($)</span>
+                    <input type="number" name="precio_trimestral" id="precioTrimestral" step="0.01" min="0" placeholder="Ej: 4000">
+                </label>
+
+                <label class="campo" for="precioAnual">
+                    <span>Anual ($)</span>
+                    <input type="number" name="precio_anual" id="precioAnual" step="0.01" min="0" placeholder="Ej: 15000">
+                </label>
+
+                <label class="campo" for="imagenPlan">
+                    <span>Imagen</span>
+                    <input type="file" name="archivo" id="imagenPlan" accept=".jpg,.jpeg,.png,.gif" required>
+                </label>
+            </div>
+
+            <p class="nota-form" id="notaImagen">
+                La imagen es obligatoria al crear un plan. Dejá vacío el precio de las duraciones que no ofrezcas (cargá al menos una).
+            </p>
+
+            <div class="acciones">
+                <!-- `formnovalidate`: al editar, la imagen es opcional y el
+                     navegador no debe bloquear el envío. El servidor valida
+                     los datos y avisa por `planMensaje`. -->
+                <button type="submit" class="btnPrincipal" formnovalidate>GUARDAR PLAN</button>
+                <button type="button" id="cancelarEdicion" hidden style="display:none;background:#b30000;color:#ffffff;">CANCELAR EDICIÓN</button>
+            </div>
+        </form>
+
+        <div id="planMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
+
+        <h1>PLANES CARGADOS</h1>
+        <div id="planesContainer" class="grid"></div>
+
+    </div>
+
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/planes.js?v=5"></script>
+</body>
+
+</html>

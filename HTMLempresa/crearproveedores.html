@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Alta, edición y eliminación de proveedores de Olympia Gym.">
+    <title>Olympia Gym | Gestión de proveedores</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/Logo Oscuro.jpg" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
+        </div>
+
+        <h1 id="tituloFormProveedor">NUEVO PROVEEDOR</h1>
+
+        <form id="formularioProveedor" method="post" action="PHPempresa/proveedores.php?accion=crear">
+            <div class="formulario-campos">
+
+                <input type="hidden" name="id" id="idProveedor">
+
+                <label class="campo" for="nombreProveedor">
+                    <span>Nombre</span>
+                    <input type="text" name="nombre" id="nombreProveedor" maxlength="100" placeholder="Ej: Nutrición Deportiva S.A." required>
+                </label>
+
+                <label class="campo" for="correoProveedor">
+                    <span>Correo electrónico</span>
+                    <input type="email" name="correo" id="correoProveedor" autocomplete="email" required>
+                </label>
+
+                <label class="campo" for="telefonoProveedor">
+                    <span>Teléfono</span>
+                    <input type="tel" name="telefono" id="telefonoProveedor" autocomplete="tel" pattern="[0-9+ ]{7,20}">
+                </label>
+            </div>
+
+            <div class="formulario-campos">
+
+                <label class="campo" for="departamentoProveedor">
+                    <span>Departamento</span>
+                    <input type="text" name="departamento" id="departamentoProveedor" maxlength="50" placeholder="Ej: Montevideo">
+                </label>
+
+                <label class="campo" for="calleProveedor">
+                    <span>Calle</span>
+                    <input type="text" name="calle" id="calleProveedor" maxlength="50" placeholder="Ej: Avenida Italia">
+                </label>
+
+                <label class="campo" for="manzanaProveedor">
+                    <span>Manzana</span>
+                    <input type="text" name="manzana" id="manzanaProveedor" maxlength="15" placeholder="Ej: A-12">
+                </label>
+
+                <label class="campo" for="solarProveedor">
+                    <span>Solar</span>
+                    <input type="text" name="solar" id="solarProveedor" maxlength="15" placeholder="Ej: 12345678">
+                </label>
+            </div>
+
+            <div class="acciones">
+                <button type="submit" class="btnPrincipal">GUARDAR PROVEEDOR</button>
+                <button type="button" id="cancelarEdicion" hidden style="display:none;background:#b30000;color:#ffffff;">CANCELAR EDICIÓN</button>
+            </div>
+        </form>
+
+        <div id="proveedorMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
+
+        <h1>PROVEEDORES CARGADOS</h1>
+        <div id="proveedoresContainer" class="grid"></div>
+
+    </div>
+
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/proveedores.js?v=5"></script>
+</body>
+
+</html>

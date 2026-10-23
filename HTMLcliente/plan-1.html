@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olympia Gym - Plan 1</title>
-    <link rel="stylesheet" href="CSScliente/interfaz.css">
-    <link rel="stylesheet" href="CSScliente/productos.css">
-    <link rel="stylesheet" href="CSScliente/planes.css">
+    <meta name="description" content="Plan Básico de Olympia Gym: elegí la duración de tu membresía.">
+    <title>Olympia Gym | Plan Basico</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css?v=5">
+    <link rel="stylesheet" href="CSScliente/productos.css?v=5">
+    <link rel="stylesheet" href="CSScliente/planes.css?v=5">
 </head>
 <body>
     <header>
         <a class="logo" href="Principio.html" aria-label="Inicio de Olympia Gym">
-            <img src="imagenes/Logo Oscuro.jpg" alt="Olympia Gym">
+            <img src="imagenes/olympia_dorado.png" alt="Olympia Gym">
         </a>
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
             <span></span>
@@ -23,28 +24,62 @@
                 <a href="planes.html" class="nav-boton">Planes</a>
                 <a href="productos.html" class="nav-boton">Productos</a>
                 <a href="mirutina.html" class="nav-boton">Rutina</a>
+                <a href="perfil.html" class="nav-boton">Mi perfil</a>
+                <a href="contacto.html" class="nav-boton">Contacto</a>
+            <a href="carrito.html" class="boton-carrito">Carrito (<span id="numeroCarrito">0</span>)</a>
             </nav>
             <a href="planes.html" class="boton-volver">← Volver</a>
         </div>
     </header>
 
     <main class="pagina-planes">
-        <div class="cabecera-plan">
-            <img src="imagenes/Despierta-Potencial.jpg" alt="Persona entrenando en Olympia Gym">
-            <div>
-                <p class="tipo-plan">Membresía</p>
-                <h1 class="titulo-planes">Plan Esencial</h1>
+        <div class="plan-panel">
+            <div class="cabecera-plan">
+                <img src="imagenes/plan basico.jpg" alt="Persona entrenando en Olympia Gym">
+                <div>
+                    <p class="tipo-plan">Membresía</p>
+                    <h1 class="titulo-planes">Plan Basico</h1>
+                </div>
             </div>
-        </div>
 
-        <div class="grilla-tiempos">
-            <div class="tiempo-plan">Mensual</div>
-            <div class="tiempo-plan">Trimestral</div>
-            <div class="tiempo-plan">Semestral</div>
-            <div class="tiempo-plan">Anual</div>
+            <div class="grilla-tiempos">
+                    <div class="tiempo-plan">
+                        <button type="button" class="boton-tiempo"
+                                data-plan-compra="1"
+                                data-periodo="semanal"
+                                data-precio="300">Semanal</button>
+                        <span class="precio-tiempo">$ 300,00</span>
+                    </div>
+                    <div class="tiempo-plan">
+                        <button type="button" class="boton-tiempo"
+                                data-plan-compra="1"
+                                data-periodo="mensual"
+                                data-precio="1200">Mensual</button>
+                        <span class="precio-tiempo">$ 1.200,00</span>
+                    </div>
+                    <div class="tiempo-plan">
+                        <button type="button" class="boton-tiempo"
+                                data-plan-compra="1"
+                                data-periodo="trimestral"
+                                data-precio="2000">Trimestral</button>
+                        <span class="precio-tiempo">$ 2.000,00</span>
+                    </div>
+                    <div class="tiempo-plan">
+                        <button type="button" class="boton-tiempo"
+                                data-plan-compra="1"
+                                data-periodo="anual"
+                                data-precio="3000">Anual</button>
+                        <span class="precio-tiempo">$ 3.000,00</span>
+                    </div></div>
         </div>
     </main>
 
-    <script src="JScliente/menu.js"></script>
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JScliente/auth.js?v=5"></script>
+    <script src="JScliente/compra-plan.js?v=5"></script>
+    
+    <script src="JScliente/carrito.js?v=5"></script>
+    <script src="JScliente/menu.js?v=5"></script>
 </body>
 </html>

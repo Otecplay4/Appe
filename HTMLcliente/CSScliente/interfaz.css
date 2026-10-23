@@ -33,6 +33,7 @@ header{
 nav{
     display:flex;
     gap:24px;
+    flex-wrap:wrap;
 }
 
 .nav-boton{
@@ -86,7 +87,7 @@ nav{
 
 .pantalla{
     height:100svh;
-    background-image:url("../imagenes/Despierta-Potencial.jpg");
+    background-image:url("../imagenes/Imagen\ Principal.jpg");
     background-size:cover;
     background-position:center;
     position:relative;
@@ -119,6 +120,17 @@ nav{
     font-size:clamp(16px, 2vw, 20px);
     line-height:1.6;
     color:#ddd;
+}
+
+/* Pantallas medianas: la navegación se compacta para no desbordar. */
+@media (max-width:1200px){
+    nav{
+        gap:12px;
+    }
+    .nav-boton{
+        padding:10px 14px;
+        font-size:14px;
+    }
 }
 
 /* Tablet */
@@ -158,6 +170,7 @@ nav{
         width:min(75vw, 300px);
         background:rgba(0,0,0,.97);
         flex-direction:column;
+        flex-wrap:nowrap;
         justify-content:center;
         align-items:center;
         gap:24px;

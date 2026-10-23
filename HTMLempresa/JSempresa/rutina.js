@@ -1,100 +1,165 @@
-const crearRutina = document.getElementById("crearRutina")
+/**
+ * A.P.P.E. — Constructor de rutinas (empresa).
+ *
+ * Requisito funcional RF-13 · Caso de uso CU-06 «Consultar y Modificar Rutina
+ * de Entrenamiento» (actor Entrenador).
+ *
+ * El guardado se hace con `fetch` (y no con el envío nativo del formulario)
+ * porque `agregarrutina.php` responde JSON. Se adjunta el token CSRF en un
+ * campo oculto, que el servidor exige (hallazgo 15).
+ *
+ * El día de cada ejercicio se envía explícitamente (hallazgo 23: la interfaz
+ * permitía organizar por día y el guardado perdía esa información).
+ */
+(function () {
+    "use strict";
 
-let contadorDias = 0;
+    API.configurar("./PHPempresa/");
 
-function agregarDia() {
-    contadorDias++;
+    const formulario = document.getElementById("crearRutina");
+    const contenedorDias = document.getElementById("diasContainer");
+    const selectorClientes = document.getElementById("clientesSelect");
+    const mensaje = document.getElementById("rutinaMensaje");
+    const campoToken = document.getElementById("csrf_token");
 
-    let html = `
-        <div class="dia" id="dia_${contadorDias}">
-            <h2>Día ${contadorDias}</h2>
-            
-            <button type="button" class="btnEliminar" onclick="eliminarDia(${contadorDias})">
-                Eliminar Día
-            </button>
-            <hr>
-            
-            <div id="ejercicios_${contadorDias}"></div>
-            
-            <button type="button" class="btnAgregar" onclick="agregarEjercicio(${contadorDias})">
-                + Ejercicio
-            </button>
-        </div>
-    `;
+    let contadorDias = 0;
 
-    document.getElementById("diasContainer").insertAdjacentHTML("beforeend", html);
-}
-
-function eliminarDia(id) {
-    let diaElement = document.getElementById(`dia_${id}`);
-    if(diaElement) {
-        diaElement.remove();
+    function campoEtiquetado(etiqueta, input) {
+        const caja = Dom.crear("label", { clases: ["campo"] });
+        caja.appendChild(Dom.texto("span", etiqueta));
+        caja.appendChild(input);
+        return caja;
     }
-}
 
-function agregarEjercicio(dia) {
-    let contenedor = document.getElementById(`ejercicios_${dia}`);
+    function crearFilaEjercicio(dia) {
+        const fila = Dom.crear("div", { clases: ["fila-ejercicio"] });
 
-    let html = `
-        <div class="ejercicio">
-            <!-- Este input oculto envía el número de día al PHP -->
-            <input type="hidden" name="dia[]" value="${dia}">
+        const musculo = Dom.crear("input", {
+            atributos: { type: "text", name: "musculo[]", placeholder: "Músculo", maxlength: "200", required: "required" },
+        });
+        const ejercicio = Dom.crear("input", {
+            atributos: { type: "text", name: "ejercicio[]", placeholder: "Ejercicio", maxlength: "200", required: "required" },
+        });
+        const series = Dom.crear("input", {
+            atributos: { type: "number", name: "series[]", placeholder: "Series", min: "1", max: "99", required: "required" },
+        });
+        const repeticiones = Dom.crear("input", {
+            atributos: { type: "number", name: "repeticiones[]", placeholder: "Repeticiones", min: "1", max: "999", required: "required" },
+        });
+        const diaOculto = Dom.crear("input", {
+            atributos: { type: "hidden", name: "dia[]", value: String(dia) },
+        });
 
-            <label>Músculo</label>
-            <input type="text" name="musculo[]" placeholder="Ej: Pecho" required>
+        const botonQuitar = Dom.boton("Quitar", () => {
+            fila.remove();
+        }, { clases: ["btnEliminar"] });
 
-            <label>Ejercicio</label>
-            <input type="text" name="ejercicio[]" placeholder="Ej: Press banca" required>
+        fila.appendChild(campoEtiquetado("Músculo", musculo));
+        fila.appendChild(campoEtiquetado("Ejercicio", ejercicio));
+        fila.appendChild(campoEtiquetado("Series", series));
+        fila.appendChild(campoEtiquetado("Repeticiones", repeticiones));
+        fila.appendChild(diaOculto);
+        fila.appendChild(botonQuitar);
 
-            <label>Series</label>
-            <input type="number" name="series[]" placeholder="Ej: 4" required min="1">
+        return fila;
+    }
 
-            <label>Repeticiones</label>
-            <input type="number" name="repeticiones[]" placeholder="Ej: 12" required min="1">
+    function agregarDia() {
+        contadorDias += 1;
 
-            <button type="button" class="btnEliminar" onclick="this.parentElement.remove()">
-                Eliminar Ejercicio
-            </button>
-        </div>
-    `;
+        const dia = contadorDias;
+        const bloque = Dom.crear("section", { clases: ["dia"], dataset: { dia: String(dia) } });
 
-    contenedor.insertAdjacentHTML("beforeend", html);
-}
+        const cabecera = Dom.crear("header", { clases: ["dia-cabecera"] });
+        cabecera.appendChild(Dom.texto("h3", "Día " + dia));
 
-// Iniciar con un día por defecto
-agregarDia();
+        const botonEliminar = Dom.boton("Eliminar día", () => {
+            bloque.remove();
+        }, { clases: ["btnEliminar"] });
+        cabecera.appendChild(botonEliminar);
+        bloque.appendChild(cabecera);
 
-// Función para cargar los clientes desde la base de datos
-function cargarClientes() {
-    fetch('./PHPempresa/buscarcliente.php') 
-        .then(res => res.json())
-        .then(datos => {
-            let select = document.getElementById("clientesSelect");
-            
-            // Limpiamos el mensaje de "Cargando..."
-            select.innerHTML = '<option value="">Seleccione un cliente...</option>';
+        const lista = Dom.crear("div", { clases: ["ejercicios-dia"] });
+        bloque.appendChild(lista);
 
-            // Si hay un error desde PHP lo mostramos
-            if(datos.error){
-                console.error(datos.error);
+        const botonAgregar = Dom.boton("+ Agregar ejercicio", () => {
+            lista.appendChild(crearFilaEjercicio(dia));
+        }, { clases: ["btnAgregar"] });
+        bloque.appendChild(botonAgregar);
+
+        lista.appendChild(crearFilaEjercicio(dia));
+
+        if (contenedorDias) {
+            contenedorDias.appendChild(bloque);
+        }
+    }
+
+    function cargarClientes() {
+        if (!selectorClientes) {
+            return;
+        }
+
+        API.get("buscarcliente.php", { limite: 100 })
+            .then((datos) => {
+                Dom.limpiar(selectorClientes);
+
+                const vacio = Dom.crear("option", { texto: "Seleccioná un cliente", atributos: { value: "" } });
+                selectorClientes.appendChild(vacio);
+
+                (datos.clientes || []).forEach((cliente) => {
+                    const opcion = Dom.crear("option", {
+                        texto: cliente.nombre_completo + " (" + cliente.correo + ")",
+                        atributos: { value: String(cliente.id_cliente) },
+                    });
+                    selectorClientes.appendChild(opcion);
+                });
+            })
+            .catch((error) => {
+                Dom.mensaje(mensaje, error.mensaje || "No se pudo cargar la lista de clientes.", "error");
+            });
+    }
+
+    if (formulario) {
+        formulario.addEventListener("submit", (evento) => {
+            evento.preventDefault();
+
+            const idCliente = selectorClientes ? selectorClientes.value : "";
+
+            if (idCliente === "") {
+                Dom.mensaje(mensaje, "Seleccioná el cliente de la rutina.", "error");
                 return;
             }
 
-            // Recorremos los clientes que llegaron de la base de datos y los agregamos
-            datos.forEach(cliente => {
-                let opcion = document.createElement("option");
-                opcion.value = cliente.id;
-                opcion.textContent = `${cliente.nombre} ${cliente.apellido} (ID: ${cliente.id})`;
-                select.appendChild(opcion);
-            });
-        })
-        .catch(error => {
-            console.error("Error en la petición de clientes:", error);
-            document.getElementById("clientesSelect").innerHTML = '<option value="">Error al cargar</option>';
-        });
-}
+            const datos = new FormData(formulario);
+            datos.set("id_cliente", idCliente);
 
-// Ejecutamos la función apenas cargue la ventana del navegador
-window.onload = function() {
+            // El token CSRF se renueva antes de enviar, por si la sesión
+            // hubiera caducado.
+            API.obtenerCsrf(true)
+                .then((token) => {
+                    datos.set("csrf_token", token || "");
+                    return API.postForm("agregarrutina.php", datos);
+                })
+                .then(() => {
+                    Dom.mensaje(mensaje, "Rutina guardada correctamente.", "exito");
+                })
+                .catch((error) => {
+                    Dom.mensaje(mensaje, error.mensaje || "No se pudo guardar la rutina.", "error");
+                });
+        });
+    }
+
+    if (contenedorDias) {
+        agregarDia();
+
+        // Botón para agregar un día más a la planificación. Se crea desde
+        // JavaScript (no hay `onclick` en línea: la CSP lo prohíbe).
+        const botonAgregarDia = Dom.boton("+ AGREGAR DÍA", () => {
+            agregarDia();
+        }, { clases: ["btnAgregar"] });
+
+        contenedorDias.parentNode.insertBefore(botonAgregarDia, contenedorDias.nextSibling);
+    }
+
     cargarClientes();
-};
+})();

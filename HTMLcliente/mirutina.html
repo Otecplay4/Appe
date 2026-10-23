@@ -2,26 +2,56 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Mi Rutina</title>
-    <link rel="stylesheet" href="CSScliente/mirutina.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tu rutina de entrenamiento en Olympia Gym.">
+    <title>Olympia Gym | Mi rutina</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css?v=5">
+    <link rel="stylesheet" href="CSScliente/mirutina.css?v=5">
 </head>
-<body>
+<body class="pagina-rutina">
+
+    <header>
+        <a class="logo" href="Principio.html" aria-label="Inicio de Olympia Gym">
+            <img src="imagenes/olympia_dorado.png" alt="Olympia Gym">
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="navMenu" aria-label="Navegación principal">
+            <a href="planes.html" class="nav-boton">Planes</a>
+            <a href="productos.html" class="nav-boton">Productos</a>
+            <a href="mirutina.html" class="nav-boton">Rutina</a>
+            <a href="perfil.html" class="nav-boton">Mi perfil</a>
+            <a href="contacto.html" class="nav-boton">Contacto</a>
+        </nav>
+    </header>
+
     <div class="contenedor">
         <h1 id="tituloRutina">Cargando rutina...</h1>
-        
-        <table>
+
+        <p class="leyenda-rutina">Ejercicio · Músculo · Series x Repeticiones · Día</p>
+
+        <table id="tablaEjercicios" aria-label="Ejercicios de mi rutina">
             <thead>
                 <tr>
-                    <th>Músculo</th>
                     <th>Ejercicio</th>
-                    <th>Series / Repeticiones</th>
+                    <th>Músculo</th>
+                    <th>Series x Repeticiones</th>
+                    <th>Día</th>
                 </tr>
             </thead>
-            <tbody id="tablaEjercicios"></tbody>
+            <tbody></tbody>
         </table>
+
+        <a class="volver-rutina" href="Principio.html">← Volver al inicio</a>
     </div>
 
-    <script src="JScliente/mirutina.js"></script>
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JScliente/auth.js?v=5"></script>
+    <script src="JScliente/mirutina.js?v=5"></script>
+    <script src="JScliente/menu.js?v=5"></script>
 </body>
 </html>

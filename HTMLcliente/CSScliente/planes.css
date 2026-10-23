@@ -77,65 +77,155 @@
     font-weight: 800;
 }
 
+.caja-plan.con-descripcion {
+    grid-template-rows: 1fr auto;
+}
+
+.caja-plan.con-descripcion .nombre-plan {
+    padding-bottom: 4px;
+}
+
+.descripcion-plan {
+    position: relative;
+    z-index: 2;
+    padding: 0 24px 22px;
+    color: #d6d6d6;
+    font-size: .9rem;
+    line-height: 1.35;
+}
+
+.descripcion-cabecera {
+    margin-top: 12px;
+    color: #d6d6d6;
+    font-size: .95rem;
+    line-height: 1.4;
+}
+
 .flecha-plan {
     display: grid;
     place-items: center;
     color: #ffd700;
-    font-size: 2rem;
+    font-size: 2.6rem;
     font-weight: 800;
+    text-shadow: 0 0 14px rgba(255, 215, 0, .5);
     opacity: 0;
+    transform: translateX(-48px);
+    pointer-events: none;
+    transition: transform .5s cubic-bezier(.22, 1, .36, 1), opacity .35s ease;
 }
 
 .fila-plan.abierta .flecha-plan {
     opacity: 1;
+    transform: translateX(0);
 }
 
 .detalle-plan {
-    height: 0;
+    height: 260px;
     overflow: hidden;
-    border: 0 solid transparent;
+    visibility: hidden;
+    border: 1px solid rgba(255, 215, 0, .35);
     border-radius: 10px;
     background: #0d0d0d;
     opacity: 0;
+    transform: translateX(-70px);
+    transition: transform .55s cubic-bezier(.22, 1, .36, 1) .08s,
+                opacity .4s ease .08s,
+                visibility 0s linear .55s;
+}
+
+.fila-plan.abierta .detalle-plan {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: .08s, .08s, 0s;
 }
 
 .grilla-detalle {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    min-height: 240px;
-    opacity: 0;
+    grid-auto-rows: 1fr;
+    gap: 14px;
+    height: auto;
+    padding: 16px;
 }
 
-.fila-plan.abierta .detalle-plan {
-    height: 240px;
-    border-width: 1px;
-    border-color: rgba(255, 215, 0, .35);
-    opacity: 1;
+/* Nombre del plan dentro del panel desplegable: identifica la duración elegida. */
+.titulo-detalle {
+    margin: 0;
+    padding: 14px 16px 4px;
+    color: #ffd700;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
 }
 
-.fila-plan.abierta .grilla-detalle {
-    opacity: 1;
-}
-
+/* Botones de duración (<button class="tiempo-plan boton-tiempo">) */
 .tiempo-plan {
     display: grid;
     place-items: center;
+    align-content: center;
     min-height: 80px;
     padding: 16px;
-    border-right: 1px solid rgba(255, 215, 0, .18);
-    border-bottom: 1px solid rgba(255, 215, 0, .18);
+    background: #000;
+    border: 2px solid rgba(255, 215, 0, .45);
+    border-radius: 8px;
     color: #ffd700;
-    font-size: .95rem;
+    font-size: 1rem;
     font-weight: 800;
+    letter-spacing: .02em;
     text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;
 }
 
-.tiempo-plan:nth-child(even) {
-    border-right: 0;
+/* Si hay un número impar de duraciones, la última ocupa todo el ancho. */
+.grilla-detalle .tiempo-plan:last-child:nth-child(odd),
+.grilla-tiempos .tiempo-plan:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
 }
 
-.tiempo-plan:nth-child(n + 3) {
-    border-bottom: 0;
+.tiempo-plan .precio-tiempo {
+    margin-top: 4px;
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.tiempo-plan .boton-tiempo {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: inherit;
+}
+
+.tiempo-plan.seleccionado .precio-tiempo {
+    color: #000;
+}
+
+.tiempo-plan:hover,
+.tiempo-plan:focus-visible {
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, .12);
+}
+
+.tiempo-plan:focus-visible {
+    outline: 2px solid #ffd700;
+    outline-offset: 3px;
+}
+
+.tiempo-plan:active {
+    transform: scale(.97);
+}
+
+.tiempo-plan.seleccionado {
+    background: #ffd700;
+    border-color: #ffd700;
+    color: #000;
 }
 
 .cabecera-plan {
@@ -170,6 +260,7 @@
     text-transform: uppercase;
 }
 
+
 .grilla-tiempos {
     width: 100%;
     max-width: 700px;
@@ -177,6 +268,8 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 16px;
     overflow: hidden;
     border: 1px solid rgba(255, 215, 0, .35);
     border-radius: 10px;
@@ -200,8 +293,12 @@
         display: none;
     }
 
+    .detalle-plan {
+        transform: translateY(-16px);
+    }
+
     .fila-plan.abierta .detalle-plan {
-        height: 240px;
+        transform: translateY(0);
     }
 }
 
@@ -242,11 +339,5 @@
 
     .grilla-tiempos .tiempo-plan {
         min-height: 76px;
-        border-right: 0;
-        border-bottom: 1px solid rgba(255, 215, 0, .18);
-    }
-
-    .grilla-tiempos .tiempo-plan:last-child {
-        border-bottom: 0;
     }
 }

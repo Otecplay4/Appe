@@ -167,3 +167,513 @@ h1 {
     background: #777;
     border-radius: 5px;
 }
+/* ===== Estilos compartidos para crearproductos.html y crearplanes.html ===== */
+.grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.tarjeta {
+    width: 240px;
+    background: #4a4a4a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tarjeta h2 {
+    font-size: 17px;
+    color: #ffd700;
+    text-align: center;
+}
+
+.tarjeta img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 3px;
+    background: #3f3f3f;
+}
+
+.tarjeta p {
+    color: #e0e0e0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.nota-form {
+    margin-top: -8px;
+    color: #bdbdbd;
+    font-size: 13px;
+}
+
+.tarjeta .lista-precios {
+    display: grid;
+    gap: 4px;
+    color: #e0e0e0;
+    font-size: 13px;
+}
+
+.tarjeta .lista-precios strong {
+    color: #ffd700;
+}
+
+.tarjeta .categoria {
+    align-self: center;
+    padding: 3px 10px;
+    border: 1px solid #ffd700;
+    border-radius: 999px;
+    color: #ffd700;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.tarjeta .precio {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.tarjeta button {
+    padding: 8px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+.tarjeta .btnActualizar {
+    background: #007a00;
+}
+
+.tarjeta .btnActualizar:hover {
+    background: #009900;
+}
+
+.tarjeta .btnEliminar {
+    background: #b30000;
+    margin-top: 0;
+}
+
+.tarjeta .btnEliminar:hover {
+    background: #d50000;
+}
+
+.vacio {
+    color: #bdbdbd;
+    font-style: italic;
+}
+
+/* ===== Barra superior con logo + botón volver a inicio-empresa.html ===== */
+.top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #3f3f3f;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.top-nav .logo-link img {
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+.top-nav .volver {
+    padding: 12px 20px;
+    background: #ffd700;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.top-nav .volver:hover {
+    background: #ffdf33;
+}
+
+/* ==========================================================================
+   Componentes compartidos por TODAS las páginas de gestión (panel, clientes,
+   productos, planes, rutinas, proveedores, cuotas, solicitudes, mensajes y
+   búsqueda). Se agregan aquí, y no en una hoja nueva, las clases que usan los
+   scripts de JSempresa para construir el contenido de las páginas.
+   ========================================================================== */
+
+/* --- Estructura general --------------------------------------------------- */
+.container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+/* `estilo.css` (página de clientes) define el body como contenedor flexible;
+   se normaliza para que todas las páginas de gestión se comporten igual. */
+body {
+    display: block;
+}
+
+/* --- Formularios ---------------------------------------------------------- */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #ffd700;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background: #3f3f3f;
+    color: #ffffff;
+    font: inherit;
+    font-weight: normal;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: 2px solid #ffd700;
+}
+
+.formulario-campos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.formulario-campos .campo {
+    flex: 1 1 220px;
+}
+
+.filtros {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #3f3f3f;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.filtros input,
+.filtros select {
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background: #555555;
+    color: #ffffff;
+    font: inherit;
+}
+
+.filtros label {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* --- Secciones y listas ---------------------------------------------------- */
+.seccion {
+    background: #3f3f3f;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.seccion h2 {
+    color: #ffd700;
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.lista-panel {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* --- Tablas ---------------------------------------------------------------- */
+.tabla-contenedor {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: #3f3f3f;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.tabla th,
+.tabla td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    font-size: 14px;
+}
+
+.tabla th {
+    background: #1f1f1f;
+    color: #ffd700;
+    font-size: 12px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.tabla td {
+    color: #e0e0e0;
+}
+
+.tabla tbody tr:hover {
+    background: #4a4a4a;
+}
+
+/* La celda de acciones es una celda de tabla: no puede ser un contenedor
+   flexible, porque rompería la alineación de las columnas. */
+.tabla td.acciones {
+    display: table-cell;
+    white-space: nowrap;
+}
+
+.tabla td.acciones button {
+    margin-right: 8px;
+    width: auto;
+    margin-top: 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tabla td.acciones .btnActualizar {
+    background: #007a00;
+    color: #ffffff;
+}
+
+.tabla td.acciones .btnActualizar:hover {
+    background: #009900;
+}
+
+.tabla td.acciones .btnEliminar {
+    background: #b30000;
+    color: #ffffff;
+}
+
+.tabla td.acciones .btnEliminar:hover {
+    background: #d50000;
+}
+
+/* --- Constructor de rutinas ------------------------------------------------ */
+.fila-ejercicio {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    background: #3f3f3f;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.fila-ejercicio .campo {
+    flex: 1 1 130px;
+}
+
+.fila-ejercicio .btnEliminar {
+    width: auto;
+    margin-top: 0;
+}
+
+.dia-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #000;
+    padding: 10px;
+}
+
+.dia-cabecera h3 {
+    background: none;
+    color: #ffd700;
+    text-align: left;
+    font-size: 18px;
+    padding: 0;
+}
+
+.dia-cabecera .btnEliminar {
+    width: auto;
+    margin-top: 0;
+}
+
+.ejercicios-dia {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* --- Indicadores y filas de panel ------------------------------------------ */
+.indicador {
+    min-width: 200px;
+    background: #4a4a4a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.indicador-titulo {
+    color: #bdbdbd;
+    font-size: 13px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.indicador-valor {
+    color: #ffd700;
+    font-size: 24px;
+}
+
+.indicador-detalle {
+    color: #e0e0e0;
+    font-size: 13px;
+}
+
+.fila-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #4a4a4a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 12px;
+}
+
+.fila-titulo {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.fila-detalle {
+    color: #e0e0e0;
+    font-size: 13px;
+}
+
+/* --- Estados vacíos -------------------------------------------------------- */
+.sin-datos,
+.sin-productos,
+.sin-planes {
+    color: #bdbdbd;
+    font-style: italic;
+}
+
+/* --- Mensajes -------------------------------------------------------------- */
+.mensaje-formulario {
+    margin: 12px 0 0;
+    min-height: 1.5em;
+    color: #ffd700;
+}
+
+.mensaje-error {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.mensaje-exito {
+    color: #7ee787;
+    font-weight: bold;
+}
+
+.mensaje-info {
+    color: #ffd700;
+}
+
+/* --- Botones de acción ----------------------------------------------------- */
+.acciones .btnActualizar {
+    width: auto;
+    margin-top: 0;
+    background: #007a00;
+    color: #ffffff;
+}
+
+.acciones .btnActualizar:hover {
+    background: #009900;
+}
+
+.acciones .btnEliminar {
+    width: auto;
+    margin-top: 0;
+    background: #b30000;
+    color: #ffffff;
+}
+
+.acciones .btnEliminar:hover {
+    background: #d50000;
+}
+
+/* Acción principal (guardar) y acción destructiva (eliminar) de los
+   formularios de gestión. */
+.acciones button.btnPrincipal {
+    background: #ffd700;
+    color: #080808;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.acciones button.btnPrincipal:hover {
+    background: #ffdf33;
+}
+
+.acciones button.btnPeligro {
+    background: #b30000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.acciones button.btnPeligro:hover {
+    background: #d50000;
+}
+
+/* El botón «CANCELAR EDICIÓN» se oculta con el atributo `hidden` (el script lo
+   vuelve a habilitar al editar un registro). Esta regla lo muestra cuando el
+   atributo ya no está presente, dejando el estilo en línea del HTML como
+   respaldo. */
+#cancelarEdicion:not([hidden]) {
+    display: inline-block !important;
+}

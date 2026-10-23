@@ -1,54 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Productos</title>
-                <link rel="stylesheet" href="CSSempresa/interfaz2.css">
-        </head>
-        
-        <body>
-            
 
-                <h2>Consumibles</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Alta, edición y eliminación de productos del catálogo de Olympia Gym.">
+    <title>Olympia Gym | Gestión de productos</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
+</head>
 
-             <form id= "formulario">
-                <input type="text" name="nombre">
+<body>
+    <div class="container">
 
-                <label for="archivo" class="etiqueta">Consumibles nuevos</label>
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
+        </div>
 
-                <input type="file" name="archivo" id="archivo" accept=".png , .jpg">
-                
-                
-                <input type="submit" value="Subir">
-                
-            </form>
-               <h2>Atuendos</h2>
-                <form id= "formulario">
-                <input type="text" name="nombre">
+        <h1 id="tituloFormProducto">NUEVO PRODUCTO</h1>
 
-                <label for="archivo" class="etiqueta">Atuendos nuevos</label>
+        <!-- Un único formulario: el tipo de producto decide en qué sección de la
+             tienda (consumibles, atuendos o accesorios) lo van a ver los
+             clientes. -->
+        <form id="formularioProducto" method="post" enctype="multipart/form-data" action="PHPempresa/img.php">
+            <div class="formulario-campos">
 
-                <input type="file" name="archivo" id="archivo" accept=".png , .jpg">
-                
-                
-                <input type="submit" value="Subir">
+                <input type="hidden" name="id" id="idProducto">
 
-            </form>
-            
-            <h2>Accesorios</h2>
+                <label class="campo" for="nombreProducto">
+                    <span>Nombre</span>
+                    <input type="text" name="nombre" id="nombreProducto" maxlength="50" placeholder="Ej: Proteína whey" required>
+                </label>
 
-            <form id= "formulario">
-                <input type="text" name="nombre">
+                <label class="campo" for="categoriaProducto">
+                    <span>Tipo de producto</span>
+                    <select name="tipo_de_producto" id="categoriaProducto" required>
+                        <option value="consumible">Consumible</option>
+                        <option value="accesorio">Accesorio</option>
+                        <option value="atuendo">Atuendo</option>
+                    </select>
+                </label>
 
-                <label for="archivo" class="etiqueta">Accesorio nuevo</label>
+                <label class="campo" for="descripcionProducto">
+                    <span>Descripción</span>
+                    <input type="text" name="descripcion" id="descripcionProducto" maxlength="200" placeholder="Opcional. Lo ve el cliente en el detalle">
+                </label>
 
-                <input type="file" name="archivo" id="archivo" accept=".png , .jpg">
-                
-                
-                <input type="submit" value="Subir">
+                <label class="campo" for="precioProducto">
+                    <span>Precio ($)</span>
+                    <input type="number" name="precio" id="precioProducto" step="0.01" min="0" placeholder="Ej: 1200" required>
+                </label>
 
-            </form>
-            <script src="JSempresa/productos.js">java</script>
-        </body>
+                <label class="campo" for="stockProducto">
+                    <span>Stock</span>
+                    <input type="number" name="stock" id="stockProducto" step="1" min="0" placeholder="Ej: 25" required>
+                </label>
+
+                <label class="campo" for="archivoProducto">
+                    <span>Imagen</span>
+                    <input type="file" name="archivo" id="archivoProducto" accept=".jpg,.jpeg,.png,.gif" required>
+                </label>
+            </div>
+
+            <p class="nota-form" id="notaImagen">La imagen es obligatoria al crear un producto.</p>
+
+            <div class="acciones">
+                <!-- `formnovalidate`: al editar, la imagen es opcional y el
+                     navegador no debe bloquear el envío. El servidor valida
+                     los datos y avisa por `productoMensaje`. -->
+                <button type="submit" class="btnPrincipal" formnovalidate>GUARDAR PRODUCTO</button>
+                <button type="button" id="cancelarEdicion" hidden style="display:none;background:#b30000;color:#ffffff;">CANCELAR EDICIÓN</button>
+            </div>
+        </form>
+
+        <div id="productoMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
+
+        <h1>PRODUCTOS CARGADOS</h1>
+        <div id="contenedor" class="grid"></div>
+
+    </div>
+
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/productos.js?v=5"></script>
+</body>
+
 </html>

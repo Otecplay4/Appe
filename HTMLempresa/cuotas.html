@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Emisión, seguimiento y vencimientos de cuotas de Olympia Gym.">
+    <title>Olympia Gym | Cuotas y vencimientos</title>
+    <link rel="stylesheet" href="CSSempresa/rutina.css?v=5">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="top-nav">
+            <a href="inicio-empresa.html" class="logo-link" title="Volver al inicio">
+                <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+            </a>
+            <a href="inicio-empresa.html" class="volver">&larr; VOLVER AL INICIO</a>
+        </div>
+
+        <h1>CUOTAS Y VENCIMIENTOS</h1>
+
+        <div id="cuotaMensaje" class="mensaje-formulario" role="status" aria-live="polite"></div>
+
+        <!-- Resumen de facturación: lo dibuja el script. -->
+        <div id="cuotaResumen" class="grid"></div>
+
+        <section class="seccion">
+            <h2>Registrar cuota</h2>
+
+            <form id="formularioCuota" method="post" action="PHPempresa/cuotas.php?accion=crear">
+                <div class="formulario-campos">
+
+                    <label class="campo" for="cuotaCliente">
+                        <span>Cliente</span>
+                        <select name="id_cliente" id="cuotaCliente" required>
+                            <option value="">Cargando clientes...</option>
+                        </select>
+                    </label>
+
+                    <label class="campo" for="cuotaPlan">
+                        <span>Plan (opcional)</span>
+                        <input type="number" name="id_plan" id="cuotaPlan" min="1" step="1" placeholder="Ej: 1">
+                    </label>
+
+                    <label class="campo" for="cuotaConcepto">
+                        <span>Concepto</span>
+                        <input type="text" name="concepto" id="cuotaConcepto" maxlength="200" placeholder="Ej: Cuota de marzo" required>
+                    </label>
+
+                    <label class="campo" for="cuotaMonto">
+                        <span>Monto ($)</span>
+                        <input type="number" name="monto" id="cuotaMonto" step="0.01" min="0" placeholder="Ej: 1500" required>
+                    </label>
+
+                    <!-- La fecha de emisión es obligatoria: el servidor no
+                         acepta una fecha vacía. -->
+                    <label class="campo" for="cuotaEmision">
+                        <span>Fecha de emisión</span>
+                        <input type="date" name="fecha_emision" id="cuotaEmision" required>
+                    </label>
+
+                    <label class="campo" for="cuotaVencimiento">
+                        <span>Fecha de vencimiento</span>
+                        <input type="date" name="fecha_vencimiento" id="cuotaVencimiento" required>
+                    </label>
+
+                    <label class="campo" for="cuotaEstado">
+                        <span>Estado</span>
+                        <select name="estado" id="cuotaEstado">
+                            <option value="pendiente" selected>Pendiente</option>
+                            <option value="pagada">Pagada</option>
+                            <option value="anulada">Anulada</option>
+                        </select>
+                    </label>
+
+                    <label class="campo" for="cuotaFormaPago">
+                        <span>Forma de pago</span>
+                        <input type="text" name="forma_pago" id="cuotaFormaPago" maxlength="30" placeholder="Ej: Tarjeta, efectivo">
+                    </label>
+                </div>
+
+                <div class="acciones">
+                    <button type="submit" class="btnPrincipal">REGISTRAR CUOTA</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Filtros del listado: el script los escucha y recarga la tabla. -->
+        <div class="filtros">
+            <label for="filtroEstadoCuota">Estado:</label>
+            <select id="filtroEstadoCuota" name="filtroEstadoCuota">
+                <option value="" selected>Todos</option>
+                <option value="pendiente">Pendientes</option>
+                <option value="pagada">Pagadas</option>
+                <option value="vencida">Vencidas</option>
+                <option value="anulada">Anuladas</option>
+            </select>
+
+            <label for="filtroProximos">Vencimientos:</label>
+            <select id="filtroProximos" name="filtroProximos">
+                <option value="">Todos</option>
+                <option value="7">Vencen en 7 días</option>
+                <option value="30">Vencen en 30 días</option>
+            </select>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Concepto</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Vencimiento</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTablaCuotas"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/cuotas.js?v=5"></script>
+</body>
+
+</html>

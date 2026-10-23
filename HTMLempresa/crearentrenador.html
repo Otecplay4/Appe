@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Creá tu cuenta de Olympia Gym.">
-    <title>Olympia Gym | Crear cuenta</title>
-    <link rel="stylesheet" href="CSSempresa/interfaz2.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Alta de cuentas de entrenador y administrador de Olympia Gym.">
+    <title>Olympia Gym | Crear cuenta de entrenador</title>
+    <link rel="stylesheet" href="CSSempresa/interfaz2.css?v=5">
 </head>
+
 <body class="pagina-acceso">
     <header class="encabezado-acceso">
         <a class="logo-acceso" href="interfaz2.html" aria-label="Ir al inicio de Olympia Gym">
@@ -18,37 +23,52 @@
         <section class="texto-acceso" aria-labelledby="register-page-title">
             <p class="texto-chico1">Olympia Gym</p>
             <h1 id="register-page-title">Recupera el tiempo perdido.</h1>
-            <p>Inicia sesión para estar al día con Olympia Gym.</p>
+            <p>Solo el administrador puede dar de alta cuentas de entrenador.</p>
         </section>
 
         <section class="caja-acceso" aria-labelledby="register-title">
-            
-            <h2 id="register-title">Registrarse</h2>
-            <form id="crearEntrenador" class="formulario-acceso">
+            <h2 id="register-title">Crear cuenta</h2>
+
+            <!-- Alta de cuentas: exclusiva del administrador (la guarda la
+                 aplica PHPempresa/crearentrenador.php). -->
+            <form id="crearEntrenador" class="formulario-acceso" method="post" action="PHPempresa/crearentrenador.php">
+
                 <label for="nombre">Nombre</label>
-                <input id="nombre" type="text" name="nombre" autocomplete="name" required>
+                <input id="nombre" type="text" name="nombre" autocomplete="name" maxlength="100" required>
+
+                <label for="apellido">Apellido</label>
+                <input id="apellido" type="text" name="apellido" autocomplete="family-name" maxlength="70">
 
                 <label for="correo">Correo electrónico</label>
                 <input id="correo" type="email" name="correo" autocomplete="email" required>
 
                 <label for="contrasena">Contraseña</label>
-                <input id="contrasena" type="password" name="contraseña" autocomplete="password" required>
+                <input id="contrasena" type="password" name="contraseña" autocomplete="new-password" minlength="8" required>
 
                 <label for="telefono">Teléfono</label>
-                <input id="telefono" type="text" name="telefono" autocomplete="telefono" required>
+                <input id="telefono" type="tel" name="telefono" autocomplete="tel" pattern="[0-9+ ]{7,20}" required>
 
                 <label for="cedula">Cédula</label>
-                <input id="cedula" type="test" name="cedula" autocomplete="cedula" required>
+                <input id="cedula" type="text" name="cedula" inputmode="numeric" pattern="[0-9]{6,10}" maxlength="10" required>
 
-
+                <label for="rol">Rol</label>
+                <select id="rol" name="rol" required>
+                    <option value="entrenador" selected>Entrenador</option>
+                    <option value="admin">Administrador</option>
+                </select>
 
                 <button type="submit">Crear cuenta</button>
-                <p id="estetico">¿Ya tienes una cuenta? <a href="interfaz2.html" id="color"> Iniciar Sesión</a></p>
+                <p id="estetico">¿Ya tienes una cuenta? <a href="interfaz2.html" id="color">Iniciar Sesión</a></p>
             </form>
+
             <p id="div" class="mensaje-formulario" role="status" aria-live="polite"></p>
         </section>
     </main>
 
-    <script src="JSempresa/app2.js"></script>
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+    <script src="JSempresa/app2.js?v=5"></script>
 </body>
+
 </html>

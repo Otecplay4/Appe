@@ -1,45 +1,130 @@
-document.addEventListener("DOMContentLoaded", () => {
-    cargarRutina();
-});
+/**
+ * A.P.P.E. — Rutina del cliente.
+ *
+ * Requisito funcional RF-13 · Caso de uso CU-06.
+ *
+ * Hallazgo 5: la versión anterior interpolaba los datos de la rutina dentro
+ * de `innerHTML`. Ahora todo se inserta con `textContent`.
+ */
+(function () {
+    "use strict";
 
-function cargarRutina() {
-    // Captura los parámetros de la URL o recupera el ID desde SessionStorage
-    const urlParams = new URLSearchParams(window.location.search);
-    const idCliente = urlParams.get('id_cliente') || sessionStorage.getItem("id_cliente");
+    API.configurar("./PHPcliente/");
 
-    let urlFetch = "./PHPcliente/mirutina.php";
-    if (idCliente) {
-        urlFetch += `?id_cliente=${idCliente}`;
+    const titulo = document.getElementById("tituloRutina");
+    const tabla = document.getElementById("tablaEjercicios");
+
+    if (!tabla) {
+        return;
     }
 
-    fetch(urlFetch)
-        .then(res => res.json())
-        .then(datos => {
-            const titulo = document.getElementById("tituloRutina");
-            const tabla = document.getElementById("tablaEjercicios");
+    function cuerpoTabla() {
+        if (!tabla) {
+            return null;
+        }
 
-            if (datos.error || !datos.length) {
-                titulo.textContent = "NO TIENES NINGUNA RUTINA ASIGNADA.";
-                return;
-            }
+        if (tabla.tagName === "TABLE") {
+            return tabla.querySelector("tbody") || tabla;
+        }
 
-            // Asigna el nombre de la rutina
-            titulo.textContent = datos[0].nombre_rutina.toUpperCase();
-            tabla.innerHTML = "";
+        return tabla;
+    }
 
-            // Inyecta los ejercicios en la tabla
-            datos.forEach(item => {
-                const fila = document.createElement("tr");
-                fila.innerHTML = `
-                    <td>${item.musculo}</td>
-                    <td>${item.ejercicio}</td>
-                    <td>${item.serie_repeticion}</td>
-                `;
-                tabla.appendChild(fila);
+    function cargarRutina() {
+        API.get("mirutina.php")
+            .then((datos) => {
+                const cuerpo = cuerpoTabla();
+
+                if (cuerpo) {
+                    // Solo se vacía el cuerpo de la tabla: el `thead` con los
+                    // títulos de las columnas se conserva.
+                    Dom.limpiar(cuerpo);
+                }
+
+                const rutina = datos.rutina;
+
+                if (!rutina) {
+                    if (titulo) {
+                        titulo.textContent = "Todavía no tenés una rutina asignada";
+                    }
+
+                    if (cuerpo) {
+                        cuerpo.appendChild(Dom.texto("p", "Todavía no tenés una rutina asignada. Contactá a tu entrenador para que te asigne una.", { clases: ["sin-rutina"] }));
+                    }
+
+                    return;
+                }
+
+                if (titulo) {
+                    titulo.textContent = String(rutina.nombre || "Mi rutina").toUpperCase();
+                }
+
+                const dias = datos.dias || {};
+                const claves = Object.keys(dias);
+
+                if (claves.length === 0) {
+                    if (cuerpo) {
+                        cuerpo.appendChild(Dom.texto("p", "La rutina no tiene ejercicios cargados.", { clases: ["sin-rutina"] }));
+                    }
+                    return;
+                }
+
+                claves.forEach((dia) => {
+                    const ejercicios = dias[dia] || [];
+
+                    if (tabla.tagName === "TABLE") {
+                        const cabecera = Dom.crear("tr", { clases: ["fila-dia"] });
+                        cabecera.appendChild(Dom.crear("th", { texto: "Día " + dia, atributos: { colspan: "4" } }));
+                        cuerpo.appendChild(cabecera);
+                    } else {
+                        cuerpo.appendChild(Dom.texto("h3", "Día " + dia, { clases: ["titulo-dia"] }));
+                    }
+
+                    ejercicios.forEach((ejercicio) => {
+                        if (tabla.tagName === "TABLE") {
+                            const fila = Dom.crear("tr", { clases: ["fila-ejercicio"] });
+                            fila.appendChild(Dom.crear("td", { texto: String(ejercicio.ejercicio) }));
+                            fila.appendChild(Dom.crear("td", { texto: String(ejercicio.musculo) }));
+                            fila.appendChild(Dom.crear("td", { texto: String(ejercicio.serie_repeticion) }));
+                            fila.appendChild(Dom.crear("td", { texto: String(dia) }));
+                            cuerpo.appendChild(fila);
+                        } else {
+                            const item = Dom.crear("li", { clases: ["ejercicio"] });
+                            item.appendChild(Dom.texto("span", ejercicio.ejercicio, { clases: ["nombre-ejercicio"] }));
+                            item.appendChild(Dom.texto("span", ejercicio.musculo, { clases: ["musculo-ejercicio"] }));
+                            item.appendChild(Dom.texto("span", ejercicio.serie_repeticion, { clases: ["series-ejercicio"] }));
+                            cuerpo.appendChild(item);
+                        }
+                    });
+                });
+            })
+            .catch((error) => {
+                const cuerpo = cuerpoTabla();
+
+                // 401: no hay sesión. 403: la sesión no tiene el rol de socio.
+                const sinAcceso = error.estado === 401 || error.estado === 403;
+
+                if (titulo) {
+                    titulo.textContent = sinAcceso
+                        ? "Iniciá sesión para ver tu rutina"
+                        : "No se pudo cargar la rutina";
+                }
+
+                if (cuerpo) {
+                    cuerpo.appendChild(Dom.texto(
+                        "p",
+                        sinAcceso
+                            ? "Tu sesión actual no tiene acceso a la información de rutinas."
+                            : (error.mensaje || "No se pudo cargar la rutina."),
+                        { clases: ["sin-rutina"] }
+                    ));
+                }
             });
-        })
-        .catch(err => {
-            console.error("Error al cargar la rutina:", err);
-            document.getElementById("tituloRutina").textContent = "ERROR AL CARGAR LA RUTINA.";
-        });
-}
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", cargarRutina);
+    } else {
+        cargarRutina();
+    }
+})();

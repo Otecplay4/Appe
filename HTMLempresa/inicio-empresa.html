@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Menú de administración de Olympia Gym: panel, clientes, rutinas, planes, productos, proveedores, cuotas, solicitudes, mensajes y búsqueda.">
+    <title>Olympia Gym | Administración</title>
+    <link rel="stylesheet" href="CSSempresa/interfaz2.css?v=5">
+</head>
+
+<body class="pagina-acceso">
+    <header id="header">
+        <a class="logo" href="inicio-empresa.html" title="Ir al inicio de la administración">
+            <img src="imagenes/olympia_dorado.png" alt="Logo de Olympia Gym">
+        </a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="navMenu">
+            <a href="panel.html" class="nav-boton">Panel</a>
+            <a href="mostrarcliente.html" class="nav-boton">Clientes</a>
+            <a href="crearrutina.html" class="nav-boton">Rutinas</a>
+            <a href="buscar.html" class="nav-boton">Búsqueda</a>
+        </nav>
+    </header>
+
+    <main class="contenido-acceso">
+        <section class="texto-acceso" aria-labelledby="bienvenida-title">
+            <p class="texto-chico">Administración</p>
+            <h1 id="bienvenida-title">Agrega, Elimina y Modifica.</h1>
+            <p>Haz que los clientes tengan una buena estadía.</p>
+        </section>
+
+        <section class="caja-acceso" aria-labelledby="acceso-title">
+            <h2 id="acceso-title">Bienvenido</h2>
+
+            <div class="acceso-botones">
+                <a href="panel.html" class="acceso-boton">Panel central</a>
+                <a href="mostrarcliente.html" class="acceso-boton">Clientes</a>
+                <a href="crearrutina.html" class="acceso-boton">Rutinas</a>
+                <a href="crearplanes.html" class="acceso-boton">Planes</a>
+                <a href="crearproductos.html" class="acceso-boton">Productos</a>
+                <a href="crearproveedores.html" class="acceso-boton">Proveedores</a>
+                <a href="cuotas.html" class="acceso-boton">Cuotas y vencimientos</a>
+                <a href="solicitudes.html" class="acceso-boton">Solicitudes de cambio</a>
+                <a href="mensajes.html" class="acceso-boton">Mensajes</a>
+                <a href="buscar.html" class="acceso-boton">Búsqueda</a>
+            </div>
+
+            <p class="enlace-acceso" id="estetico">
+                <a href="PHPempresa/logout.php" id="color">Cerrar Sesión</a>
+            </p>
+        </section>
+    </main>
+
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JSempresa/guardia.js?v=5"></script>
+</body>
+
+</html>

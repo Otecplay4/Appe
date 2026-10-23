@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olympia Gym</title>
-        <link rel="stylesheet" href="CSScliente/interfaz.css">
+    <meta name="description" content="Olympia Gym:Entrenamiento personalizado, planes de membresía y tienda del gimnasio.">
+    <title>Olympia Gym | Inicio</title>
+    <link rel="stylesheet" href="CSScliente/interfaz.css?v=5">
 </head>
 <body class="pagina-acceso">
     <header>
@@ -16,9 +17,11 @@
             <span></span>
             <span></span>
         </button>
-        <nav id="navMenu">
+        <nav id="navMenu" aria-label="Navegación principal">
             <a href="planes.html" class="nav-boton">Planes</a>
             <a href="productos.html" class="nav-boton">Productos</a>
+            <a href="perfil.html" class="nav-boton">Mi perfil</a>
+            <a href="contacto.html" class="nav-boton">Contacto</a>
             <a href="registro.html" class="nav-boton">Crear Cuenta</a>
             <a href="Inicio-Sesion.html" class="nav-boton">Iniciar Sesión</a>
         </nav>
@@ -38,6 +41,9 @@
 
     </section>
 
-    <script src="JScliente/menu.js"></script>
+    <script src="../assets/js/api.js?v=5"></script>
+    <script src="../assets/js/dom.js?v=5"></script>
+    <script src="JScliente/auth.js?v=5"></script>
+    <script src="JScliente/menu.js?v=5"></script>
 </body>
 </html>

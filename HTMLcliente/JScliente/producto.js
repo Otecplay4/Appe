@@ -1,73 +1,128 @@
-const cajaDetalle = document.getElementById("detalleProducto")
-const datos = new URLSearchParams(location.search)
-const categoria = datos.get("cat")
-const numero = Number(datos.get("id"))
-const productos = CATALOGO[categoria] || []
-const producto = productos[numero]
+/**
+ * A.P.P.E. — Detalle de un producto.
+ *
+ * Las acciones «Agregar al carrito» y «Comprar» exigen inicio de sesión
+ * (RF-04, RNF-05).
+ */
+(function () {
+    "use strict";
 
-function nombreCategoria(texto) {
-    return texto.charAt(0).toUpperCase() + texto.slice(1)
-}
+    const cajaDetalle = document.getElementById("detalleProducto");
 
-if (cajaDetalle && producto) {
-    document.title = producto.nombre + " | Olympia Gym"
+    if (!cajaDetalle) {
+        return;
+    }
 
-    const foto = document.createElement("img")
-    foto.className = "foto-grande"
-    foto.src = producto.imagen
-    foto.alt = producto.alt
+    function nombreCategoria(texto) {
+        switch (texto) {
+            case "ropa":
+                return "Atuendo";
+            case "suplementos":
+                return "Consumible";
+            case "accesorios":
+                return "Accesorio";
+            default:
+                return "Producto";
+        }
+    }
 
-    const info = document.createElement("div")
-    info.className = "info-grande"
+    function mostrarNoEncontrado() {
+        Dom.limpiar(cajaDetalle);
+        cajaDetalle.appendChild(Dom.texto("p", "No se encontró el producto solicitado.", { clases: ["sin-productos"] }));
+    }
 
-    const tipo = document.createElement("p")
-    tipo.className = "tipo-producto"
-    tipo.textContent = nombreCategoria(categoria)
+    function mostrarProducto(producto) {
+        Dom.limpiar(cajaDetalle);
 
-    const nombre = document.createElement("h1")
-    nombre.className = "nombre-grande"
-    nombre.textContent = producto.nombre
+        const foto = Dom.crear("img", {
+            clases: ["foto-grande"],
+            atributos: { src: producto.imagen, alt: producto.nombre },
+        });
+        foto.addEventListener("error", () => {
+            foto.setAttribute("src", "./imagenes/OLYMPIA.jpg");
+        });
 
-    const descripcion = document.createElement("p")
-    descripcion.className = "descripcion-producto"
-    descripcion.textContent = producto.descripcion
+        const info = Dom.crear("div", { clases: ["info-grande"] });
+        info.appendChild(Dom.texto("span", nombreCategoria(producto.categoria), { clases: ["tipo-producto"] }));
+        info.appendChild(Dom.texto("h2", producto.nombre, { clases: ["nombre-grande"] }));
+        info.appendChild(Dom.texto("p", producto.descripcion, { clases: ["descripcion-producto"] }));
+        info.appendChild(Dom.texto("span", Dom.precio(producto.precio), { clases: ["precio-producto"] }));
 
-    const texto = document.createElement("p")
-    texto.className = "texto-producto"
-    texto.textContent = "Precio a consultar en el gimnasio."
+        const botones = Dom.crear("div", { clases: ["botones-compra"] });
 
-    const botones = document.createElement("div")
-    botones.className = "botones-compra"
+        const botonAgregar = Dom.boton("Agregar al carrito", () => {
+            Auth.requerirLogin("Necesitás iniciar sesión para agregar productos al carrito.").then((permitido) => {
+                if (!permitido) {
+                    return;
+                }
 
-    const agregar = document.createElement("button")
-    agregar.className = "boton-agregar"
-    agregar.type = "button"
-    agregar.textContent = "Agregar al carrito"
-    agregar.addEventListener("click", () => {
-        agregarAlCarrito(producto, categoria)
-        agregar.textContent = "Agregado al carrito"
-    })
+                if (typeof Carrito !== "undefined") {
+                    Carrito.agregar(producto, producto.categoria);
+                }
+            });
+        }, { clases: ["boton-agregar"] });
 
-    const comprar = document.createElement("button")
-    comprar.className = "boton-comprar"
-    comprar.type = "button"
-    comprar.textContent = "Comprar ahora"
-    comprar.addEventListener("click", () => {
-        agregarAlCarrito(producto, categoria)
-        location.href = "carrito.html"
-    })
+        const botonComprar = Dom.boton("Comprar", () => {
+            Auth.requerirLogin("Necesitás iniciar sesión para comprar.").then((permitido) => {
+                if (!permitido) {
+                    return;
+                }
 
-    const volver = document.createElement("a")
-    volver.className = "boton-producto"
-    volver.href = "producto-categoria.html?cat=" + categoria
-    volver.textContent = "← Volver a " + nombreCategoria(categoria)
+                const aviso = "Compra simulada: " + producto.nombre
+                    + ".\n\nSe agregó al carrito. El proyecto no integra ningún medio de pago.";
 
-    botones.append(agregar, comprar)
-    info.append(tipo, nombre, descripcion, texto, botones, volver)
-    cajaDetalle.append(foto, info)
-} else if (cajaDetalle) {
-    const aviso = document.createElement("p")
-    aviso.className = "sin-productos"
-    aviso.textContent = "No encontramos este producto."
-    cajaDetalle.append(aviso)
-}
+                window.alert(aviso);
+            });
+        }, { clases: ["boton-comprar", "boton-producto"] });
+
+        botones.appendChild(botonAgregar);
+        botones.appendChild(botonComprar);
+        info.appendChild(botones);
+
+        cajaDetalle.appendChild(foto);
+        cajaDetalle.appendChild(info);
+    }
+
+    function iniciar() {
+        const parametros = new URLSearchParams(window.location.search);
+        const idServidor = parametros.get("id");
+        const indice = parametros.get("idx");
+        const categoria = parametros.get("cat") || "accesorios";
+
+        // Producto del servidor: se pide por su identificador.
+        if (idServidor && /^\d+$/.test(idServidor)) {
+            Catalogo.cargarProductoServidor(idServidor).then((producto) => {
+                if (!producto) {
+                    mostrarNoEncontrado();
+                    return;
+                }
+
+                producto.categoria = producto.categoria || categoria;
+                mostrarProducto(producto);
+            });
+            return;
+        }
+
+        // Producto del catálogo fijo: no está en la base de datos, se toma de
+        // la categoría y su posición.
+        if (indice !== null && /^\d+$/.test(indice)) {
+            Catalogo.cargarProductoFijo(categoria, parseInt(indice, 10)).then((producto) => {
+                if (!producto) {
+                    mostrarNoEncontrado();
+                    return;
+                }
+
+                mostrarProducto(producto);
+            });
+            return;
+        }
+
+        mostrarNoEncontrado();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", iniciar);
+    } else {
+        iniciar();
+    }
+})();
