@@ -417,7 +417,6 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (1,1,350.00,'Botella deportiva Olympia','Botella reutilizable de 750 ml.','accesorio',NULL,40,1,'2026-10-21 18:36:08'),(2,1,1200.00,'Camiseta OLYMPIA','Camiseta de algodón con el logo del gimnasio.','atuendo',NULL,25,1,'2026-10-21 18:36:08'),(3,1,1800.00,'Pantalón de entrenamiento','Pantalón de entrenamiento resistente.','atuendo',NULL,20,1,'2026-10-21 18:36:08'),(4,1,900.00,'Shaker de proteína','Shaker de proteína de 600 ml.','consumible',NULL,30,1,'2026-10-21 18:36:08'),(5,1,450.00,'Banda elástica','Set de bandas elásticas para calentamiento.','accesorio',NULL,50,1,'2026-10-21 18:36:08');
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -449,7 +448,6 @@ CREATE TABLE `provee` (
 
 LOCK TABLES `provee` WRITE;
 /*!40000 ALTER TABLE `provee` DISABLE KEYS */;
-INSERT INTO `provee` VALUES (1,1,1,1),(2,1,2,1),(3,1,4,1);
 /*!40000 ALTER TABLE `provee` ENABLE KEYS */;
 UNLOCK TABLES;
 

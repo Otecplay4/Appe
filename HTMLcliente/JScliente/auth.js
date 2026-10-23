@@ -100,6 +100,19 @@ const Auth = (() => {
                 enlace.title = "Necesitás iniciar sesión";
             });
 
+            // Con sesión iniciada, "volver al inicio" lleva al panel del
+            // cliente y no a la portada pública.
+            if (situacion.logueado) {
+                if (/\/Principio\.html$/i.test(window.location.pathname)) {
+                    window.location.replace("./Inicio.html");
+                    return situacion;
+                }
+
+                document.querySelectorAll('a[href="Principio.html"]').forEach((enlace) => {
+                    enlace.setAttribute("href", "Inicio.html");
+                });
+            }
+
             // El enlace de "Mi perfil" solo existe para el cliente.
             const perfil = document.querySelector('a[href="perfil.html"]');
             if (perfil && !situacion.logueado) {
