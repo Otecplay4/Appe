@@ -107,7 +107,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,1,1,1,1,'Camila','Rodríguez','094445556','cliente@olympia.local','$2y$10$lIEVcULLUS1Hch0Js13wgOiXgts4/Npk8qA8TQT.VadbD1Lo1BIti',1,'2026-10-21 18:36:08'),(2,1,NULL,NULL,NULL,'Mateo','Leal','093801616','mjleal999@gmail.com','$2y$10$eNH9IJAvp2FWxgyhGOjuwO.Ah.0Xp0ogn5inDNATl/wNQtqy/ROBy',1,'2026-10-22 08:00:29'),(3,1,NULL,NULL,NULL,'leandro','villarueta','3242525','leandro@gmail.com','$2y$10$FxtS53yJ0kj8gnrRdeDGSueG2W335UC5mQzisa42OVTNjQ9qMRPe6',1,'2026-10-22 08:02:17');
+INSERT INTO `cliente` VALUES (1,1,NULL,1,1,'Camila','Rodríguez','094445556','cliente@olympia.local','$2y$10$lIEVcULLUS1Hch0Js13wgOiXgts4/Npk8qA8TQT.VadbD1Lo1BIti',1,'2026-10-21 18:36:08'),(2,1,NULL,NULL,NULL,'Mateo','Leal','093801616','mjleal999@gmail.com','$2y$10$eNH9IJAvp2FWxgyhGOjuwO.Ah.0Xp0ogn5inDNATl/wNQtqy/ROBy',1,'2026-10-22 08:00:29'),(3,1,NULL,NULL,NULL,'leandro','villarueta','3242525','leandro@gmail.com','$2y$10$FxtS53yJ0kj8gnrRdeDGSueG2W335UC5mQzisa42OVTNjQ9qMRPe6',1,'2026-10-22 08:02:17');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +174,7 @@ CREATE TABLE `cuota` (
 
 LOCK TABLES `cuota` WRITE;
 /*!40000 ALTER TABLE `cuota` DISABLE KEYS */;
-INSERT INTO `cuota` VALUES (1,1,1,'Cuota mensual - Plan Full',1500.00,'2026-09-01','2026-09-30','2026-09-01','pagada','Tarjeta','2026-10-21 18:36:08'),(2,1,1,'Cuota mensual - Plan Full',1500.00,'2026-10-01','2026-10-31',NULL,'pendiente',NULL,'2026-10-21 18:36:08'),(3,1,1,'Cuota mensual - Plan Full',1500.00,'2026-08-01','2026-08-31',NULL,'vencida',NULL,'2026-10-21 18:36:08');
+INSERT INTO `cuota` VALUES (1,1,NULL,'Cuota mensual - Plan Full',1500.00,'2026-09-01','2026-09-30','2026-09-01','pagada','Tarjeta','2026-10-21 18:36:08'),(2,1,NULL,'Cuota mensual - Plan Full',1500.00,'2026-10-01','2026-10-31',NULL,'pendiente',NULL,'2026-10-21 18:36:08'),(3,1,NULL,'Cuota mensual - Plan Full',1500.00,'2026-08-01','2026-08-31',NULL,'vencida',NULL,'2026-10-21 18:36:08');
 /*!40000 ALTER TABLE `cuota` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,7 +358,6 @@ CREATE TABLE `plan` (
 
 LOCK TABLES `plan` WRITE;
 /*!40000 ALTER TABLE `plan` DISABLE KEYS */;
-INSERT INTO `plan` VALUES (1,1,'Plan Full','Acceso a sala de musculación y clases grupales.','Acceso libre al gimnasio',1500.00,'Mensual','individual','2026-01-01','2026-12-31',NULL,1,'2026-10-21 18:36:08'),(2,1,'Plan Familiar','Acceso para dos personas, clases y musculación.','Acceso para dos personas',2600.00,'Mensual','familiar','2026-01-01','2026-12-31',NULL,1,'2026-10-21 18:36:08'),(3,1,'Plan Trimestral','Acceso completo durante tres meses.','Acceso libre y clases',3900.00,'Trimestral','individual','2026-01-01','2026-12-31',NULL,1,'2026-10-21 18:36:08');
 /*!40000 ALTER TABLE `plan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,7 +383,6 @@ CREATE TABLE `planprecio` (
 
 LOCK TABLES `planprecio` WRITE;
 /*!40000 ALTER TABLE `planprecio` DISABLE KEYS */;
-INSERT INTO `planprecio` VALUES (1,'mensual',1500.00),(1,'trimestral',3900.00),(1,'anual',15000.00),(2,'mensual',2600.00),(2,'trimestral',6500.00),(3,'trimestral',3900.00),(3,'anual',15000.00);
 /*!40000 ALTER TABLE `planprecio` ENABLE KEYS */;
 UNLOCK TABLES;
 
