@@ -4,20 +4,7 @@
  *
  * Requisito funcional RF-13 / RF-14 · Caso de uso CU-06 «Consultar y Modificar
  * Rutina de Entrenamiento» (actor Entrenador).
- *
- * Correcciones respecto de la versión anterior:
- *   - Exige sesión de entrenador y token CSRF (hallazgos 1 y 15).
- *   - Responde JSON con `Content-Type` declarado, en lugar de una página HTML
- *     (hallazgo 26).
- *   - Valida en el servidor la correspondencia entre los arrays de ejercicios,
- *     músculos, series, repeticiones y días (hallazgo 16).
- *   - Conserva el día de cada ejercicio (hallazgo 23).
- *   - Usa el modelo v2: la rutina es una entidad con identificador propio y
- *     sus ejercicios se relacionan por `rutinatieneejercicio`. Dos rutinas con
- *     el mismo nombre ya no se confunden y la identidad no depende de una
- *     fila de ejercicio (hallazgo 22).
- *   - Todas las escrituras relacionadas van en una transacción con rollback
- *     (hallazgo 21).
+
  */
 
 declare(strict_types=1);
@@ -33,7 +20,7 @@ ejecutar_endpoint(static function (): void {
     $nombreRutina = texto_requerido($_POST['nombre_rutina'] ?? '', 'Nombre de la rutina', 50);
 
     // --- El cliente debe existir --------------------------------------------
-    $stmt = appe_conexion()->prepare('SELECT id_cliente FROM cliente WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('SELECT id FROM cliente WHERE id = ?');
     $stmt->execute([$idCliente]);
 
     if ($stmt->fetch() === false) {
@@ -94,12 +81,12 @@ ejecutar_endpoint(static function (): void {
     $pdo = appe_conexion();
 
     try {
-        // Hallazgo 21: todas las escrituras relacionadas en una transacción.
+        
         $pdo->beginTransaction();
 
-        // 1. Se localiza la rutina activa del cliente con ese nombre; si no
+        //    Se localiza la rutina activa del cliente con ese nombre; si no
         //    existe, se crea una nueva. La identidad es el id_rutina, no el
-        //    nombre (hallazgo 22).
+        //    nombre
         $stmt = $pdo->prepare(
             "SELECT id_rutina
                FROM rutina
@@ -113,21 +100,30 @@ ejecutar_endpoint(static function (): void {
         if ($fila !== false) {
             $idRutina = (int) $fila['id_rutina'];
 
-            // Se reemplaza el contenido de la rutina (no se duplica).
+            // Se reemplaza el contenido de la rutina.
             $stmt = $pdo->prepare('DELETE FROM rutinatieneejercicio WHERE id_rutina = ?');
             $stmt->execute([$idRutina]);
 
             $stmt = $pdo->prepare("UPDATE rutina SET id_entrenador = ?, estado = 'activa' WHERE id_rutina = ?");
             $stmt->execute([$idEntrenador, $idRutina]);
         } else {
+            // `fecha_inicio` y `fecha_fin` son obligatorias en el esquema: la
+            // rutina nueva rige desde hoy y por un mes.
             $stmt = $pdo->prepare(
-                "INSERT INTO rutina (nombre, id_cliente, id_entrenador, estado) VALUES (?, ?, ?, 'activa')"
+                "INSERT INTO rutina (nombre, id_cliente, id_entrenador, fecha_inicio, fecha_fin, estado)
+                 VALUES (?, ?, ?, ?, ?, 'activa')"
             );
-            $stmt->execute([$nombreRutina, $idCliente, $idEntrenador]);
+            $stmt->execute([
+                $nombreRutina,
+                $idCliente,
+                $idEntrenador,
+                date('Y-m-d'),
+                date('Y-m-d', strtotime('+1 month')),
+            ]);
             $idRutina = (int) $pdo->lastInsertId();
         }
 
-        // 2. Cada ejercicio del formulario se resuelve contra el catálogo y se
+        //    Cada ejercicio del formulario se resuelve contra el catálogo y se
         //    enlaza con la rutina indicando día y prescripción.
         $stmtBuscar = $pdo->prepare('SELECT id_ejercicio FROM ejercicio WHERE nombre = ? AND musculo = ? LIMIT 1');
         $stmtCrear  = $pdo->prepare('INSERT INTO ejercicio (nombre, musculo) VALUES (?, ?)');
@@ -154,8 +150,8 @@ ejecutar_endpoint(static function (): void {
             ]);
         }
 
-        // 3. Se actualiza el puntero del cliente una sola vez por operación.
-        $stmt = $pdo->prepare('UPDATE cliente SET id_rutina = ?, id_entrenador = ? WHERE id_cliente = ?');
+        
+        $stmt = $pdo->prepare('UPDATE cliente SET id_rutina = ?, id_entrenador = ? WHERE id = ?');
         $stmt->execute([$idRutina, $idEntrenador, $idCliente]);
 
         $pdo->commit();

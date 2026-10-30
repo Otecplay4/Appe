@@ -26,7 +26,7 @@ ejecutar_endpoint(static function (): void {
 
     switch ($tipo) {
         case 'clientes':
-            $sql = 'SELECT id_cliente AS id, CONCAT(nombre, \' \', apellido) AS etiqueta,
+            $sql = 'SELECT id AS id, CONCAT(nombre, \' \', apellido) AS etiqueta,
                            correo AS detalle, activo AS estado
                       FROM cliente';
             $parametros = [];
@@ -98,7 +98,7 @@ ejecutar_endpoint(static function (): void {
                            CONCAT(COALESCE(c.nombre, \'\'), \' \', COALESCE(c.apellido, \'\')) AS detalle,
                            r.estado AS estado
                       FROM rutina r
-                      LEFT JOIN cliente c ON c.id_cliente = r.id_cliente';
+                      LEFT JOIN cliente c ON c.id = r.id_cliente';
             $parametros = [];
 
             if ($like !== null) {

@@ -1,10 +1,5 @@
 /**
  * A.P.P.E. — Utilidades de DOM seguras.
- *
- * Hallazgos 5 y 6: varios listados interpolaban datos del servidor dentro de
- * `innerHTML`, lo que convertía un nombre de producto o un nombre de cliente
- * en un vector de XSS almacenado. Todas las pantallas nuevas usan estas
- * funciones, que construyen el DOM y asignan el texto con `textContent`.
  */
 const Dom = {
     /**

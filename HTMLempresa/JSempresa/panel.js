@@ -2,12 +2,6 @@
  * A.P.P.E. — Gestión de clientes (panel de la empresa).
  *
  * Requisito funcional RF-06 · Caso de uso CU-02 «Gestionar Usuarios».
- *
- * Correcciones:
- *   - Hallazgo 20: el script buscaba `#cuerpoTabla`, que no existía en
- *     ninguna página, por lo que el listado nunca se dibujaba.
- *   - Hallazgo 5/6: los datos se insertan con `textContent`.
- *   - Hallazgo 25: se comprueba el resultado real de cada operación.
  */
 (function () {
     "use strict";

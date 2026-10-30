@@ -57,7 +57,7 @@ function listar_solicitudes(): void
                    e.nombre AS entrenador_nombre,
                    r.nombre AS rutina_nombre
               FROM solicitudcambio s
-              JOIN cliente c ON c.id_cliente = s.id_cliente
+              JOIN cliente c ON c.id = s.id_cliente
               LEFT JOIN entrenador e ON e.id_entrenador = s.id_entrenador
               LEFT JOIN rutina r ON r.id_rutina = s.id_rutina
              WHERE 1 = 1';

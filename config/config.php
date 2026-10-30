@@ -1,17 +1,6 @@
 <?php
 /**
  * A.P.P.E. — Configuración local de la instalación.
- *
- * Este archivo SÍ se incluye en el proyecto (a diferencia de config.example.php)
- * para que la aplicación funcione de inmediato en un entorno de desarrollo.
- *
- * ANTES DE PUBLICAR EN UN SERVIDOR REAL:
- *   1. Cambie la clave de 'base_datos' por una cadena larga y aleatoria.
- *   2. Verifique que la cuenta 'app_appe' tenga SOLO los privilegios
- *      SELECT, INSERT, UPDATE, DELETE sobre la base 'appe' (ver
- *      database/APPE_base_datos.sql, sección "Usuario de aplicación").
- *   3. Ajuste 'aplicacion.ruta_cookie' si la aplicación no está en la raíz.
- *   4. Mantenga 'aplicacion.depurar' en false.
  */
 
 declare(strict_types=1);
@@ -22,8 +11,7 @@ return [
         'puerto'  => 3306,
         'nombre'  => 'appe',
         'usuario' => 'app_appe',
-        // Debe coincidir con la clave que crea appe-db-completa.sql.
-        'clave'   => '371365a1565409e5c0f7bd02d7007303',
+        'clave'   => '',
         'charset' => 'utf8mb4',
     ],
 

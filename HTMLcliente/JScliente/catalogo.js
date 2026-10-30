@@ -5,7 +5,7 @@
  * (RF-08) se suman al catálogo fijo de la interfaz.
  *
  * Todos los datos del servidor se tratan como no confiables: se devuelven
- * como datos y quien los pinta los inserta con `textContent` (hallazgos 5 y 6).
+ * como datos y quien los pinta los inserta con `textContent`.
  */
 const Catalogo = (() => {
     "use strict";

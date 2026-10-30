@@ -66,7 +66,7 @@ ejecutar_endpoint(static function (): void {
         $stmt->execute([$hash, (int) $registro['id_entrenador']]);
         $idActor = (int) $registro['id_entrenador'];
     } else {
-        $stmt = appe_conexion()->prepare('UPDATE cliente SET `contraseña` = ? WHERE id_cliente = ?');
+        $stmt = appe_conexion()->prepare('UPDATE cliente SET `contraseña` = ? WHERE id = ?');
         $stmt->execute([$hash, (int) $registro['id_cliente']]);
         $idActor = (int) $registro['id_cliente'];
     }

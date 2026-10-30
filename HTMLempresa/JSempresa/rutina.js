@@ -5,11 +5,9 @@
  * de Entrenamiento» (actor Entrenador).
  *
  * El guardado se hace con `fetch` (y no con el envío nativo del formulario)
- * porque `agregarrutina.php` responde JSON. Se adjunta el token CSRF en un
- * campo oculto, que el servidor exige (hallazgo 15).
- *
- * El día de cada ejercicio se envía explícitamente (hallazgo 23: la interfaz
- * permitía organizar por día y el guardado perdía esa información).
+ * porque `agregarrutina.php` responde JSON..
+
+ * El día de cada ejercicio se envía explícitamente
  */
 (function () {
     "use strict";

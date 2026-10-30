@@ -3,8 +3,7 @@
  *
  * Requisito funcional RF-13 · Caso de uso CU-06.
  *
- * Hallazgo 5: la versión anterior interpolaba los datos de la rutina dentro
- * de `innerHTML`. Ahora todo se inserta con `textContent`.
+ * Todo se inserta con `textContent`.
  */
 (function () {
     "use strict";

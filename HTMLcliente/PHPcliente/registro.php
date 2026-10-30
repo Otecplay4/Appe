@@ -2,18 +2,7 @@
 /**
  * A.P.P.E. — Registro de clientes.
  *
- * Caso de uso CU-09 «Registrarse» · Requisito funcional RF-01.
- *
- * El PDF exige "registro de nuevos usuarios con validación de datos y
- * contraseña" y un CAPTCHA para verificar que el usuario no es un bot.
- *
- * Correcciones aplicadas respecto de la versión anterior:
- *   - Se exige token CSRF (hallazgo 15).
- *   - El CAPTCHA se valida y se consume en el servidor (un solo uso).
- *   - Se comprueba el código de error de la subida y el tamaño real del
- *     archivo (hallazgo 8).
- *   - La contraseña nunca se sanea ni se registra: solo se hashea.
- *   - Respuesta JSON coherente (hallazgo 26).
+ * Caso de uso CU-09 Registrarse · Requisito funcional RF-01.
  */
 
 declare(strict_types=1);
@@ -53,7 +42,7 @@ ejecutar_endpoint(static function (): void {
     }
 
     // --- Correo duplicado ------------------------------------------------------
-    $stmt = appe_conexion()->prepare('SELECT id_cliente FROM cliente WHERE correo = ?');
+    $stmt = appe_conexion()->prepare('SELECT id FROM cliente WHERE correo = ?');
     $stmt->execute([$correo]);
 
     if ($stmt->fetch() !== false) {

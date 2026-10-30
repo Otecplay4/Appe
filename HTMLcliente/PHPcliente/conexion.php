@@ -3,7 +3,7 @@
  * A.P.P.E. — Compatibilidad: conexión a la base de datos.
  *
  * La conexión real vive en `config/conexion.php` (una sola para todo el
- * proyecto, hallazgo 29). Este archivo se conserva porque el código anterior
+ * proyecto,). Este archivo se conserva porque el código anterior
  * lo incluía y porque las instalaciones antiguas pueden seguir llamándolo.
  */
 

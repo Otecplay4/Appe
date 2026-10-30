@@ -2,10 +2,9 @@
 /**
  * A.P.P.E. — Desafío CAPTCHA para el registro.
  *
- * El entorno de despliegue no tiene disponible la extensión GD, por lo que no
- * se genera una imagen: el desafío es aritmético y la respuesta correcta nunca
+ * El desafío es aritmético y la respuesta correcta nunca
  * sale del servidor. Se guarda únicamente en la sesión y se consume en un solo
- * intento (ver `registro.php`).
+ * intento.
  */
 
 declare(strict_types=1);

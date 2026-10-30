@@ -3,16 +3,8 @@
  *
  * Unifica el acceso a los endpoints PHP y garantiza que todas las páginas
  * usen el mismo contrato de respuesta y el mismo manejo de errores.
- *
- * Contrato del servidor (ver `config/seguridad.php`):
  *   Éxito -> HTTP 200/201  { "exito": true,  "mensaje": "...", "datos": { ... } }
  *   Error -> HTTP 4xx/5xx  { "exito": false, "mensaje": "...", "codigo": "..." }
- *
- * Correcciones que incorpora (hallazgos 15, 26 y 29):
- *   - Comprueba `response.ok` en todas las peticiones: antes se intentaba
- *     parsear como JSON el cuerpo de un error 401 o 500.
- *   - Envía el token CSRF en la cabecera `X-CSRF-Token`.
- *   - Centraliza el manejo de errores en un solo lugar.
  */
 const API = (() => {
     "use strict";
@@ -66,7 +58,7 @@ const API = (() => {
     }
 
     /**
-     * Obtiene (y memoriza) el token CSRF de la sesión.
+     * Obtiene y mantiene el token CSRF de la sesión.
      */
     async function obtenerCsrf(forzar) {
         if (csrf && !forzar) {

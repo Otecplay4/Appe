@@ -4,8 +4,7 @@
  *
  * Caso de uso CU-08 «Cerrar Sesión».
  *
- * Destruye el estado de sesión y expira la cookie (antes la cookie de la
- * empresa no se expiraba, hallazgo 12).
+ * Destruye el estado de sesión y expira la cookie.
  */
 
 declare(strict_types=1);

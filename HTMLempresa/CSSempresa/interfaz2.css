@@ -331,3 +331,118 @@ nav{
 .contenido-acceso{
 padding-top: 150px;
 }
+
+
+/* ==========================================================================
+   Tablet (761px a 1099px)
+   Cabecera compacta y caja de acceso / menú sin desbordar la pantalla.
+   Escritorio (1100px o más) y teléfono (760px o menos) no cambian.
+   ========================================================================== */
+@media (min-width: 761px) and (max-width: 1099px) {
+    #header {
+        padding: 16px 32px;
+        gap: 16px;
+    }
+
+    .logo img {
+        height: 56px;
+    }
+
+    nav {
+        flex-wrap: nowrap;
+        gap: 12px;
+    }
+
+    .nav-boton {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .encabezado-acceso,
+    .contenido-acceso {
+        width: 92%;
+    }
+
+    .contenido-acceso {
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
+        gap: 40px;
+        padding-top: 130px;
+        padding-bottom: 64px;
+    }
+
+    .texto-acceso h1 {
+        font-size: clamp(32px, 4.4vw, 46px);
+    }
+
+    .texto-acceso > p:last-child {
+        font-size: 17px;
+    }
+
+    .caja-acceso {
+        padding: 32px;
+    }
+}
+
+
+/* ==========================================================================
+   Teléfono (760px o menos)
+   El menú se pliega en un botón de hamburguesa y se abre como panel lateral,
+   igual que en HTMLcliente. Escritorio y tablet (761px o más) no cambian.
+   ========================================================================== */
+@media (max-width: 760px) {
+    #header {
+        padding: 16px 20px;
+    }
+
+    .logo img {
+        height: 44px;
+    }
+
+    .menu-toggle {
+        display: flex;
+        position: relative;
+    }
+
+    #navMenu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        height: 100dvh;
+        width: min(75vw, 300px);
+        background: rgba(0, 0, 0, .97);
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        transform: translateX(100%);
+        visibility: hidden;
+        transition: transform .35s ease, visibility 0s linear .35s;
+    }
+
+    #navMenu.abierto {
+        transform: translateX(0);
+        visibility: visible;
+        transition-delay: 0s;
+    }
+
+    #navMenu .nav-boton {
+        width: 80%;
+        text-align: center;
+        padding: 14px 0;
+        font-size: 16px;
+    }
+
+    .contenido-acceso {
+        padding-top: 110px;
+    }
+
+    .caja-acceso {
+        padding: 28px 22px;
+    }
+
+    .caja-acceso h2 {
+        font-size: 26px;
+    }
+}

@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "cedula": "57776131",
+        "nombre": "leandro",
+        "apellido": "villanueva",
+        "telefono": "093758374",
+        "correo": "villarueta22@gmail.com",
+        "contraseña": "$2y$10$oHt1i5XNmJY84sn06uyb5Okqp\/luUVDEUeSY99NdQhFtA6ITn4wke",
+        "rol": "admin",
+        "estado": "aprobada",
+        "motivo_rechazo": null,
+        "fecha_solicitud": "2026-10-29 14:15:08",
+        "fecha_resolucion": "2026-10-29 14:59:27",
+        "id_admin_resolutor": 2
+    }
+]

@@ -5,21 +5,21 @@
  * Uso obligatorio en cada endpoint:
  *
  *     <?php
- *     require_once __DIR__ . '/../../config/bootstrap.php';
+ *     require_once __DIR__ . "/../../config/bootstrap.php";
  *
  *     try {
  *         // ... lógica del endpoint ...
- *         responder_exito('Listo.', ['items' => $filas]);
+ *         responder_exito("Listo.", ["items" => $filas]);
  *     } catch (ValidacionException $e) {
- *         responder_error($e->getMessage(), 422, 'validacion');
+ *         responder_error($e->getMessage(), 422, "validacion");
  *     } catch (AccesoDenegadoException $e) {
- *         responder_error($e->getMessage(), 403, 'acceso');
+ *         responder_error($e->getMessage(), 403, "acceso");
  *     } catch (NoEncontradoException $e) {
- *         responder_error($e->getMessage(), 404, 'no_encontrado');
+ *         responder_error($e->getMessage(), 404, "no_encontrado");
  *     } catch (ConflictoException $e) {
- *         responder_error($e->getMessage(), 409, 'conflicto');
+ *         responder_error($e->getMessage(), 409, "conflicto");
  *     } catch (Throwable $e) {
- *         responder_error('Ocurrió un error inesperado. Referencia: ' . manejar_error($e, 'endpoint'), 500, 'error_interno');
+ *         responder_error("Ocurrió un error inesperado. Referencia: " . manejar_error($e, "endpoint"), 500, "error_interno");
  *     }
  *
  * IMPORTANTE: este archivo debe ser la PRIMERA sentencia del endpoint. El
@@ -136,26 +136,63 @@ if (!function_exists('appe_ruta_cookie')) {
 }
 
 /* --------------------------------------------------------------------------
- * 3. Sesión única y endurecida (hallazgos 10, 11 y 12)
- *
- * Antes existían dos espacios de sesión independientes (APPE_CLIENTE y
- * APPE_EMPRESA) y ambos escribían `$_SESSION['correo']`, de modo que una
- * sesión de cliente satisfacía el chequeo de acceso empresarial. Ahora hay una
- * sola sesión con el rol explícito.
+ * 3. Sesión endurecida, separada por área y de larga duración
  *
  * La ruta de la cookie se detecta sola a partir de la raíz de publicación, de
  * modo que el proyecto funciona igual si se instala en la raíz del dominio,
  * en un subdirectorio o en una carpeta cuyo nombre lleva espacios.
+ *
+ * El área del cliente (HTMLcliente) y el área de la empresa (HTMLempresa:
+ * entrenador / administrador) usan cookies de sesión DISTINTAS. Antes
+ * compartían una sola (`APPE_SESSION`): iniciar sesión como entrenador en una
+ * pestaña pisaba la identidad del cliente en las demás, y esas pantallas
+ * pasaban a responder 403 «No tiene permisos para realizar esta operación».
+ *
+ * La duración se define ANTES de `session_start()`; configurada después no
+ * tiene efecto y PHP aplicaba su valor por defecto (24 minutos), de modo que
+ * una pestaña inactiva perdía la sesión.
  * -------------------------------------------------------------------------- */
+
+if (!function_exists('appe_nombre_sesion')) {
+    /**
+     * Nombre de la cookie de sesión según el área que atiende la petición.
+     */
+    function appe_nombre_sesion(): string
+    {
+        $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+
+        return stripos($script, '/HTMLempresa/') !== false ? 'APPE_EMPRESA' : 'APPE_CLIENTE';
+    }
+}
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     $usarHttps = (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off')
         || (int) ($_SERVER['SERVER_PORT'] ?? 0) === 443;
 
-    session_name('APPE_SESSION');
+    // Segundos que dura la sesión sin actividad (por defecto, 24 horas).
+    $duracionSesion = max(60, (int) ($aplicacion['duracion_sesion'] ?? 86400));
+
+    // Carpeta propia para los archivos de sesión: en un servidor compartido
+    // (XAMPP) otras aplicaciones PHP limpian la carpeta común con su propio
+    // tiempo de vida, que es mucho menor, y se llevan las sesiones de A.P.P.E.
+    $carpetaSesiones = __DIR__ . '/sesiones';
+
+    if (!is_dir($carpetaSesiones)) {
+        @mkdir($carpetaSesiones, 0700, true);
+    }
+
+    if (is_dir($carpetaSesiones) && is_writable($carpetaSesiones)) {
+        session_save_path($carpetaSesiones);
+    }
+
+    ini_set('session.gc_maxlifetime', (string) $duracionSesion);
+
+    $rutaCookie = appe_ruta_cookie($aplicacion);
+
+    session_name(appe_nombre_sesion());
     session_set_cookie_params([
-        'lifetime' => 0,
-        'path'     => appe_ruta_cookie($aplicacion),
+        'lifetime' => $duracionSesion,
+        'path'     => $rutaCookie,
         'domain'   => '',
         'secure'   => $usarHttps,
         'httponly' => true,
@@ -163,6 +200,28 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     ]);
 
     session_start();
+
+    // Renovación deslizante: cada petición vuelve a extender la vigencia de la
+    // cookie, así la sesión solo caduca tras `duracion_sesion` sin actividad.
+    // (Si PHP acaba de crear la sesión, ya envió la cookie con esta vigencia.)
+    $cookieYaEnviada = false;
+    foreach (headers_list() as $cabecera) {
+        if (stripos($cabecera, 'Set-Cookie: ' . session_name() . '=') === 0) {
+            $cookieYaEnviada = true;
+            break;
+        }
+    }
+
+    if (PHP_SAPI !== 'cli' && !headers_sent() && !$cookieYaEnviada) {
+        setcookie(session_name(), session_id(), [
+            'expires'  => time() + $duracionSesion,
+            'path'     => $rutaCookie,
+            'domain'   => '',
+            'secure'   => $usarHttps,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
 }
 
 /* --------------------------------------------------------------------------

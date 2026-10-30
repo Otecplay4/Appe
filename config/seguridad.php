@@ -1,15 +1,6 @@
 <?php
 /**
  * A.P.P.E. — Biblioteca central de seguridad, sesión, validación y respuestas.
- *
- * Concentra todo lo que el código duplicaba y lo que estaba disperso
- * (hallazgos 1, 2, 3, 10, 11, 12, 13, 14, 15, 16, 17, 26, 29).
- *
- * Contrato de respuesta ÚNICO para todos los endpoints (hallazgo 26):
- *
- *   Éxito  -> HTTP 200/201  { "exito": true,  "mensaje": "...", "datos": { ... } }
- *   Error  -> HTTP 4xx/5xx  { "exito": false, "mensaje": "...",
- *                             "codigo": "validacion", "referencia": "ERR-XXXX" }
  */
 
 declare(strict_types=1);
@@ -47,9 +38,6 @@ if (!class_exists('ConflictoException', false)) {
     class ConflictoException extends RuntimeException {}
 }
 
-/* ==========================================================================
- * 2. Respuestas JSON
- * ========================================================================== */
 
 /**
  * Envía una respuesta JSON y finaliza la ejecución.
@@ -86,10 +74,7 @@ function responder_exito(string $mensaje = 'Operación realizada.', array $datos
     ], $codigoHttp);
 }
 
-/**
- * Respuesta de error legible. El detalle técnico nunca se envía al cliente
- * (hallazgo 17); el identificador `referencia` permite correlacionar con el log.
- */
+
 function responder_error(
     string $mensaje,
     int $codigoHttp = 400,
@@ -109,22 +94,13 @@ function responder_error(
     responder_json($cuerpo, $codigoHttp);
 }
 
-/* ==========================================================================
- * 3. Registro de errores y correlación
- * ========================================================================== */
 
-/**
- * Genera un identificador corto de correlación para un error.
- */
 function nueva_referencia(): string
 {
     return 'ERR-' . strtoupper(bin2hex(random_bytes(3)));
 }
 
-/**
- * Registra la excepción internamente y devuelve la referencia de correlación.
- * El cliente nunca recibe el mensaje real de la excepción (hallazgo 17).
- */
+
 function manejar_error(Throwable $e, string $contexto): string
 {
     $referencia = nueva_referencia();
@@ -141,13 +117,7 @@ function manejar_error(Throwable $e, string $contexto): string
     return $referencia;
 }
 
-/* ==========================================================================
- * 4. Sesión y autenticación
- * ========================================================================== */
 
-/**
- * Rol actual del usuario autenticado: 'admin' | 'entrenador' | 'cliente'.
- */
 function rol_actual(): ?string
 {
     $usuario = $_SESSION['usuario'] ?? null;
@@ -168,7 +138,7 @@ function usuario_actual(): ?array
 }
 
 /**
- * Identificador del cliente autenticado (solo si el rol es 'cliente').
+ * Identificador del cliente autenticado (solo si el rol es "cliente").
  */
 function cliente_id_actual(): ?int
 {
@@ -182,7 +152,7 @@ function cliente_id_actual(): ?int
 }
 
 /**
- * Identificador del entrenador autenticado (roles 'entrenador' o 'admin').
+ * Identificador del entrenador autenticado (roles "entrenador" o "admin").
  */
 function entrenador_id_actual(): ?int
 {
@@ -224,7 +194,7 @@ function requiere_rol(string ...$roles): void
 }
 
 /**
- * Exige rol 'cliente'.
+ * Exige rol "cliente".
  *
  * @throws AccesoDenegadoException
  */
@@ -236,7 +206,7 @@ function requiere_cliente(): int
 }
 
 /**
- * Exige rol 'entrenador' o 'admin'.
+ * Exige rol "entrenador" o "admin".
  *
  * @throws AccesoDenegadoException
  */
@@ -248,7 +218,7 @@ function requiere_entrenador(): int
 }
 
 /**
- * Exige rol 'admin' (Administrador del sistema según el PDF).
+ * Exige rol "admin" (Administrador del sistema según el PDF).
  *
  * @throws AccesoDenegadoException
  */
@@ -261,12 +231,6 @@ function requiere_admin(): int
 
 /**
  * Establece la identidad del usuario en la sesión.
- *
- * Hallazgo 10: se regenera el identificador de sesión al autenticar para
- * invalidar cualquier sesión previa (prevención de fijación de sesión).
- * Hallazgo 12: se reconstruye el estado; no se arrastra información del rol
- * anterior ni se guarda el hash de la contraseña en la sesión.
- *
  * @param array<string, mixed> $usuario
  */
 function iniciar_sesion_usuario(array $usuario): void
@@ -307,9 +271,6 @@ function cerrar_sesion(): void
     session_destroy();
 }
 
-/* ==========================================================================
- * 5. Protección CSRF (hallazgo 15)
- * ========================================================================== */
 
 /**
  * Devuelve (y crea si hace falta) el token CSRF de la sesión.
@@ -363,9 +324,7 @@ function exigir_csrf(): void
     }
 }
 
-/* ==========================================================================
- * 6. Validación de entrada (hallazgo 16)
- * ========================================================================== */
+
 
 /**
  * Normaliza un texto recibido: recorta, elimina etiquetas y caracteres de
@@ -408,7 +367,7 @@ function texto_requerido(mixed $valor, string $campo, int $maximo = 255, int $mi
 }
 
 /**
- * Texto opcional. Devuelve '' si no se informó.
+ * Texto opcional. Devuelve "" si no se informó.
  *
  * @throws ValidacionException
  */
@@ -688,9 +647,7 @@ function limpiar_intentos(): void
     }
 }
 
-/* ==========================================================================
- * 8. Bitácora de auditoría (trazabilidad de las operaciones sensibles)
- * ========================================================================== */
+
 
 /**
  * Registra una operación sensible en la bitácora.
@@ -717,9 +674,7 @@ function auditar(string $accion, string $entidad, ?int $idEntidad = null, string
     }
 }
 
-/* ==========================================================================
- * 9. Utilidades de consulta
- * ========================================================================== */
+
 
 /**
  * Categorías que usa la interfaz del cliente y su correspondencia con el
@@ -770,7 +725,7 @@ function escapar_like(string $texto): string
 /**
  * Sirve una imagen guardada en disco de forma segura.
  *
- * - La extensión NUNCA proviene de la petición: la lee el endpoint desde la
+ * - La extensión nunca proviene de la petición: la lee el endpoint desde la
  *   base de datos, dentro de una lista cerrada.
  * - El identificador es un entero validado.
  * - Se comprueba con `realpath()` que la ruta final siga dentro del
@@ -863,14 +818,6 @@ function servir_imagen(string $directorioBase, string $extension, int $id, ?stri
     echo $contenido;
     exit;
 }
-
-/* ==========================================================================
- * 10. Despachador de endpoints
- *
- * Todo endpoint usa este envoltorio, de modo que el contrato de respuesta es
- * siempre el mismo (hallazgo 26) y ningún error interno llega al cliente
- * (hallazgo 17).
- * ========================================================================== */
 
 /**
  * Ejecuta la operación de un endpoint y traduce cualquier excepción a la

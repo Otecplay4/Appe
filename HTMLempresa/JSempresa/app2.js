@@ -1,8 +1,8 @@
 /**
  * A.P.P.E. — Inicio de sesión del entrenador y alta de cuentas.
  *
- * El alta de cuentas es exclusiva del Administrador (hallazgo 2: el alta era
- * pública y cualquier visitante obtenía una cuenta de entrenador).
+ * El alta de cuentas funciona con solicitud: cualquier persona puede enviarla
+ * y solo el Administrador la aprueba (ver `solicitudesregistro.html`).
  */
 (function () {
     "use strict";
@@ -43,7 +43,7 @@
     }
 
     /* ----------------------------------------------------------------------
-     * Alta de entrenador (RF-05) — solo Administrador
+     * Solicitud de alta de entrenador (RF-05) — la aprueba el Administrador
      * -------------------------------------------------------------------- */
     if (crearEntrenador) {
         crearEntrenador.addEventListener("submit", (evento) => {
@@ -67,7 +67,7 @@
 
             API.postForm("crearentrenador.php", datos)
                 .then(() => {
-                    Dom.mensaje(div, "Cuenta creada correctamente.", "exito");
+                    Dom.mensaje(div, "Solicitud de registro enviada. El administrador la revisará y te avisará cuando esté aprobada. Mientras tanto no podés iniciar sesión.", "exito");
                     crearEntrenador.reset();
                 })
                 .catch((error) => {

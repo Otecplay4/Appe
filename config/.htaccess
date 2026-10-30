@@ -1,0 +1,21 @@
+# A.P.P.E. — Protección del directorio de configuración
+# Ningún archivo de este directorio debe ser accesible desde el navegador.
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
+
+# Bloquear ejecución de PHP en este directorio
+<FilesMatch "\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

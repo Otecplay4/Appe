@@ -24,7 +24,7 @@ ejecutar_endpoint(static function (): void {
 
     $idCliente = id_requerido($_POST['id'] ?? null, 'Cliente');
 
-    $stmt = appe_conexion()->prepare('SELECT id_cliente, nombre, apellido FROM cliente WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('SELECT id AS id_cliente, nombre, apellido FROM cliente WHERE id = ?');
     $stmt->execute([$idCliente]);
     $cliente = $stmt->fetch();
 
@@ -32,7 +32,7 @@ ejecutar_endpoint(static function (): void {
         throw new NoEncontradoException('El cliente no existe.');
     }
 
-    $stmt = appe_conexion()->prepare('DELETE FROM cliente WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('DELETE FROM cliente WHERE id = ?');
     $stmt->execute([$idCliente]);
 
     auditar(
