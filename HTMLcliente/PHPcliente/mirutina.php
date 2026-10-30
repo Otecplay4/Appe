@@ -4,14 +4,6 @@
  *
  * Requisito funcional RF-13 «permitir al cliente consultar su rutina de
  * entrenamiento asignada» · Caso de uso CU-06.
- *
- * Correcciones aplicadas respecto de la versión anterior:
- *   - El identificador del cliente se toma EXCLUSIVAMENTE de la sesión; no se
- *     acepta ningún `id_cliente` de la petición (hallazgo 4: IDOR).
- *   - Se eliminó la línea en blanco que precedía a `<?php` y que contaminaba
- *     el JSON con la advertencia de «cabeceras ya enviadas» (hallazgo 27).
- *   - Se devuelve un objeto con la rutina y sus ejercicios agrupados por día,
- *     con `Content-Type` declarado (hallazgos 26 y 28).
  */
 
 declare(strict_types=1);
@@ -23,19 +15,19 @@ ejecutar_endpoint(static function (): void {
 
     $idCliente = cliente_id_actual();
 
-    // 1. La rutina vigente: la que apunta `cliente.id_rutina` (MER del PDF) o,
-    //    en su defecto, la última rutina activa creada para el cliente.
+    // 1. La rutina vigente: la que apunta `cliente.id_rutina` o,
+    //   su respectiva rutina para el cliente que haya iniciaado sesion.
     $stmt = appe_conexion()->prepare(
         'SELECT COALESCE(c.id_rutina, (
                     SELECT r.id_rutina
                       FROM rutina r
-                     WHERE r.id_cliente = c.id_cliente
+                     WHERE r.id_cliente = c.id
                        AND r.estado = \'activa\'
                      ORDER BY r.id_rutina DESC
                      LIMIT 1
                 )) AS id_rutina
            FROM cliente c
-          WHERE c.id_cliente = ?'
+          WHERE c.id = ?'
     );
     $stmt->execute([$idCliente]);
     $fila = $stmt->fetch();
@@ -50,7 +42,7 @@ ejecutar_endpoint(static function (): void {
         ]);
     }
 
-    // 2. Los ejercicios de la rutina, con su día y su prescripción.
+    // 2. Los ejercicios de la rutina, con su día y sus ejercicios/Mùsculo trabajado.
     $stmt = appe_conexion()->prepare(
         'SELECT ru.nombre           AS nombre_rutina,
                 rt.dia              AS dia,

@@ -36,7 +36,7 @@ ejecutar_endpoint(static function (): void {
         throw new ConflictoException('Ya tiene una solicitud pendiente de respuesta.');
     }
 
-    $stmt = appe_conexion()->prepare('SELECT id_rutina, id_entrenador FROM cliente WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('SELECT id_rutina, id_entrenador FROM cliente WHERE id = ?');
     $stmt->execute([$idCliente]);
     $cliente = $stmt->fetch();
 

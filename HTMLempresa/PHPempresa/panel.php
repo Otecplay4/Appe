@@ -78,9 +78,9 @@ ejecutar_endpoint(static function (): void {
 
     // --- Últimos clientes dados de alta ---------------------------------------
     $stmt = $pdo->query(
-        'SELECT id_cliente, nombre, apellido, correo, fecha_alta
+        'SELECT id AS id_cliente, nombre, apellido, correo, fecha_alta
            FROM cliente
-          ORDER BY id_cliente DESC
+          ORDER BY id DESC
           LIMIT 5'
     );
     $ultimosClientes = $stmt->fetchAll();
@@ -90,7 +90,7 @@ ejecutar_endpoint(static function (): void {
         "SELECT q.id_cuota, q.concepto, q.monto, q.fecha_vencimiento, q.estado,
                 c.nombre, c.apellido
            FROM cuota q
-           JOIN cliente c ON c.id_cliente = q.id_cliente
+           JOIN cliente c ON c.id = q.id_cliente
           WHERE q.estado IN ('pendiente', 'vencida')
           ORDER BY q.fecha_vencimiento ASC
           LIMIT 8"
@@ -101,7 +101,7 @@ ejecutar_endpoint(static function (): void {
     $stmt = $pdo->query(
         "SELECT s.id_solicitud, s.mensaje, s.fecha, c.nombre, c.apellido
            FROM solicitudcambio s
-           JOIN cliente c ON c.id_cliente = s.id_cliente
+           JOIN cliente c ON c.id = s.id_cliente
           WHERE s.estado = 'pendiente'
           ORDER BY s.fecha ASC
           LIMIT 5"

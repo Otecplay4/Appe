@@ -1,13 +1,21 @@
 <?php
 /**
- * A.P.P.E. — Alta de entrenadores.
+ * A.P.P.E. — Solicitud de alta de entrenadores.
  *
  * Requisito funcional RF-05 «gestionar el registro completo de entrenadores
  * (alta, baja, modificación y consulta)».
  *
- * Hallazgo 2 (severidad alta): el alta era pública, de modo que cualquier
- * visitante obtenía una cuenta de entrenador. Ahora SOLO el Administrador
- * (rol 'admin' del PDF) puede crear cuentas de entrenador o de administrador.
+ * Flujo de registro con aprobación:
+ *   1. Cualquier persona puede ENVIAR una solicitud de registro (este endpoint).
+ *   2. La solicitud NO crea la cuenta: se guarda como «pendiente» en
+ *      `config/solicitudes_registro.json` (fuera de la base de datos), con la
+ *      contraseña ya cifrada.
+ *   3. Solo el Administrador la aprueba o rechaza desde
+ *      `PHPempresa/solicitudesregistro.php`; recién al aprobar se inserta la
+ *      fila en la tabla `entrenador`.
+ *
+ * Hallazgo 2 (severidad alta): el alta directa era pública. Por eso este
+ * endpoint nunca inserta en `entrenador`.
  *
  * La validación que antes vivía aislada en `seguridadentrenador.php` se
  * aplica aquí, en el servidor (hallazgo 16).
@@ -16,6 +24,43 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../config/bootstrap.php';
+
+// Archivo JSON donde se guardan las solicitudes (NO en la base de datos).
+// El directorio `config/` está protegido por su `.htaccess`.
+define('ARCHIVO_SOLICITUDES', __DIR__ . '/../../config/solicitudes_registro.json');
+
+/**
+ * @return array<int, array<string, mixed>>
+ */
+function leer_solicitudes(): array
+{
+    if (!file_exists(ARCHIVO_SOLICITUDES)) {
+        return [];
+    }
+
+    $contenido = file_get_contents(ARCHIVO_SOLICITUDES);
+    $datos = json_decode($contenido === false ? '' : $contenido, true);
+
+    return is_array($datos) ? $datos : [];
+}
+
+/**
+ * @param array<int, array<string, mixed>> $solicitudes
+ */
+function guardar_solicitudes(array $solicitudes): void
+{
+    $escrito = file_put_contents(
+        ARCHIVO_SOLICITUDES,
+        json_encode($solicitudes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+        LOCK_EX
+    );
+
+    // Si el servidor web no puede escribir en `config/`, no se debe responder
+    // «enviada» cuando la solicitud se perdió.
+    if ($escrito === false) {
+        throw new RuntimeException('No se pudo escribir ' . ARCHIVO_SOLICITUDES . ' (revisar permisos de config/).');
+    }
+}
 
 ejecutar_endpoint(static function (): void {
     exigir_metodo('POST');
@@ -45,7 +90,7 @@ ejecutar_endpoint(static function (): void {
         throw new ValidacionException('La contraseña es demasiado larga.');
     }
 
-    // Cédula y correo únicos.
+    // Cédula y correo únicos entre los entrenadores ya existentes.
     $stmt = appe_conexion()->prepare('SELECT id_entrenador FROM entrenador WHERE cedula = ? OR correo = ?');
     $stmt->execute([$cedula, $correo]);
 
@@ -53,25 +98,44 @@ ejecutar_endpoint(static function (): void {
         throw new ConflictoException('Ya existe un entrenador con esa cédula o ese correo.');
     }
 
-    $stmt = appe_conexion()->prepare(
-        'INSERT INTO entrenador (cedula, nombre, apellido, telefono, correo, `contraseña`, rol, activo)
-         VALUES (?, ?, ?, ?, ?, ?, ?, 1)'
-    );
-    $stmt->execute([
-        $cedula,
-        $nombre,
-        $apellido,
-        $telefono,
-        $correo,
-        password_hash($clave, PASSWORD_DEFAULT),
-        $rol,
-    ]);
+    // No puede haber dos solicitudes pendientes con el mismo correo.
+    $solicitudes = leer_solicitudes();
 
-    $id = (int) appe_conexion()->lastInsertId();
+    foreach ($solicitudes as $s) {
+        if (($s['correo'] ?? '') === $correo && ($s['estado'] ?? '') === 'pendiente') {
+            throw new ConflictoException('Ya existe una solicitud de registro pendiente con ese correo.');
+        }
+    }
 
-    auditar('alta_entrenador', 'entrenador', $id, $correo . ' / rol ' . $rol);
+    $nuevoId = 1;
 
-    responder_exito('Entrenador creado correctamente.', [
-        'id_entrenador' => $id,
+    foreach ($solicitudes as $s) {
+        if ((int) ($s['id'] ?? 0) >= $nuevoId) {
+            $nuevoId = (int) $s['id'] + 1;
+        }
+    }
+
+    $solicitudes[] = [
+        'id'                 => $nuevoId,
+        'cedula'             => $cedula,
+        'nombre'             => $nombre,
+        'apellido'           => $apellido === '' ? null : $apellido,
+        'telefono'           => $telefono,
+        'correo'             => $correo,
+        'contraseña'         => password_hash($clave, PASSWORD_DEFAULT),
+        'rol'                => $rol,
+        'estado'             => 'pendiente',
+        'motivo_rechazo'     => null,
+        'fecha_solicitud'    => date('Y-m-d H:i:s'),
+        'fecha_resolucion'   => null,
+        'id_admin_resolutor' => null,
+    ];
+
+    guardar_solicitudes($solicitudes);
+
+    auditar('solicitud_registro', 'solicitudregistro', $nuevoId, $correo . ' / rol ' . $rol);
+
+    responder_exito('Solicitud de registro enviada. El administrador la revisará y te avisará por correo.', [
+        'id_solicitud' => $nuevoId,
     ], 201);
 }, 'crearentrenador.php');

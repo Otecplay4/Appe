@@ -3,17 +3,6 @@
  * A.P.P.E. — Modificación de datos de un cliente.
  *
  * Requisito funcional RF-06 · Caso de uso CU-02 «Gestionar Usuarios».
- *
- * Hallazgo 19 (contrato incompatible): el formulario enviaba `id` y `nombre`,
- * mientras el servidor leía también `apellido` y `correo` y los metía en el
- * UPDATE, con el riesgo de sobrescribir con valores nulos. Ahora:
- *   - cada campo se valida en el servidor antes de usarse (hallazgo 16);
- *   - solo se escribe lo que el cliente envió (actualización parcial);
- *   - si no se envía ningún campo, se informa con un error claro;
- *   - se distingue «no existe» (404) de «no cambió nada» (200).
- *
- * Hallazgo 25: se comprueba el resultado real y se devuelven estados HTTP
- * coherentes.
  */
 
 declare(strict_types=1);
@@ -28,7 +17,7 @@ ejecutar_endpoint(static function (): void {
     $idCliente = id_requerido($_POST['id'] ?? null, 'Cliente');
 
     // Existencia del cliente.
-    $stmt = appe_conexion()->prepare('SELECT id_cliente FROM cliente WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('SELECT id FROM cliente WHERE id = ?');
     $stmt->execute([$idCliente]);
 
     if ($stmt->fetch() === false) {
@@ -51,7 +40,7 @@ ejecutar_endpoint(static function (): void {
     if (isset($_POST['correo'])) {
         $correo = correo_requerido($_POST['correo']);
 
-        $stmt = appe_conexion()->prepare('SELECT id_cliente FROM cliente WHERE correo = ? AND id_cliente <> ?');
+        $stmt = appe_conexion()->prepare('SELECT id FROM cliente WHERE correo = ? AND id <> ?');
         $stmt->execute([$correo, $idCliente]);
 
         if ($stmt->fetch() !== false) {
@@ -123,7 +112,7 @@ ejecutar_endpoint(static function (): void {
 
     $parametros[] = $idCliente;
 
-    $stmt = appe_conexion()->prepare('UPDATE cliente SET ' . implode(', ', $campos) . ' WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('UPDATE cliente SET ' . implode(', ', $campos) . ' WHERE id = ?');
     $stmt->execute($parametros);
 
     auditar('modificacion_cliente', 'cliente', $idCliente, 'Campos: ' . implode(', ', $campos));
@@ -131,8 +120,8 @@ ejecutar_endpoint(static function (): void {
     // Se devuelve el registro ya actualizado para que el front-end no tenga que
     // adivinar el resultado (hallazgo 25).
     $stmt = appe_conexion()->prepare(
-        'SELECT id_cliente, nombre, apellido, correo, telefono, activo, id_plan, id_entrenador, id_rutina
-           FROM cliente WHERE id_cliente = ?'
+        'SELECT id AS id_cliente, nombre, apellido, correo, telefono, activo, id_plan, id_entrenador, id_rutina
+           FROM cliente WHERE id = ?'
     );
     $stmt->execute([$idCliente]);
     $fila = $stmt->fetch();

@@ -8,20 +8,19 @@
 -- Base de datos y usuario de aplicación
 --
 -- Permiten importar este archivo en cualquier XAMPP recién instalado sin
--- pasos manuales. La clave de 'app_appe' debe coincidir con 'clave' en
--- config/config.php. ATENCIÓN: importar este archivo reemplaza las tablas
+-- pasos manuales. 'app_appe' es un único usuario local y sin contraseña:
+-- 'clave' en config/config.php debe quedar vacía. ATENCIÓN: importar este
+-- archivo reemplaza las tablas
 -- existentes (DROP TABLE) y se pierden los datos cargados.
 --
 
 CREATE DATABASE IF NOT EXISTS `appe` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `appe`;
 
-CREATE USER IF NOT EXISTS 'app_appe'@'localhost' IDENTIFIED BY '371365a1565409e5c0f7bd02d7007303';
-CREATE USER IF NOT EXISTS 'app_appe'@'127.0.0.1' IDENTIFIED BY '371365a1565409e5c0f7bd02d7007303';
-ALTER USER 'app_appe'@'localhost' IDENTIFIED BY '371365a1565409e5c0f7bd02d7007303';
-ALTER USER 'app_appe'@'127.0.0.1' IDENTIFIED BY '371365a1565409e5c0f7bd02d7007303';
+DROP USER IF EXISTS 'app_appe'@'127.0.0.1';
+CREATE USER IF NOT EXISTS 'app_appe'@'localhost' IDENTIFIED BY '';
+ALTER USER 'app_appe'@'localhost' IDENTIFIED BY '';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `appe`.* TO 'app_appe'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `appe`.* TO 'app_appe'@'127.0.0.1';
 FLUSH PRIVILEGES;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -76,7 +75,7 @@ DROP TABLE IF EXISTS `cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cliente` (
-  `id_cliente` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `id_gimnasio` int DEFAULT NULL,
   `id_plan` int DEFAULT NULL,
   `id_rutina` int DEFAULT NULL,
@@ -88,7 +87,9 @@ CREATE TABLE `cliente` (
   `contraseña` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Hash bcrypt (password_hash). Nunca en texto plano.',
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `fecha_alta` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_cliente`),
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `uk_cliente_correo` (`correo`),
   KEY `idx_cliente_entrenador` (`id_entrenador`),
   KEY `idx_cliente_rutina` (`id_rutina`),
@@ -97,7 +98,7 @@ CREATE TABLE `cliente` (
   CONSTRAINT `fk_cliente_entrenador` FOREIGN KEY (`id_entrenador`) REFERENCES `entrenador` (`id_entrenador`) ON DELETE SET NULL,
   CONSTRAINT `fk_cliente_gimnasio` FOREIGN KEY (`id_gimnasio`) REFERENCES `gimnasio` (`id_gimnasio`) ON DELETE SET NULL,
   CONSTRAINT `fk_cliente_plan` FOREIGN KEY (`id_plan`) REFERENCES `plan` (`id_plan`) ON DELETE SET NULL,
-  CONSTRAINT `fk_cliente_rutina` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE SET NULL
+  CONSTRAINT `fk_rutina` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -107,7 +108,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,1,NULL,1,1,'Camila','Rodríguez','094445556','cliente@olympia.local','$2y$10$lIEVcULLUS1Hch0Js13wgOiXgts4/Npk8qA8TQT.VadbD1Lo1BIti',1,'2026-10-21 18:36:08'),(2,1,NULL,NULL,NULL,'Mateo','Leal','093801616','mjleal999@gmail.com','$2y$10$eNH9IJAvp2FWxgyhGOjuwO.Ah.0Xp0ogn5inDNATl/wNQtqy/ROBy',1,'2026-10-22 08:00:29'),(3,1,NULL,NULL,NULL,'leandro','villarueta','3242525','leandro@gmail.com','$2y$10$FxtS53yJ0kj8gnrRdeDGSueG2W335UC5mQzisa42OVTNjQ9qMRPe6',1,'2026-10-22 08:02:17');
+INSERT INTO `cliente` VALUES (1,1,NULL,1,1,'Camila','Rodríguez','094445556','cliente@olympia.local','$2y$10$lIEVcULLUS1Hch0Js13wgOiXgts4/Npk8qA8TQT.VadbD1Lo1BIti',1,'2026-10-21 18:36:08',NULL,NULL),(2,1,NULL,NULL,NULL,'Mateo','Leal','093801616','mjleal999@gmail.com','$2y$10$eNH9IJAvp2FWxgyhGOjuwO.Ah.0Xp0ogn5inDNATl/wNQtqy/ROBy',1,'2026-10-22 08:00:29',NULL,NULL),(3,1,NULL,NULL,NULL,'leandro','villarueta','3242525','leandro@gmail.com','$2y$10$FxtS53yJ0kj8gnrRdeDGSueG2W335UC5mQzisa42OVTNjQ9qMRPe6',1,'2026-10-22 08:02:17',NULL,NULL);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,14 +120,14 @@ DROP TABLE IF EXISTS `clientecompraproducto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientecompraproducto` (
-  `id_cliente` int NOT NULL,
-  `id_producto` int NOT NULL,
-  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `cantidad` int NOT NULL DEFAULT '1',
-  `precio_unitario` decimal(10,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`id_cliente`,`id_producto`,`fecha`),
+  `id_compra` int NOT NULL AUTO_INCREMENT,
+  `fecha` date NOT NULL,
+  `id_cliente` int DEFAULT NULL,
+  `id_producto` int DEFAULT NULL,
+  PRIMARY KEY (`id_compra`),
+  KEY `idx_ccp_cliente` (`id_cliente`),
   KEY `idx_ccp_producto` (`id_producto`),
-  CONSTRAINT `fk_ccp_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE CASCADE,
+  CONSTRAINT `fk_ccp_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_ccp_producto` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -163,7 +164,7 @@ CREATE TABLE `cuota` (
   KEY `idx_cuota_cliente` (`id_cliente`),
   KEY `idx_cuota_vencimiento` (`fecha_vencimiento`,`estado`),
   KEY `fk_cuota_plan` (`id_plan`),
-  CONSTRAINT `fk_cuota_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE CASCADE,
+  CONSTRAINT `fk_cuota_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_cuota_plan` FOREIGN KEY (`id_plan`) REFERENCES `plan` (`id_plan`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -339,9 +340,9 @@ CREATE TABLE `plan` (
   `beneficio` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Precio de referencia del plan.',
   `duracion` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tipo_de_plan` varchar(60) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `fecha_inicio` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Fecha de inicio de la vigencia (texto, según el MER del PDF).',
-  `fecha_fin` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Fecha de fin de la vigencia (texto, según el MER del PDF).',
+  `tipo_de_plan` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha_inicio` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Fecha de inicio de la vigencia (texto, según el MER del PDF).',
+  `fecha_fin` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Fecha de fin de la vigencia (texto, según el MER del PDF).',
   `extension` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Extensión de la imagen; NULL si el plan no tiene imagen.',
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -494,16 +495,16 @@ DROP TABLE IF EXISTS `rutina`;
 CREATE TABLE `rutina` (
   `id_rutina` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `id_cliente` int DEFAULT NULL,
+  `id_cliente` int NOT NULL,
   `id_entrenador` int DEFAULT NULL,
-  `fecha_inicio` date DEFAULT NULL,
-  `fecha_fin` date DEFAULT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
   `estado` enum('activa','archivada') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'activa',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_rutina`),
   KEY `idx_rutina_cliente` (`id_cliente`),
   KEY `idx_rutina_entrenador` (`id_entrenador`),
-  CONSTRAINT `fk_rutina_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE CASCADE,
+  CONSTRAINT `fk_rutina_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_rutina_entrenador` FOREIGN KEY (`id_entrenador`) REFERENCES `entrenador` (`id_entrenador`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -514,7 +515,7 @@ CREATE TABLE `rutina` (
 
 LOCK TABLES `rutina` WRITE;
 /*!40000 ALTER TABLE `rutina` DISABLE KEYS */;
-INSERT INTO `rutina` VALUES (1,'Rutina Full',1,1,NULL,NULL,'activa','2026-10-21 18:36:08');
+INSERT INTO `rutina` VALUES (1,'Rutina Full',1,1,'2026-10-21','2026-11-21','activa','2026-10-21 18:36:08');
 /*!40000 ALTER TABLE `rutina` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -572,7 +573,7 @@ CREATE TABLE `solicitudcambio` (
   KEY `idx_solicitud_estado` (`estado`),
   KEY `fk_sol_rutina` (`id_rutina`),
   KEY `fk_sol_entrenador` (`id_entrenador`),
-  CONSTRAINT `fk_sol_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE CASCADE,
+  CONSTRAINT `fk_sol_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_sol_entrenador` FOREIGN KEY (`id_entrenador`) REFERENCES `entrenador` (`id_entrenador`) ON DELETE SET NULL,
   CONSTRAINT `fk_sol_rutina` FOREIGN KEY (`id_rutina`) REFERENCES `rutina` (`id_rutina`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -597,9 +598,9 @@ DROP TABLE IF EXISTS `telcliente`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telcliente` (
   `id_cliente` int NOT NULL,
-  `telefono` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` int(9) NOT NULL,
   PRIMARY KEY (`id_cliente`,`telefono`),
-  CONSTRAINT `fk_telcliente_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE CASCADE
+  CONSTRAINT `fk_telcliente_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -609,7 +610,7 @@ CREATE TABLE `telcliente` (
 
 LOCK TABLES `telcliente` WRITE;
 /*!40000 ALTER TABLE `telcliente` DISABLE KEYS */;
-INSERT INTO `telcliente` VALUES (1,'094445556');
+INSERT INTO `telcliente` VALUES (1,94445556);
 /*!40000 ALTER TABLE `telcliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -622,7 +623,7 @@ DROP TABLE IF EXISTS `telentrenador`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telentrenador` (
   `id_entrenador` int NOT NULL,
-  `telefono` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` int(9) NOT NULL,
   PRIMARY KEY (`id_entrenador`,`telefono`),
   CONSTRAINT `fk_telentrenador_entrenador` FOREIGN KEY (`id_entrenador`) REFERENCES `entrenador` (`id_entrenador`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -634,7 +635,7 @@ CREATE TABLE `telentrenador` (
 
 LOCK TABLES `telentrenador` WRITE;
 /*!40000 ALTER TABLE `telentrenador` DISABLE KEYS */;
-INSERT INTO `telentrenador` VALUES (1,'099000001'),(2,'099000002');
+INSERT INTO `telentrenador` VALUES (1,99000001),(2,99000002);
 /*!40000 ALTER TABLE `telentrenador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -647,7 +648,7 @@ DROP TABLE IF EXISTS `telgimnasio`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telgimnasio` (
   `id_gimnasio` int NOT NULL,
-  `telefono` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` int(9) NOT NULL,
   PRIMARY KEY (`id_gimnasio`,`telefono`),
   CONSTRAINT `fk_telgimnasio_gimnasio` FOREIGN KEY (`id_gimnasio`) REFERENCES `gimnasio` (`id_gimnasio`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -659,7 +660,7 @@ CREATE TABLE `telgimnasio` (
 
 LOCK TABLES `telgimnasio` WRITE;
 /*!40000 ALTER TABLE `telgimnasio` DISABLE KEYS */;
-INSERT INTO `telgimnasio` VALUES (1,'24001234');
+INSERT INTO `telgimnasio` VALUES (1,24001234);
 /*!40000 ALTER TABLE `telgimnasio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -672,7 +673,7 @@ DROP TABLE IF EXISTS `telproveedor`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telproveedor` (
   `id_proveedor` int NOT NULL,
-  `telefono` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` int(9) NOT NULL,
   PRIMARY KEY (`id_proveedor`,`telefono`),
   CONSTRAINT `fk_telproveedor_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id_proveedor`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -684,7 +685,7 @@ CREATE TABLE `telproveedor` (
 
 LOCK TABLES `telproveedor` WRITE;
 /*!40000 ALTER TABLE `telproveedor` DISABLE KEYS */;
-INSERT INTO `telproveedor` VALUES (1,'24009999');
+INSERT INTO `telproveedor` VALUES (1,24009999);
 /*!40000 ALTER TABLE `telproveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 

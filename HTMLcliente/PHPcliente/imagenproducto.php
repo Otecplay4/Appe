@@ -3,8 +3,7 @@
  * A.P.P.E. — Imagen pública de un producto.
  *
  * La extensión se lee de la base de datos, nunca de la petición, y la ruta
- * final se comprueba con `realpath()` para impedir el path traversal
- * (hallazgo 7).
+ * final se comprueba con `realpath()` para impedir el path traversal.
  */
 
 declare(strict_types=1);

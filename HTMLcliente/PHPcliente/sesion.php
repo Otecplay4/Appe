@@ -1,12 +1,6 @@
 <?php
 /**
  * A.P.P.E. — Estado de la sesión del cliente.
- *
- * Fuente de verdad: la sesión de PHP del servidor. El navegador no decide si
- * el usuario está autenticado (hallazgo 11).
- *
- * También entrega el token CSRF que el front-end adjunta a las operaciones que
- * modifican el estado (hallazgo 15).
  */
 
 declare(strict_types=1);

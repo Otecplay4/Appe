@@ -23,7 +23,7 @@ ejecutar_endpoint(static function (): void {
     $texto = isset($_GET['q']) ? limpiar_texto($_GET['q']) : '';
     $limite = isset($_GET['limite']) ? entero_requerido($_GET['limite'], 'Límite', 1, 100) : 50;
 
-    $sql = 'SELECT c.id_cliente, c.nombre, c.apellido, c.correo, c.telefono, c.activo
+    $sql = 'SELECT c.id AS id_cliente, c.nombre, c.apellido, c.correo, c.telefono, c.activo
               FROM cliente c
              WHERE c.activo = 1';
     $parametros = [];

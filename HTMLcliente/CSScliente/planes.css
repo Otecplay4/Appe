@@ -25,16 +25,19 @@
     gap: 36px;
 }
 
+/* stretch para que la tarjeta y el panel de precios queden de la misma altura */
 .fila-plan {
     display: grid;
     grid-template-columns: 1fr 80px 1fr;
-    align-items: center;
+    align-items: stretch;
 }
 
+/* La altura sale del ancho (16:9), así la foto no se recorta distinto
+   en cada pantalla y se sigue leyendo el texto que trae la imagen. */
 .caja-plan {
     position: relative;
     display: grid;
-    min-height: 240px;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     border: 1px solid rgba(255, 215, 0, .35);
     border-radius: 10px;
@@ -68,12 +71,14 @@
     outline-offset: 4px;
 }
 
+/* El tamaño va entre 18px y 26px según el ancho, para que nombres largos
+   como "Plan Familiar" no lleguen al borde en celular. */
 .nombre-plan {
     position: relative;
     z-index: 2;
     align-self: end;
-    padding: 24px;
-    font-size: 26px;
+    padding: clamp(14px, 4vw, 24px);
+    font-size: clamp(18px, 5vw, 26px);
     font-weight: 800;
 }
 
@@ -85,7 +90,8 @@
     padding-bottom: 4px;
 }
 
-.descripcion-plan {
+.descripcion-plan,
+.beneficio-plan {
     position: relative;
     z-index: 2;
     padding: 0 24px 22px;
@@ -119,8 +125,10 @@
     transform: translateX(0);
 }
 
+/* Sin altura fija: los planes del entrenador pueden traer descripción
+   y beneficio, y con 260px se cortaban los botones de abajo. */
 .detalle-plan {
-    height: 260px;
+    height: auto;
     overflow: hidden;
     visibility: hidden;
     border: 1px solid rgba(255, 215, 0, .35);
@@ -276,7 +284,10 @@
     background: #0d0d0d;
 }
 
-@media (min-width: 641px) and (max-width: 1024px) {
+/* Tablet: dos planes por fila, cada uno con la tarjeta arriba y los precios
+   abajo. Llega hasta 1199px igual que el resto de las hojas; antes cortaba en
+   1024 y entre 1025 y 1199 volvía el diseño de escritorio todo apretado. */
+@media (min-width: 641px) and (max-width: 1199px) {
     .lista-planes {
         grid-template-columns: repeat(2, 1fr);
         align-items: start;
@@ -312,17 +323,35 @@
         font-size: 40px;
     }
 
+    /* Un plan debajo del otro: imagen arriba y precios abajo. */
     .fila-plan {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
-    .flecha-plan,
-    .detalle-plan {
+    .flecha-plan {
         display: none;
     }
 
-    .caja-plan {
-        min-height: 190px;
+    /* Antes el panel se ocultaba y en celular no había forma de ver los
+       precios. Ahora se muestra sin el desplazamiento de la animación. */
+    .detalle-plan {
+        transform: none;
+    }
+
+    .fila-plan.abierta .detalle-plan {
+        transform: none;
+    }
+
+    /* Botones más bajos para que los 4 entren en 2x2 sin ocupar media pantalla. */
+    .grilla-detalle {
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .grilla-detalle .tiempo-plan {
+        min-height: 64px;
+        padding: 10px;
     }
 
     .cabecera-plan {
@@ -339,5 +368,18 @@
 
     .grilla-tiempos .tiempo-plan {
         min-height: 76px;
+    }
+}
+
+
+/* Tablet: los márgenes laterales se ajustan al ancho de la pantalla. */
+@media (min-width: 641px) and (max-width: 1199px) {
+    .pagina-planes {
+        padding: 120px 40px 64px;
+    }
+
+    .pagina-planes > .titulo-planes {
+        margin-bottom: 40px;
+        font-size: 44px;
     }
 }

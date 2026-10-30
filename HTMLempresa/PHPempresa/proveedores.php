@@ -4,9 +4,6 @@
  *
  * Requisito funcional RF-09 «gestionar los datos de los proveedores del
  * gimnasio» · Caso de uso CU-05 «Administrar Productos y Proveedores».
- *
- * La relación proveedor-producto se guarda en `provee` (MER del PDF).
- *
  * Todas las operaciones exigen sesión de entrenador y token CSRF.
  */
 

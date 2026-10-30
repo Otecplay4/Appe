@@ -8,13 +8,13 @@
  * Flujo:
  *   1. El cliente indica su correo.
  *   2. Se genera un token aleatorio; en la base de datos solo se guarda su
- *      hash (SHA-256). El valor en claro viaja únicamente en el enlace.
+ *      hash. El valor en claro viaja únicamente en el enlace.
  *   3. Se envía el enlace de restablecimiento por correo.
  *   4. `reestablecerclave.php` valida el token y permite fijar una contraseña
  *      nueva (que se guarda con `password_hash`).
  *
- * La respuesta es SIEMPRE la misma, exista o no la cuenta: así no se puede
- * enumerar qué correos están registrados (hallazgo 13).
+ * La respuesta es siempre la misma, exista o no la cuenta: así no se puede
+ * enumerar qué correos están registrados.
  */
 
 declare(strict_types=1);
@@ -28,7 +28,7 @@ ejecutar_endpoint(static function (): void {
 
     $correo = correo_requerido($_POST['correo'] ?? '');
 
-    $stmt = appe_conexion()->prepare('SELECT id_cliente, nombre, correo FROM cliente WHERE correo = ? AND activo = 1');
+    $stmt = appe_conexion()->prepare('SELECT id AS id_cliente, nombre, correo FROM cliente WHERE correo = ? AND activo = 1');
     $stmt->execute([$correo]);
     $usuario = $stmt->fetch();
 
@@ -54,7 +54,7 @@ ejecutar_endpoint(static function (): void {
         $stmt->execute([(int) $usuario['id_cliente'], $hash, $vigencia]);
 
         // El enlace es relativo a este endpoint (`PHPcliente/`), de modo que
-        // funciona con cualquier carpeta de publicación.
+        // funciona con cualquier carpeta.
         $enlace = '../reestablecer.html?token=' . $token;
 
         enviar_correo(

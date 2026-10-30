@@ -7,7 +7,7 @@
  *
  * Disponible sin inicio de sesión (así lo define el caso de uso), pero con
  * token CSRF para evitar que terceros envíen mensajes en nombre de la
- * aplicación. La validación de los datos se hace en el servidor (hallazgo 16).
+ * aplicación. La validación de los datos se hace en el servidor.
  */
 
 declare(strict_types=1);

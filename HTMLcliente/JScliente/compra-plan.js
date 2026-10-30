@@ -2,8 +2,10 @@
  * A.P.P.E. — Compra de planes (simulada).
  *
  * La compra es una SIMULACIÓN: el proyecto no integra ningún medio de pago.
- * Lo que se controla aquí es el acceso (RF-04): solo un cliente autenticado
- * puede "contratar" un plan.
+ * (RF-04): solo un cliente autenticado puede "contratar" un plan.
+ *
+ * Aquí el plan solo se agrega al carrito; la contratación se confirma y se
+ * registra en carrito.js cuando el cliente pulsa «Comprar».
  */
 (function () {
     "use strict";
@@ -57,22 +59,26 @@
                 const periodo = periodoPlan(boton);
                 const precio = precioPlan(boton);
 
-                // La compra simulada también deja el plan en el carrito.
-                if (typeof Carrito !== "undefined" && precio > 0) {
-                    Carrito.agregar({
-                        id: "plan-" + (boton.getAttribute("data-plan") || boton.getAttribute("data-plan-compra") || "0"),
-                        nombre: plan + (periodo ? " · " + periodo : ""),
-                        precio: precio,
-                        imagen: "./imagenes/plan basico.jpg",
-                        categoria: "planes",
-                    }, "planes");
+                const planId = boton.getAttribute("data-plan") || boton.getAttribute("data-plan-compra") || "0";
+                const idNumerico = parseInt(planId.toString().replace("plan-", ""), 10);
+                const periodoAttr = (boton.getAttribute("data-periodo") || (tarjetaTiempo ? tarjetaTiempo.getAttribute("data-periodo") : "") || "mensual").toLowerCase();
+
+                if (typeof Carrito === "undefined" || !(precio > 0) || !(idNumerico > 0)) {
+                    window.alert("No se pudo agregar el plan al carrito.");
+                    return;
                 }
 
-                const detalle = periodo ? " (" + periodo + ")" : "";
-                const aviso = "Compra simulada: " + plan + detalle
-                    + ".\n\nSe agregó al carrito. El proyecto no integra ningún medio de pago.";
-
-                window.alert(aviso);
+                // Elegir un plan SOLO lo agrega al carrito. La contratación se
+                // registra cuando el cliente confirma la compra en carrito.html.
+                Carrito.agregar({
+                    id: "plan-" + idNumerico,
+                    nombre: plan + (periodo ? " · " + periodo : ""),
+                    precio: precio,
+                    imagen: "./imagenes/plan basico.jpg",
+                    categoria: "planes",
+                    id_plan: idNumerico,
+                    periodo: periodoAttr,
+                }, "planes");
             });
         });
     }

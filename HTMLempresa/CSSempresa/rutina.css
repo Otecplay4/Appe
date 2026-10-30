@@ -677,3 +677,275 @@ body {
 #cancelarEdicion:not([hidden]) {
     display: inline-block !important;
 }
+
+
+/* ==========================================================================
+   Tablet (641px a 1199px)
+   Páginas de gestión: márgenes cómodos, tarjetas e indicadores que reparten
+   todo el ancho y barra superior más compacta. Escritorio (1200px o más) y
+   teléfono (640px o menos) no cambian.
+   ========================================================================== */
+@media (min-width: 641px) and (max-width: 1199px) {
+    body {
+        padding: 24px 28px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .top-nav {
+        padding: 10px 18px;
+        margin-bottom: 24px;
+    }
+
+    .top-form,
+    .filtros {
+        gap: 12px;
+    }
+
+    /* Tarjetas e indicadores: columnas iguales que ocupan todo el ancho. */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 16px;
+    }
+
+    .tarjeta {
+        width: auto;
+    }
+
+    /* Los mensajes de "sin datos" ocupan toda la fila de la grilla. */
+    .grid > .sin-datos,
+    .grid > .sin-productos,
+    .grid > .sin-planes,
+    .grid > .vacio {
+        grid-column: 1 / -1;
+    }
+
+    .indicador {
+        min-width: 0;
+    }
+
+    /* Resúmenes (panel y cuotas): 4 indicadores por fila, parejos. */
+    #panelIndicadores,
+    #cuotaResumen {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Formularios: campos en dos columnas parejas. */
+    .formulario-campos .campo {
+        flex: 1 1 calc(50% - 15px);
+    }
+
+    .fila-ejercicio .campo {
+        flex: 1 1 140px;
+    }
+
+    .seccion {
+        padding: 18px;
+    }
+}
+
+
+/* ==========================================================================
+   Tablet y teléfono (1199px o menos)
+   Cuando un formulario tiene varios grupos de campos seguidos (por ejemplo
+   «Tipo de plan» y los precios) el segundo grupo quedaba pegado al primero.
+   Escritorio (1200px o más) no cambia.
+   ========================================================================== */
+@media (max-width: 1199px) {
+    .formulario-campos + .formulario-campos {
+        margin-top: 15px;
+    }
+
+    /* La nota bajo el formulario ya no se encima al último campo. */
+    .nota-form {
+        margin-top: 8px;
+    }
+
+    /* Los indicadores no quedan pegados a la sección siguiente. */
+    #panelIndicadores,
+    #cuotaResumen {
+        margin-bottom: 20px;
+    }
+}
+
+
+/* ==========================================================================
+   Teléfono (640px o menos)
+   Páginas de gestión en una sola columna: barra superior que cabe en la
+   pantalla, formularios y filtros apilados, tarjetas a todo el ancho, botones
+   fáciles de tocar y tablas con desplazamiento horizontal propio.
+   Escritorio (1200px o más) y tablet (641px a 1199px) no cambian.
+   ========================================================================== */
+@media (max-width: 640px) {
+    body {
+        padding: 14px 14px 32px;
+    }
+
+    h1 {
+        font-size: 22px;
+        line-height: 1.2;
+        margin-bottom: 16px;
+    }
+
+    /* Barra superior: logo más chico y botón «Volver» que no desborda. */
+    .top-nav {
+        padding: 8px 12px;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .top-nav .logo-link {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .top-nav .logo-link img {
+        height: 40px;
+        max-width: 100%;
+    }
+
+    .top-nav .volver {
+        flex: 0 1 auto;
+        padding: 10px 12px;
+        font-size: 12px;
+        line-height: 1.2;
+        text-align: center;
+        white-space: normal;
+    }
+
+    /* Filtros y formularios superiores: un control por fila. */
+    .top-form,
+    .filtros {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .top-form input,
+    .top-form select,
+    .filtros input,
+    .filtros select {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .formulario-campos {
+        gap: 12px;
+    }
+
+    .formulario-campos + .formulario-campos {
+        margin-top: 12px;
+    }
+
+    .formulario-campos .campo,
+    .fila-ejercicio .campo {
+        flex: 1 1 100%;
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+        min-height: 44px;
+    }
+
+    /* Tarjetas: una por fila. */
+    .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .tarjeta {
+        width: auto;
+    }
+
+    .grid > .sin-datos,
+    .grid > .sin-productos,
+    .grid > .sin-planes,
+    .grid > .vacio {
+        grid-column: 1 / -1;
+    }
+
+    /* Indicadores (panel y cuotas): dos por fila. */
+    #panelIndicadores,
+    #cuotaResumen {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .indicador {
+        min-width: 0;
+        padding: 12px;
+    }
+
+    .indicador-valor {
+        font-size: 20px;
+        overflow-wrap: anywhere;
+    }
+
+    .seccion {
+        padding: 14px;
+    }
+
+    .seccion h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    /* Botones de acción: a todo el ancho y fáciles de tocar. */
+    .acciones {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .acciones button,
+    .acciones button.btnPrincipal,
+    .acciones button.btnPeligro,
+    .acciones .btnActualizar,
+    .acciones .btnEliminar {
+        flex: 1 1 100%;
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .btnAgregar {
+        min-height: 44px;
+    }
+
+    /* Constructor de rutinas: los días ocupan casi todo el ancho. */
+    .dia {
+        min-width: min(280px, 82vw);
+    }
+
+    .dia-cabecera {
+        flex-wrap: wrap;
+    }
+
+    .fila-ejercicio {
+        padding: 10px;
+    }
+
+    .fila-ejercicio .btnEliminar {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    /* Tablas: se desplazan dentro de su contenedor, no la página entera. */
+    .tabla-contenedor {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tabla th,
+    .tabla td {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .tabla td.acciones button {
+        min-height: 40px;
+    }
+}

@@ -4,9 +4,6 @@
  *
  * Requisito funcional RF-07 «gestionar los planes y suscripciones del
  * gimnasio con su duración, beneficios y precio» · Caso de uso CU-03.
- *
- * El precio se desglosa en `planprecio` (semanal / mensual / trimestral /
- * anual) y `plan.precio` guarda el precio de referencia.
  */
 
 declare(strict_types=1);
@@ -62,9 +59,11 @@ ejecutar_endpoint(static function (): void {
             $beneficio === '' ? null : $beneficio,
             $precioReferencia,
             $duracion === '' ? null : $duracion,
-            $tipoPlan === '' ? null : $tipoPlan,
-            $fechaInicio === '' ? null : $fechaInicio,
-            $fechaFin === '' ? null : $fechaFin,
+            // `tipo_de_plan`, `fecha_inicio` y `fecha_fin` son NOT NULL en el
+            // esquema: si no se informan se guarda cadena vacía, no NULL.
+            $tipoPlan,
+            $fechaInicio,
+            $fechaFin,
         ]);
 
         $idPlan = (int) $pdo->lastInsertId();

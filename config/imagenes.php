@@ -1,15 +1,9 @@
 <?php
 /**
  * A.P.P.E. — Validación y almacenamiento de imágenes subidas.
- *
- * Hallazgo 8 (severidad alta): la versión anterior movía el archivo sin
- * comprobar el código de error de la subida, ni el tamaño, ni el contenido real.
- * Renombrar un archivo no transforma su contenido.
- *
- * Lo que hace esta función:
- *   1. Comprueba el código de error real de la subida (`$_FILES['x']['error']`).
+ *   1. Comprueba el código de error real de la subida (`$_FILES["x"]["error"]`).
  *   2. Comprueba el tamaño máximo configurado.
- *   3. Comprueba el TIPO REAL del archivo con `getimagesize()` y `finfo`, no la
+ *   3. Comprueba el tipo del archivo con `getimagesize()` y `finfo`, no la
  *      extensión ni el `Content-Type` que declara el navegador.
  *   4. Recodifica la imagen a JPEG cuando la extensión GD está disponible, lo
  *      que elimina cualquier carga incrustada.
@@ -95,7 +89,7 @@ if (!function_exists('guardar_imagen')) {
      * @param string               $directorio Directorio destino (debe existir).
      * @param string               $nombreBase Nombre base del archivo (sin extensión).
      *
-     * @return string La extensión con la que se guardó ('jpg' o 'png').
+     * @return string La extensión con la que se guardó ("jpg" o "png").
      *
      * @throws ValidacionException
      */

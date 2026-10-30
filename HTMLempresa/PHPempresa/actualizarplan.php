@@ -56,7 +56,8 @@ ejecutar_endpoint(static function (): void {
     if (isset($_POST['tipo_de_plan'])) {
         $tipo = texto_opcional($_POST['tipo_de_plan'], 'Tipo de plan', 60);
         $campos[] = 'tipo_de_plan = ?';
-        $parametros[] = $tipo === '' ? null : $tipo;
+        // `tipo_de_plan` es NOT NULL: "sin tipo" se guarda como cadena vacía.
+        $parametros[] = $tipo;
     }
 
     if (isset($_POST['activo'])) {

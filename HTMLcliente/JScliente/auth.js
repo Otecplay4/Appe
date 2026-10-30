@@ -5,7 +5,7 @@
  * La fuente de verdad es el servidor (`sesion.php`): el navegador no decide
  * si el usuario está autenticado.
  *
- * Fallo cerrado: ante cualquier duda, la opción queda bloqueada.
+ * Ante cualquier duda, la opción queda bloqueada.
  */
 const Auth = (() => {
     "use strict";
@@ -124,7 +124,7 @@ const Auth = (() => {
     }
 
     /**
-     * Aplica la guarda a la navegación apenas se carga la página: los
+     * Aplica seguridad a la navegación apenas se carga la página: los
      * enlaces que exigen sesión quedan bloqueados para el visitante.
      */
     function iniciar() {

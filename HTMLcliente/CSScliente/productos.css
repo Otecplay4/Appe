@@ -475,3 +475,79 @@
         min-height: 150px;
     }
 }
+
+
+/* ==========================================================================
+   Tablet (641px a 1199px)
+   Escritorio (1200px o más) y teléfono (640px o menos) no cambian.
+   ========================================================================== */
+@media (min-width: 641px) and (max-width: 1199px) {
+    .pagina-productos,
+    .pagina-producto,
+    .pagina-carrito {
+        padding: 120px 40px 64px;
+    }
+
+    .titulo-productos {
+        margin-bottom: 40px;
+        font-size: 44px;
+    }
+
+    /* Productos: tarjetas con el texto a escala de tablet. */
+    .nombre-producto {
+        font-size: 1.5rem;
+    }
+
+    .info-producto {
+        padding: 16px;
+    }
+
+    .acciones-producto {
+        padding: 0 16px 16px;
+    }
+
+    /* Detalle de producto y carrito. */
+    .info-grande {
+        padding: 40px;
+    }
+
+    .nombre-grande {
+        font-size: 40px;
+    }
+
+    .descripcion-producto {
+        font-size: 18px;
+    }
+
+    .fila-carrito {
+        grid-template-columns: 120px 1fr auto auto auto;
+    }
+
+    .fila-carrito img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Tablet vertical: las 3 categorías quedan en una sola fila (sin tarjeta
+   huérfana) y los productos en dos columnas. */
+@media (min-width: 641px) and (max-width: 900px) {
+    .grilla-categorias {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+
+    .caja-categoria {
+        min-height: 380px;
+    }
+
+    .titulo-categoria {
+        min-height: 68px;
+        padding: 18px;
+        font-size: 20px;
+    }
+
+    .grilla-productos {
+        gap: 20px;
+    }
+}

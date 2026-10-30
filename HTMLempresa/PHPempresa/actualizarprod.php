@@ -3,10 +3,6 @@
  * A.P.P.E. — Modificación de un producto del catálogo.
  *
  * Requisito funcional RF-08 · Caso de uso CU-05.
- *
- * Hallazgo 28: la versión anterior solo leía un parámetro y no actualizaba
- * nada. Ahora se modifican todos los atributos editables y se comprueba el
- * resultado real de la operación (hallazgo 25).
  */
 
 declare(strict_types=1);

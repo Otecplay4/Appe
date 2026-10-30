@@ -51,6 +51,9 @@
             const listaPlan = Dom.crear("ul", { clases: ["perfil-lista"] });
             listaPlan.appendChild(Dom.texto("li", "Plan: " + plan.nombre));
             listaPlan.appendChild(Dom.texto("li", "Beneficio: " + (plan.beneficio || "-")));
+            if (plan.periodo) {
+                listaPlan.appendChild(Dom.texto("li", "Período: " + plan.periodo.charAt(0).toUpperCase() + plan.periodo.slice(1)));
+            }
             listaPlan.appendChild(Dom.texto("li", "Precio: " + Dom.precio(plan.precio)));
             listaPlan.appendChild(Dom.texto("li", "Vigencia: " + (plan.fecha_inicio || "-") + " a " + (plan.fecha_fin || "-")));
             seccionPlan.appendChild(listaPlan);
@@ -136,16 +139,22 @@
         API.get("miperfil.php")
             .then(pintar)
             .catch((error) => {
-                // 401: no hay sesión. 403: la sesión no tiene el rol de socio.
+                // 401: no hay sesión. 403: la sesión no tiene permisos o expiró.
                 const sinAcceso = error.estado === 401 || error.estado === 403;
 
-                Dom.mensaje(
-                    mensaje,
-                    sinAcceso
-                        ? "Tu sesión actual no tiene acceso a esta información."
-                        : (error.mensaje || "No se pudo cargar el perfil."),
-                    "error"
-                );
+                if (sinAcceso) {
+                    // Mostrar aviso breve y redirigir al login en caso de logout repentino
+                    Dom.mensaje(mensaje, "Tu sesión ha expirado. Redirigiendo al login...", "error");
+                    setTimeout(() => {
+                        window.location.href = "./Principio.html"; // Redirecciòn para iniciar sesiòn nuevamente
+                    }, 2000);
+                } else {
+                    Dom.mensaje(
+                        mensaje,
+                        error.mensaje || "No se pudo cargar el perfil.",
+                        "error"
+                    );
+                }
             });
     }
 

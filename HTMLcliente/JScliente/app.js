@@ -1,10 +1,6 @@
 /**
  * A.P.P.E. — Inicio de sesión y registro del cliente.
- *
- * Corrige los hallazgos 26 (contratos de respuesta y manejo de errores) y 6
- * (los mensajes del servidor se mostraban con `innerHTML`, lo que permite
- * inyectar HTML si el mensaje llega a reflejar datos del usuario).
- *
+
  * Todos los mensajes se muestran con `textContent` a través de `Dom.mensaje`.
  */
 (function () {

@@ -439,3 +439,39 @@ justify-content: center;
         padding: 18px;
     }
 }
+
+
+/* ==========================================================================
+   Tablet (761px a 1099px)
+   La caja de acceso (420px) y el texto ya no caben lado a lado con el
+   espacio original: se reduce el hueco y el titular para evitar el desborde.
+   ========================================================================== */
+@media (min-width: 761px) and (max-width: 1099px) {
+    .encabezado-acceso,
+    .contenido-acceso,
+    .encabezado-navegacion {
+        width: 92%;
+    }
+
+    .contenido-acceso {
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
+        gap: 40px;
+        padding: 40px 0 64px;
+    }
+
+    .texto-acceso h1 {
+        font-size: clamp(32px, 4.4vw, 46px);
+    }
+
+    .texto-acceso > p:last-child {
+        font-size: 17px;
+    }
+
+    .caja-acceso {
+        padding: 32px;
+    }
+
+    .contenido-simple {
+        max-width: 720px;
+    }
+}

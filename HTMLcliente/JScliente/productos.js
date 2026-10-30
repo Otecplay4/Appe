@@ -1,8 +1,7 @@
 /**
  * A.P.P.E. — Rejilla de productos por categoría.
  *
- * Hallazgo 6: la versión anterior interpolaba el nombre del producto dentro
- * de `innerHTML`. Aquí todo el contenido se inserta con `textContent`.
+ * Todo el contenido se inserta con `textContent`.
  */
 (function () {
     "use strict";

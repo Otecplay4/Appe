@@ -1,15 +1,6 @@
 <?php
 /**
  * A.P.P.E. — Conexión única a la base de datos (PDO).
- *
- * Hallazgo 9: se elimina el uso de `root` con contraseña vacía. La conexión usa
- * una cuenta de aplicación con privilegios mínimos y las credenciales provienen
- * de `config/config.php` o, en su defecto, de las variables de entorno
- * DB_HOST / DB_NAME / DB_USER / DB_PASS. Nunca se versionan en el código.
- *
- * Hallazgo 29: existe una sola conexión en todo el proyecto (antes estaba
- * duplicada en `PHPcliente/conexion.php` y `PHPempresa/conexion2.php`).
- *
  * Todas las consultas del proyecto usan sentencias preparadas con
  * `ATTR_EMULATE_PREPARES = false` (PDOStatement::execute con parámetros reales).
  */
@@ -115,7 +106,7 @@ if (!function_exists('appe_conexion')) {
                 PDO::ATTR_STRINGIFY_FETCHES  => false,
             ]);
         } catch (PDOException $e) {
-            // Hallazgo 17: no se filtra el detalle técnico al cliente.
+
             error_log('[APPE] No se pudo conectar a la base de datos: ' . $e->getMessage());
             throw new RuntimeException('La base de datos no está disponible en este momento.', 0, $e);
         }

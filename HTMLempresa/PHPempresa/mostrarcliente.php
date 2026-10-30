@@ -4,12 +4,6 @@
  *
  * Requisito funcional RF-06 «gestionar el registro completo de clientes» y
  * RF-12 «realizar búsquedas y filtros dinámicos sobre todos los registros».
- *
- * Hallazgo 3 (severidad alta): la versión anterior devolvía la columna
- * `contraseña` de todos los clientes sin exigir sesión. Ahora:
- *   - exige sesión de entrenador o administrador;
- *   - la contraseña NUNCA se incluye en la respuesta;
- *   - solo se devuelven los campos necesarios.
  */
 
 declare(strict_types=1);
@@ -33,7 +27,7 @@ ejecutar_endpoint(static function (): void {
 
     $paginacion = parametros_paginacion(200);
 
-    $sql = 'SELECT c.id_cliente, c.nombre, c.apellido, c.correo, c.telefono, c.activo,
+    $sql = 'SELECT c.id AS id_cliente, c.nombre, c.apellido, c.correo, c.telefono, c.activo,
                    c.fecha_alta, c.id_plan, c.id_entrenador, c.id_rutina,
                    p.nombre AS plan_nombre,
                    e.nombre AS entrenador_nombre

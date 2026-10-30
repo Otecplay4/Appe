@@ -3,16 +3,6 @@
  * A.P.P.E. — Inicio de sesión del entrenador / administrador.
  *
  * Caso de uso CU-01 «Iniciar Sesión» (actor Entrenador).
- *
- * Correcciones respecto de la versión anterior:
- *   - El correo se valida en el servidor (antes no se validaba).
- *   - Regeneración del identificador de sesión y reconstrucción del estado
- *     (hallazgos 10 y 12).
- *   - Mensaje genérico ante credenciales inválidas (hallazgo 13).
- *   - Límite de intentos por cuenta y por origen, persistido en la base de
- *     datos (hallazgo 14).
- *   - Token CSRF obligatorio (hallazgo 15).
- *   - Se comprueba que la cuenta esté activa.
  */
 
 declare(strict_types=1);

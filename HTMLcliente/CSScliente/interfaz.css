@@ -204,3 +204,82 @@ nav{
         font-size:28px;
     }
 }
+
+/* ==========================================================================
+   Tablet (641px a 1199px)
+   Solo se aplica en tablets: escritorio (1200px o más) y teléfono (640px o
+   menos) conservan sus estilos originales.
+   ========================================================================== */
+@media (min-width:641px) and (max-width:1199px){
+    /* Portada: texto un poco más grande para aprovechar la pantalla. */
+    .contenido{
+        max-width:600px;
+    }
+    .contenido h1{
+        font-size:clamp(40px, 5.4vw, 56px);
+    }
+    .contenido p{
+        font-size:clamp(18px, 2.4vw, 22px);
+    }
+}
+
+/* Tablet vertical y tablets chicas: la cabecera cabe en una sola fila. */
+@media (min-width:641px) and (max-width:960px){
+    header{
+        padding:14px 24px;
+        gap:12px;
+    }
+    .logo img{
+        height:46px;
+    }
+    nav{
+        flex-wrap:nowrap;
+        gap:6px;
+    }
+    .nav-boton{
+        padding:8px 10px;
+        font-size:13px;
+    }
+    .lado-derecho{
+        gap:8px;
+    }
+    .lado-derecho .boton-carrito,
+    .lado-derecho .boton-volver{
+        padding:8px 10px;
+        font-size:13px;
+        min-height:0;
+        white-space:nowrap;
+    }
+    nav .boton-carrito{
+        padding:8px 10px;
+        font-size:13px;
+        white-space:nowrap;
+    }
+    .contenido{
+        margin-left:48px;
+    }
+}
+
+/* Tablets muy chicas (641px a 740px): se compacta un poco más. */
+@media (min-width:641px) and (max-width:740px){
+    header{
+        padding:12px 14px;
+        gap:8px;
+    }
+    .logo img{
+        height:38px;
+    }
+    nav{
+        gap:4px;
+    }
+    .nav-boton,
+    nav .boton-carrito,
+    .lado-derecho .boton-carrito,
+    .lado-derecho .boton-volver{
+        padding:6px 7px;
+        font-size:12px;
+    }
+    .lado-derecho{
+        gap:4px;
+    }
+}

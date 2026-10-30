@@ -2,15 +2,6 @@
  * A.P.P.E. — Gestión de productos (empresa).
  *
  * Requisito funcional RF-08 · Caso de uso CU-05.
- *
- * Correcciones:
- *   - Hallazgo 18: la versión anterior redeclaraba `let form` en el mismo
- *     ámbito, lo que producía un `SyntaxError` que impedía ejecutar el
- *     archivo completo. Aquí todo vive dentro de un módulo (IIFE) y cada
- *     bloque tiene su propio ámbito.
- *   - Hallazgo 29: se eliminó la dependencia de la variable global
- *     `contenedor`; la referencia al DOM es explícita.
- *   - Hallazgo 26: se comprueba el resultado real de cada operación.
  */
 (function () {
     "use strict";

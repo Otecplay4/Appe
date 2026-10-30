@@ -60,7 +60,7 @@ function listar_cuotas(): void
                    q.fecha_emision, q.fecha_vencimiento, q.fecha_pago, q.estado, q.forma_pago,
                    c.nombre, c.apellido, c.correo
               FROM cuota q
-              JOIN cliente c ON c.id_cliente = q.id_cliente
+              JOIN cliente c ON c.id = q.id_cliente
              WHERE 1 = 1';
     $parametros = [];
 
@@ -140,7 +140,7 @@ function crear_cuota(): void
         throw new ValidacionException('La fecha de vencimiento no puede ser anterior a la de emisión.');
     }
 
-    $stmt = appe_conexion()->prepare('SELECT id_cliente FROM cliente WHERE id_cliente = ?');
+    $stmt = appe_conexion()->prepare('SELECT id FROM cliente WHERE id = ?');
     $stmt->execute([$idCliente]);
 
     if ($stmt->fetch() === false) {

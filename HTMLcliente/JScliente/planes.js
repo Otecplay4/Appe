@@ -13,31 +13,8 @@
         return;
     }
 
-    const PANTALLA_MOVIL = 640;
-
-    function cambiar(fila, abrir) {
-        const detalle = fila.querySelector(".detalle-plan");
-        const boton = fila.querySelector(".caja-plan");
-
-        // La hoja de estilo muestra el detalle cuando la fila tiene la clase
-        // «abierta».
-        fila.classList.toggle("abierta", abrir);
-
-        if (detalle) {
-            detalle.setAttribute("aria-hidden", abrir ? "false" : "true");
-        }
-
-        if (boton) {
-            boton.setAttribute("aria-expanded", abrir ? "true" : "false");
-        }
-    }
-
     /**
      * Construye la fila de un plan creado por el entrenador.
-     *
-     * La estructura es exactamente la misma que la de los planes fijos del
-     * HTML: una fila `.fila-plan` con la tarjeta `.caja-plan`, la flecha y el
-     * panel `.detalle-plan` donde están los precios.
      */
     function crearFilaPlan(plan) {
         const idPanel = "planPanel-" + plan.id_plan;
@@ -94,10 +71,49 @@
         return fila;
     }
 
+    /**
+     * Los planes fijos de la interfaz (Plan Basico y Plan Familiar) ya están en
+     * el HTML con su imagen. Sus precios se sincronizan con los de la base de
+     * datos para que lo que se ve en pantalla y en el carrito sea lo mismo que
+     * se registra al comprar.
+     */
+    function sincronizarPlanFijo(plan) {
+        const precios = plan.precios || {};
+
+        Object.keys(precios).forEach((periodo) => {
+            const valor = Number(precios[periodo]);
+            const boton = lista.querySelector(
+                '.boton-tiempo[data-plan-compra="' + plan.id_plan + '"][data-periodo="' + periodo + '"]'
+            );
+
+            if (!boton || !(valor > 0)) {
+                return;
+            }
+
+            boton.setAttribute("data-precio", String(valor));
+
+            const etiqueta = boton.parentElement ? boton.parentElement.querySelector(".precio-tiempo") : null;
+            if (etiqueta) {
+                etiqueta.textContent = PlanesComun.formatearPrecio(valor);
+            }
+        });
+    }
+
     function mostrar() {
+        // Ids de los planes que ya están dibujados en el HTML.
+        const fijos = new Set(
+            Array.from(lista.querySelectorAll(".caja-plan[data-plan]")).map((tarjeta) => tarjeta.getAttribute("data-plan"))
+        );
+
         PlanesComun.cargarPlanesServidor().then((planes) => {
             planes.forEach((plan) => {
                 if (!plan || !plan.id_plan) {
+                    return;
+                }
+
+                // Un plan fijo no se vuelve a dibujar: solo se actualizan sus precios.
+                if (fijos.has(String(plan.id_plan))) {
+                    sincronizarPlanFijo(plan);
                     return;
                 }
 

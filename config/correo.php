@@ -3,15 +3,15 @@
  * A.P.P.E. — Envío de correo electrónico.
  *
  * El proyecto no puede depender de un servidor SMTP en el entorno de
- * desarrollo. Este envoltorio usa la función `mail()` de PHP cuando el
+ * desarrollo. Este envoltorio usa la función "mail()" de PHP cuando el
  * servidor de correo está configurado y, en caso contrario, registra el
  * contenido en el log del servidor para que el mensaje no se pierda.
  *
- * Configuración en `config/config.php`:
+ * Configuración en "config/config.php":
  *
- *     'correo' => [
- *         'remitente' => 'no-reply@olympia.local',
- *         'nombre'    => 'A.P.P.E.',
+ *     "correo" => [
+ *         "remitente" => "no-reply@olympia.local",
+ *         "nombre"    => "A.P.P.E.",
  *     ],
  */
 
