@@ -359,6 +359,7 @@ CREATE TABLE `plan` (
 
 LOCK TABLES `plan` WRITE;
 /*!40000 ALTER TABLE `plan` DISABLE KEYS */;
+INSERT INTO `plan` VALUES (1,1,'Plan Basico','Entrenamiento de fuerza','Acceso a todas las áreas',1200.00,'Mensual','individual','','',NULL,1,'2026-10-30 16:12:14'),(2,1,'Plan Familiar','Entrenamiento personalizado','Acceso a todas las áreas',1800.00,'Mensual','familiar','','',NULL,1,'2026-10-30 16:12:14');
 /*!40000 ALTER TABLE `plan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,6 +385,7 @@ CREATE TABLE `planprecio` (
 
 LOCK TABLES `planprecio` WRITE;
 /*!40000 ALTER TABLE `planprecio` DISABLE KEYS */;
+INSERT INTO `planprecio` VALUES (1,'semanal',300.00),(1,'mensual',1200.00),(1,'trimestral',2000.00),(1,'anual',3000.00),(2,'semanal',450.00),(2,'mensual',1800.00),(2,'trimestral',3000.00),(2,'anual',4500.00);
 /*!40000 ALTER TABLE `planprecio` ENABLE KEYS */;
 UNLOCK TABLES;
 
